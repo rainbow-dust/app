@@ -3,5 +3,5 @@ export const Collection = () => {
     <div>
       <h1>Collection</h1>
     </div>
-  );
-};
+  )
+}

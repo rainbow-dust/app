@@ -1,17 +1,17 @@
-import { Home } from "@/pages/Home";
-import { Detail } from "@/pages/Detail";
+import { Detail } from '@/pages/Detail'
+import { Home } from '@/pages/Home'
 
 export const routes = [
   {
-    path: "/",
+    path: '/',
     element: <Home />,
   },
   {
-    path: "/detail/:id",
+    path: '/detail/:id',
     element: <Detail />,
   },
   {
-    path: "*",
+    path: '*',
     element: <div>404</div>,
   },
-];
+]

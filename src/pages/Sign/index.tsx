@@ -3,5 +3,5 @@ export const Sign = () => {
     <div>
       <h1>Sign</h1>
     </div>
-  );
-};
+  )
+}

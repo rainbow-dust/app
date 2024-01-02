@@ -1,13 +1,38 @@
 {
-  "name": "app",
+  "name": "@furina/app",
+  "author": "huamurui",
   "private": true,
   "version": "0.0.0",
+  "repository": {
+    "directory": "@furina/app"
+  },
+  "license": "MIT",
   "type": "module",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "prettier --ignore-path ./.prettierignore --write "
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git",
+      "useEmoji": true
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix --ignore-path .gitignore",
+    "preview": "vite preview",
+    "format": "prettier --write src/",
+    "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.jsx, --quiet ./",
+    "prepare": "husky install"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -24,6 +49,14 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "typescript": "^5.2.2",
+    "prettier": "^3.0.3",
+    "@huamurui/prettier": "^0.0.2",
+    "commitlint": "^17.4.2",
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "cz-git": "^1.4.1",
     "vite": "^5.0.8"
   }
 }

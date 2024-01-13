@@ -5,6 +5,7 @@ import { addPost } from '@/services'
 export const Post = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [tags, setTags] = useState<string[]>([])
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -14,10 +15,14 @@ export const Post = () => {
     setContent(e.target.value)
   }
 
+  const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTags(e.target.value.split(','))
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Add your logic to submit the post content here
-    addPost(title, content, ['1', '2', '3'])
+    addPost(title, content, tags)
   }
 
   return (
@@ -34,6 +39,8 @@ export const Post = () => {
 
         <label htmlFor="content">Content:</label>
         <textarea id="content" value={content} onChange={handleContentChange} />
+        <label htmlFor="tags">Tags:</label>
+        <input type="text" value={tags} onChange={handleTagsChange} />
 
         <button type="submit">Publish</button>
       </form>

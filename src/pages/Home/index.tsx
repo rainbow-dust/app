@@ -10,6 +10,9 @@ export const Home = () => {
       <div>
         <Link to="/self">Self</Link>
       </div>
+      <div>
+        <Link to="/post">Post</Link>
+      </div>
     </div>
   )
 }

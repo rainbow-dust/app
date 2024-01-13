@@ -7,6 +7,10 @@ interface Post {
   _id: string
   title: string
   content: string
+  user: {
+    _id: string
+    username: string
+  }
 }
 
 const ContentListQueryPage: React.FC = () => {
@@ -31,7 +35,9 @@ const ContentListQueryPage: React.FC = () => {
             <Link to={`/detail/${content._id}`} key={content._id}>
               <h6>{content.title}</h6>
             </Link>
-            <p>{content.content}</p>
+            <p>{content.user?.username}</p>
+
+            <div>{content.content}</div>
           </li>
         ))}
       </ul>

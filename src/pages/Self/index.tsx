@@ -8,11 +8,11 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('')
 
   const handleLogin = () => {
-    ;``
     // Handle login logic here
 
     login(username, password).then((res) => {
       localStorage.setItem('token', res.token)
+      localStorage.setItem('username', res.username)
       console.log(res)
     })
   }
@@ -70,6 +70,11 @@ const RegistrationPage: React.FC = () => {
 const SelfPage: React.FC = () => {
   return (
     <div>
+      {localStorage.getItem('token') ? (
+        <h2>hi, {localStorage.getItem('username')}</h2>
+      ) : (
+        '-'
+      )}
       <LoginPage />
       <RegistrationPage />
     </div>

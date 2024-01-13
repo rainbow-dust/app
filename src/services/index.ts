@@ -75,3 +75,38 @@ export async function getPost(id: string) {
       return res
     })
 }
+
+export async function addComment(
+  postId: string,
+  content: string,
+  mentionee?: string,
+) {
+  return fetch(`${BASE_URL}/comment/add`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ postId, content, mentionee }),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function getComments(commentId: string) {
+  return fetch(`${BASE_URL}/comments/${commentId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}

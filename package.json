@@ -40,23 +40,25 @@
     "react-router-dom": "^6.21.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "@huamurui/prettier": "^0.0.2",
+    "@types/node": "^20.11.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "commitlint": "^17.4.2",
+    "cz-git": "^1.4.1",
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "typescript": "^5.2.2",
-    "prettier": "^3.0.3",
-    "@huamurui/prettier": "^0.0.2",
-    "commitlint": "^17.4.2",
-    "@commitlint/cli": "^17.4.2",
-    "@commitlint/config-conventional": "^17.4.2",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
-    "cz-git": "^1.4.1",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.2.2",
     "vite": "^5.0.8"
   }
 }

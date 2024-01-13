@@ -2,16 +2,3 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
-
-.bar {
-  position: fixed;
-  top: 0px;
-  height: 50px;
-  width: 100%;
-  background-color: bisque;
-  transition: all 0.2s ease-in-out;
-}
-
-.hide {
-  transform: translateY(-50px);
-}

@@ -1,8 +1,15 @@
+import { Link } from 'react-router-dom'
+
 export const Home = () => {
   return (
     <div>
       <h1>Home</h1>
-      <div style={{ height: '3000px' }}></div>
+      <div>
+        <Link to="/feed">Feed</Link>
+      </div>
+      <div>
+        <Link to="/self">Self</Link>
+      </div>
     </div>
   )
 }

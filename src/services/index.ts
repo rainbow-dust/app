@@ -29,14 +29,19 @@ export async function login(username: string, password: string) {
     })
 }
 
-export async function addPost(title: string, content: string, tags: string[]) {
+export async function addPost(
+  title: string,
+  content: string,
+  tags: string[],
+  picUrls: string[],
+) {
   return fetch(`${BASE_URL}/post/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ title, content, tags }),
+    body: JSON.stringify({ title, content, tags, picUrls }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -103,6 +108,23 @@ export async function getComments(commentId: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function upload(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return fetch(`${BASE_URL}/upload/album`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: formData,
   })
     .then((res) => res.json())
     .then((res) => {

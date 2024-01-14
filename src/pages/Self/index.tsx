@@ -13,7 +13,6 @@ const LoginPage: React.FC = () => {
     login(username, password).then((res) => {
       localStorage.setItem('token', res.token)
       localStorage.setItem('username', res.username)
-      console.log(res)
     })
   }
 

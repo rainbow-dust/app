@@ -33,7 +33,7 @@ export async function addPost(
   title: string,
   content: string,
   tags: string[],
-  picUrls: string[],
+  pic_urls: string[],
 ) {
   return fetch(`${BASE_URL}/post/add`, {
     method: 'POST',
@@ -41,7 +41,7 @@ export async function addPost(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ title, content, tags, picUrls }),
+    body: JSON.stringify({ title, content, tags, pic_urls }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -82,8 +82,9 @@ export async function getPost(id: string) {
 }
 
 export async function addComment(
-  postId: string,
+  post_id: string,
   content: string,
+  comment_id?: string,
   mentionee?: string,
 ) {
   return fetch(`${BASE_URL}/comment/add`, {
@@ -92,7 +93,7 @@ export async function addComment(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ postId, content, mentionee }),
+    body: JSON.stringify({ post_id, content, comment_id, mentionee }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -101,8 +102,8 @@ export async function addComment(
     })
 }
 
-export async function getComments(commentId: string) {
-  return fetch(`${BASE_URL}/comments/${commentId}`, {
+export async function getComments(comment_id: string) {
+  return fetch(`${BASE_URL}/comments/${comment_id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

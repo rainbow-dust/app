@@ -11,9 +11,9 @@ interface Post {
   // comments: any[]
   comments: [
     {
-      commentId: string
+      comment_id: string
       content: string
-      nestedComments: [
+      nested_comments: [
         {
           _id: string
           content: string
@@ -39,15 +39,14 @@ export const Detail = () => {
     setComment(e.target.value)
   }
   const handleSubmit = async () => {
-    await addComment(id as string, comment)
+    await addComment(id as string, comment, undefined, undefined)
     setComment('')
     const res = await getPost(id as string)
     setPost(res)
   }
 
   const handleReply = async (mentionee: string) => {
-    console.log(mentionee)
-    await addComment(id as string, comment, mentionee)
+    await addComment(id as string, comment, mentionee, mentionee)
     setComment('')
     const res = await getPost(id as string)
     setPost(res)
@@ -64,8 +63,10 @@ export const Detail = () => {
           <li key={i}>
             {comment.content}
 
-            <button onClick={() => handleReply(comment.commentId)}>回复</button>
-            {comment?.nestedComments && <button>展开</button>}
+            <button onClick={() => handleReply(comment.comment_id)}>
+              回复
+            </button>
+            {comment?.nested_comments && <button>展开</button>}
           </li>
         ))}
       </ul>

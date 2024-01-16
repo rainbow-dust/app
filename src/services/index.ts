@@ -141,7 +141,7 @@ export async function addTag(name: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ name, description: '' }),
   })
     .then((res) => res.json())
     .then((res) => {

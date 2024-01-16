@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { addPost, queryTags, upload } from '@/services'
+import { addPost, addTag, queryTags, upload } from '@/services'
 
 interface Tag {
   name: string
@@ -32,10 +32,16 @@ export const Publish = () => {
   const [chosenTags, setChosenTags] = useState<Tag[]>([])
   const [tobeChosenTags, setTobeChosenTags] = useState<Tag[]>([])
   const [queryStr, setQueryStr] = useState<string>('')
+  const [addNew, setAddNew] = useState<boolean>(false)
 
   const getTobeChosenTags = async (queryStr: string) => {
     setQueryStr(queryStr)
     const tags = await queryTags(queryStr)
+    if (tags.length === 0) {
+      setAddNew(true)
+    } else {
+      setAddNew(false)
+    }
     setTobeChosenTags(
       tags.filter((t: Tag) => !chosenTags.find((c) => c._id === t._id)),
     )
@@ -50,11 +56,17 @@ export const Publish = () => {
     setTobeChosenTags([...tobeChosenTags, tag])
   }
 
+  const handleAddTag = async () => {
+    setAddNew(false)
+    const tag = await addTag(queryStr)
+    setQueryStr('')
+    setChosenTags([...chosenTags, tag])
+  }
   const [fileUrls, setFileUrls] = useState<string[]>([])
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files[0]
+    const file = e.target.files?.[0]
+    if (!file) return
     const { url } = await upload(file)
-    console.log(url)
     setFileUrls([...fileUrls, url])
   }
 
@@ -98,6 +110,14 @@ export const Publish = () => {
             value={queryStr}
             onChange={(e) => getTobeChosenTags(e.target.value)}
           />
+          {addNew && (
+            <span
+              style={{ cursor: 'pointer', border: '1px solid black' }}
+              onClick={() => handleAddTag()}
+            >
+              Add New Tag
+            </span>
+          )}
           <div>chosenTags:</div>
           {chosenTags?.map((tag) => (
             <span

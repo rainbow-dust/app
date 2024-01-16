@@ -1,7 +1,7 @@
 import { Detail } from '@/pages/Detail'
 import { Feed } from '@/pages/Feed'
 import { Home } from '@/pages/Home'
-import { Post } from '@/pages/Post'
+import { Publish } from '@/pages/Publish'
 import { Self } from '@/pages/Self'
 
 export const routes = [
@@ -18,8 +18,8 @@ export const routes = [
     element: <Self />,
   },
   {
-    path: '/post',
-    element: <Post />,
+    path: '/publish',
+    element: <Publish />,
   },
   {
     path: '/feed',

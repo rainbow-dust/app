@@ -11,7 +11,7 @@ export const Home = () => {
         <Link to="/self">Self</Link>
       </div>
       <div>
-        <Link to="/post">Post</Link>
+        <Link to="/publish">Publish</Link>
       </div>
     </div>
   )

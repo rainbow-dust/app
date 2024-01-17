@@ -85,8 +85,8 @@ export async function getPost(id: string) {
 export async function addComment(
   post_id: string,
   content: string,
-  comment_id?: string,
-  mentionee?: string,
+  root_comment_id?: string,
+  mentionee_id?: string,
 ) {
   return fetch(`${BASE_URL}/comment/add`, {
     method: 'POST',
@@ -94,7 +94,7 @@ export async function addComment(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ post_id, content, comment_id, mentionee }),
+    body: JSON.stringify({ post_id, content, root_comment_id, mentionee_id }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -103,9 +103,57 @@ export async function addComment(
     })
 }
 
-export async function getComments(root_comment_id: string) {
-  return fetch(`${BASE_URL}/comment/${root_comment_id}/children`, {
+export async function getRootComments(post_id: string) {
+  return fetch(`${BASE_URL}/comment/post/${post_id}/root_comment`, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function getChildComments(root_comment_id: string) {
+  return fetch(
+    `${BASE_URL}/comment/root_comment/${root_comment_id}/child_comment`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function likeComment(comment_id: string) {
+  return fetch(`${BASE_URL}/comment/${comment_id}/like`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function cancelLikeComment(comment_id: string) {
+  return fetch(`${BASE_URL}/comment/${comment_id}/like`, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,

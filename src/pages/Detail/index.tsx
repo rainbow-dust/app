@@ -10,9 +10,9 @@ export const Detail = () => {
       <h1>Detail</h1>
       {id && (
         <>
-          <Content postId={id} />
+          <Content noteId={id} />
           <h3>Comments</h3>
-          <Comments postId={id} />
+          <Comments noteId={id} />
         </>
       )}
     </div>

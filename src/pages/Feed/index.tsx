@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getPosts } from '~/services'
+import { getNotes } from '~/services'
 
-interface Post {
+interface Note {
   _id: string
   title: string
   content: string
@@ -15,13 +15,13 @@ interface Post {
 }
 
 const ContentListQueryPage: React.FC = () => {
-  const [contentList, setContentList] = useState<Post[]>([])
+  const [contentList, setContentList] = useState<Note[]>([])
 
   useEffect(() => {
     // Fetch content list data from API or database
     const fetchContentList = async () => {
-      const res = await getPosts()
-      setContentList(res.postList)
+      const res = await getNotes()
+      setContentList(res.noteList)
     }
 
     fetchContentList()

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { addPost, addTag, queryTags, upload } from '~/services'
+import { addNote, addTag, queryTags, upload } from '~/services'
 
 interface Tag {
   name: string
@@ -10,8 +10,8 @@ interface Tag {
 export const Publish: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Add your logic to submit the post content here
-    addPost(
+    // Add your logic to submit the note content here
+    addNote(
       title,
       content,
       chosenTags.map((t) => t.name),

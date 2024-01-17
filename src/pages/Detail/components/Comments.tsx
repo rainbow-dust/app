@@ -25,16 +25,19 @@ interface RootComment extends Comment {
   child_comment_count?: number
 }
 
-export const Comments: FC<{ postId: string }> = ({ postId }) => {
+// 依旧是可以拆的... 比如 CommentItem 组件，把点赞和回复的逻辑放到里面去，又比如把回复也单独搞出来
+// 这样拆的话...变量也可以拆，就不用看着那么一整个的超级大变量不知道怎么更新了
+// 只能说...不习惯这样
+export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   const [rootComments, setRootComments] = useState<RootComment[]>([])
-  const fetchRootComments = async (postId: string) => {
-    const res = await getRootComments(postId)
+  const fetchRootComments = async (noteId: string) => {
+    const res = await getRootComments(noteId)
     setRootComments(res.data)
   }
 
   useEffect(() => {
-    fetchRootComments(postId)
-  }, [postId])
+    fetchRootComments(noteId)
+  }, [noteId])
 
   const unfoldReply = async (commentId: string) => {
     const res = await getChildComments(commentId)
@@ -56,9 +59,9 @@ export const Comments: FC<{ postId: string }> = ({ postId }) => {
     rootCommentId?: string,
     meetioneeId?: string,
   ) => {
-    const res = await addComment(postId, content, rootCommentId, meetioneeId)
+    const res = await addComment(noteId, content, rootCommentId, meetioneeId)
     if (rootCommentId) {
-      fetchRootComments(postId)
+      fetchRootComments(noteId)
     } else {
       unfoldReply(res._id)
     }

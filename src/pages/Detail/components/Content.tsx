@@ -1,29 +1,29 @@
 import { FC, useEffect, useState } from 'react'
 
-import { getPost } from '~/services'
+import { getNote } from '~/services'
 
-interface Post {
+interface Note {
   _id: string
   title: string
   content: string
   pic_urls: string[]
 }
 
-export const Content: FC<{ postId: string }> = ({ postId }) => {
-  const [post, setPost] = useState<Post>()
+export const Content: FC<{ noteId: string }> = ({ noteId }) => {
+  const [note, setNote] = useState<Note>()
   useEffect(() => {
-    const fetchPost = async () => {
-      const res = await getPost(postId)
-      setPost(res)
+    const fetchNote = async () => {
+      const res = await getNote(noteId)
+      setNote(res)
     }
-    fetchPost()
-  }, [postId])
+    fetchNote()
+  }, [noteId])
 
   return (
     <>
-      <h2>{post?.title}</h2>
-      <p>{post?.content}</p>
-      {post?.pic_urls.map((url, i) => (
+      <h2>{note?.title}</h2>
+      <p>{note?.content}</p>
+      {note?.pic_urls.map((url, i) => (
         <img
           style={{
             maxWidth: '100%',

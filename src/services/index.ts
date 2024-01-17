@@ -1,5 +1,14 @@
 const BASE_URL = '/api'
-// 应该给一个统一的...把 auth token 和后续的res.json()什么的统一处理一下，顺便分一下哪些是需要 auth token 的前端就做一下拦截
+// 应该给一个统一的...把 auth token 和后续的 res.json() 什么的统一处理一下，顺便分一下哪些是需要 auth token 的前端就做一下拦截
+
+// async function furinaFetch(url: string, options:furinaSetting) {
+//   return fetch(url, options)
+//     .then((res) => res.json())
+//     .then((res) => {
+//       if (res.error) throw res.error
+//       return res
+//     })
+// }
 
 export async function register(username: string, password: string) {
   return fetch(`${BASE_URL}/user/register`, {
@@ -30,13 +39,13 @@ export async function login(username: string, password: string) {
     })
 }
 
-export async function addPost(
+export async function addNote(
   title: string,
   content: string,
   tags: string[],
   pic_urls: string[],
 ) {
-  return fetch(`${BASE_URL}/post/add`, {
+  return fetch(`${BASE_URL}/note/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -51,8 +60,8 @@ export async function addPost(
     })
 }
 
-export async function getPosts() {
-  return fetch(`${BASE_URL}/post/query/list`, {
+export async function getNotes() {
+  return fetch(`${BASE_URL}/note/query/list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -67,8 +76,8 @@ export async function getPosts() {
     })
 }
 
-export async function getPost(id: string) {
-  return fetch(`${BASE_URL}/post/${id}`, {
+export async function getNote(id: string) {
+  return fetch(`${BASE_URL}/note/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -83,7 +92,7 @@ export async function getPost(id: string) {
 }
 
 export async function addComment(
-  post_id: string,
+  note_id: string,
   content: string,
   root_comment_id?: string,
   mentionee_id?: string,
@@ -94,7 +103,7 @@ export async function addComment(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ post_id, content, root_comment_id, mentionee_id }),
+    body: JSON.stringify({ note_id, content, root_comment_id, mentionee_id }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -103,8 +112,8 @@ export async function addComment(
     })
 }
 
-export async function getRootComments(post_id: string) {
-  return fetch(`${BASE_URL}/comment/post/${post_id}/root_comment`, {
+export async function getRootComments(note_id: string) {
+  return fetch(`${BASE_URL}/comment/note/${note_id}/root_comment`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

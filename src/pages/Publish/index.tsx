@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 
-import { addNote, addTag, queryTags, upload } from '~/services'
+import { addNote } from '~/services'
+
+import { ImgUpload } from './components/ImgUpload'
+import { TagSelect } from './components/TagSelect'
 
 interface Tag {
   name: string
@@ -8,6 +11,9 @@ interface Tag {
 }
 
 export const Publish: React.FC = () => {
+  const [chosenTags, setChosenTags] = useState<Tag[]>([])
+  const [fileUrls, setFileUrls] = useState<string[]>([])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Add your logic to submit the note content here
@@ -29,61 +35,10 @@ export const Publish: React.FC = () => {
     setContent(e.target.value)
   }
 
-  const [chosenTags, setChosenTags] = useState<Tag[]>([])
-  const [tobeChosenTags, setTobeChosenTags] = useState<Tag[]>([])
-  const [queryStr, setQueryStr] = useState<string>('')
-  const [addNew, setAddNew] = useState<boolean>(false)
-
-  const getTobeChosenTags = async (queryStr: string) => {
-    setQueryStr(queryStr)
-    const tags = await queryTags(queryStr)
-    if (tags.length === 0) {
-      setAddNew(true)
-    } else {
-      setAddNew(false)
-    }
-    setTobeChosenTags(
-      tags.filter((t: Tag) => !chosenTags.find((c) => c._id === t._id)),
-    )
-  }
-
-  const chooseTag = (tag: Tag) => {
-    setChosenTags([...chosenTags, tag])
-    setTobeChosenTags(tobeChosenTags.filter((t) => t._id !== tag._id))
-  }
-  const unchooseTag = (tag: Tag) => {
-    setChosenTags(chosenTags.filter((t) => t._id !== tag._id))
-    setTobeChosenTags([...tobeChosenTags, tag])
-  }
-
-  const handleAddTag = async () => {
-    setAddNew(false)
-    const tag = await addTag(queryStr)
-    setQueryStr('')
-    setChosenTags([...chosenTags, tag])
-  }
-  const [fileUrls, setFileUrls] = useState<string[]>([])
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const { url } = await upload(file)
-    setFileUrls([...fileUrls, url])
-  }
-
   return (
     <div>
       <h1>Content Publish Page</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="file">Files:</label>
-        <input type="file" id="file" onChange={handleFileChange} />
-        <div>
-          {fileUrls.map((url, index) => (
-            <div>
-              <img key={index} src="" alt={url} />
-            </div>
-          ))}
-        </div>
-
         <div>
           <label htmlFor="title">Title:</label>
           <input
@@ -102,48 +57,8 @@ export const Publish: React.FC = () => {
             onChange={handleContentChange}
           />
         </div>
-        <div>
-          <label htmlFor="tags">Tags:</label>
-          <input
-            type="text"
-            id="tags"
-            value={queryStr}
-            onChange={(e) => getTobeChosenTags(e.target.value)}
-          />
-          {addNew && (
-            <span
-              style={{ cursor: 'pointer', border: '1px solid black' }}
-              onClick={() => handleAddTag()}
-            >
-              Add New Tag
-            </span>
-          )}
-          <div>chosenTags:</div>
-          {chosenTags?.map((tag) => (
-            <span
-              key={tag._id}
-              style={{
-                cursor: 'pointer',
-                color: 'red',
-                border: '1px solid black',
-              }}
-              onClick={() => unchooseTag(tag)}
-            >
-              {tag.name}
-            </span>
-          ))}
-          <div>tobeChosenTags:</div>
-
-          {tobeChosenTags?.map((tag) => (
-            <span
-              key={tag._id}
-              style={{ cursor: 'pointer', border: '1px solid black' }}
-              onClick={() => chooseTag(tag)}
-            >
-              {tag.name}
-            </span>
-          ))}
-        </div>
+        <TagSelect chosenTags={chosenTags} setChosenTags={setChosenTags} />
+        <ImgUpload fileUrls={fileUrls} setFileUrls={setFileUrls} />
         <button type="submit">Publish</button>
       </form>
     </div>

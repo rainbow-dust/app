@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_FURINA_APP_API_URL
+// 应该给一个统一的...把 auth token 和后续的res.json()什么的统一处理一下，顺便分一下哪些是需要 auth token 的前端就做一下拦截
 
 export async function register(username: string, password: string) {
   return fetch(`${BASE_URL}/user/register`, {

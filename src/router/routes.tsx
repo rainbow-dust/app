@@ -1,8 +1,8 @@
-import { Detail } from '@/pages/Detail'
-import { Feed } from '@/pages/Feed'
-import { Home } from '@/pages/Home'
-import { Publish } from '@/pages/Publish'
-import { Self } from '@/pages/Self'
+import { Detail } from '~/pages/Detail'
+import { Feed } from '~/pages/Feed'
+import { Home } from '~/pages/Home'
+import { Publish } from '~/pages/Publish'
+import { Self } from '~/pages/Self'
 
 export const routes = [
   {

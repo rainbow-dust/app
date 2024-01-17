@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 
-import { useScroll } from '@/hooks/useScroll'
+import { useScroll } from '~/hooks/useScroll'
 
 interface WaterfallItem {
   id: string

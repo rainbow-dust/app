@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { login, register } from '@/services'
+import { login, register } from '~/services'
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('')
@@ -11,8 +11,14 @@ const LoginPage: React.FC = () => {
     // Handle login logic here
 
     login(username, password).then((res) => {
+      if (!res.token) {
+        window.alert(JSON.stringify(res))
+        return
+      }
       localStorage.setItem('token', res.token)
       localStorage.setItem('username', res.username)
+      window.alert('登录成功')
+      window.location.reload()
     })
   }
 

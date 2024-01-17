@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-import { addPost, addTag, queryTags, upload } from '@/services'
+import { addPost, addTag, queryTags, upload } from '~/services'
 
 interface Tag {
   name: string
   _id: string
 }
 
-export const Publish = () => {
+export const Publish: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Add your logic to submit the post content here

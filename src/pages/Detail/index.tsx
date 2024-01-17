@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { getPost } from '@/services'
-import { addComment } from '@/services'
+import { getPost } from '~/services'
+import { addComment } from '~/services'
 
 interface Post {
   _id: string
   title: string
   content: string
   // comments: any[]
+  pic_urls: string[]
   comments: [
     {
       comment_id: string
@@ -57,6 +58,16 @@ export const Detail = () => {
       <h1>Detail</h1>
       <h2>{post?.title}</h2>
       <p>{post?.content}</p>
+      {post?.pic_urls.map((url, i) => (
+        <img
+          style={{
+            maxWidth: '100%',
+          }}
+          key={i}
+          src={url}
+          alt="url"
+        />
+      ))}
       <h3>Comments</h3>
       <ul>
         {post?.comments.map((comment, i) => (

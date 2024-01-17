@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getPosts } from '@/services'
+import { getPosts } from '~/services'
 
 interface Post {
   _id: string

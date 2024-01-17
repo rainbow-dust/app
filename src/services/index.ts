@@ -103,8 +103,8 @@ export async function addComment(
     })
 }
 
-export async function getComments(comment_id: string) {
-  return fetch(`${BASE_URL}/comments/${comment_id}`, {
+export async function getComments(root_comment_id: string) {
+  return fetch(`${BASE_URL}/comment/${root_comment_id}/children`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

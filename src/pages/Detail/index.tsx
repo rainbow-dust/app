@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { getPost } from '~/services'
-import { addComment } from '~/services'
+import { addComment, getComments, getPost } from '~/services'
 
 interface Post {
   _id: string
@@ -10,27 +9,30 @@ interface Post {
   content: string
   // comments: any[]
   pic_urls: string[]
-  comments: [
-    {
-      comment_id: string
-      content: string
-      nested_comments: [
-        {
-          _id: string
-          content: string
-        },
-      ]
-    },
-  ]
+  comments: RootComment[]
+}
+
+interface RootComment {
+  comment_id: string
+  content: string
+  child_comment_count: number
+  child_comments: child_comment[]
+}
+
+interface child_comment {
+  _id: string
+  content: string
 }
 
 export const Detail = () => {
   const { id } = useParams()
   const [post, setPost] = useState<Post>()
+  const [comments, setComments] = useState<RootComment[]>([])
   useEffect(() => {
     const fetchPost = async () => {
       const res = await getPost(id as string)
       setPost(res)
+      setComments(res.comments)
     }
     fetchPost()
   }, [id])
@@ -51,6 +53,22 @@ export const Detail = () => {
     setComment('')
     const res = await getPost(id as string)
     setPost(res)
+    // 这时的评论应该只增不减
+    setComments([...comments, res.comments])
+  }
+
+  const getChildren = async (comment_id: string) => {
+    const res = await getComments(comment_id)
+    // 将数据塞到对应的comment里面，根据id来
+
+    const newComments = comments.map((comment) => {
+      if (comment.comment_id === comment_id) {
+        comment.child_comments = res.data
+      }
+      return comment
+    })
+    setComments(newComments)
+    console.log(newComments)
   }
 
   return (
@@ -70,14 +88,30 @@ export const Detail = () => {
       ))}
       <h3>Comments</h3>
       <ul>
-        {post?.comments.map((comment, i) => (
+        {comments.map((comment, i) => (
           <li key={i}>
             {comment.content}
-
+            {comment?.child_comment_count}
             <button onClick={() => handleReply(comment.comment_id)}>
               回复
             </button>
-            {comment?.nested_comments && <button>展开</button>}
+            {comment?.child_comment_count > 0 && (
+              <span
+                style={{ color: 'blue', cursor: 'pointer' }}
+                onClick={() => getChildren(comment.comment_id)}
+              >
+                展开{comment.child_comment_count}条评论
+              </span>
+            )}
+            {
+              <ul>
+                {comment?.child_comments?.map(
+                  (child_comment: child_comment, i: number) => (
+                    <li key={i}>{child_comment.content}</li>
+                  ),
+                )}
+              </ul>
+            }
           </li>
         ))}
       </ul>

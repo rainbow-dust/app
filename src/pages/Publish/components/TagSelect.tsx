@@ -34,6 +34,12 @@ export const TagSelect: React.FC<{
   }, [])
 
   const getTobeChosenTags = async (queryStr: string) => {
+    if (queryStr === '') {
+      setQueryStr('')
+      setTobeChosenTags([])
+      return
+    }
+
     setQueryStr(queryStr)
     const tags = await queryTags(queryStr)
     if (tags.length === 0) {

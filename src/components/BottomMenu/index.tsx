@@ -22,7 +22,7 @@ export const BottomMenu: React.FC = () => {
     {
       name: '我的',
       icon: '',
-      path: '/self',
+      path: '/people/' + localStorage.getItem('username'),
     },
   ]
 

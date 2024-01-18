@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { BsHeart } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 import { getNotes } from '~/services'
@@ -30,6 +31,30 @@ const ContentListQueryPage: React.FC = () => {
   return (
     <div>
       <h1>Content List</h1>
+      <div
+        style={{
+          position: 'relative',
+          width: '16px',
+          height: '16px',
+        }}
+      >
+        <BsHeart />
+        <span
+          style={{
+            position: 'absolute',
+            top: '-3px',
+            right: '-1px',
+            fontSize: '8px',
+            width: '8px',
+            height: '8px',
+            color: 'red',
+            backgroundColor: 'white',
+            fontFamily: 'sans-serif',
+          }}
+        >
+          1222
+        </span>
+      </div>
       <ul>
         {contentList.map((content) => (
           <li key={content._id}>

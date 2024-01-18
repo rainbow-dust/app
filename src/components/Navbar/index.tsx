@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { LoginOrRegisterModal } from '../Modal/LoginOrRegister'
 import Classes from './index.module.css'
 
 export const NavBar = () => {
@@ -11,6 +12,12 @@ export const NavBar = () => {
     localStorage.removeItem('username')
     localStorage.removeItem('token')
     setUsername('')
+  }
+
+  const [isLoginOrRegisterModalOpen, setIsLoginOrRegisterModalOpen] =
+    useState(false)
+  const toggleLoginOrRegisterModal = () => {
+    setIsLoginOrRegisterModalOpen(!isLoginOrRegisterModalOpen)
   }
 
   return (
@@ -38,15 +45,13 @@ export const NavBar = () => {
             </button>
           </div>
         ) : (
-          <button
-            onClick={() => {
-              navigate('/self')
-            }}
-          >
-            登录
-          </button>
+          <button onClick={toggleLoginOrRegisterModal}>登录</button>
         )}
       </div>
+      <LoginOrRegisterModal
+        isOpen={isLoginOrRegisterModalOpen}
+        toggle={toggleLoginOrRegisterModal}
+      />
     </div>
   )
 }

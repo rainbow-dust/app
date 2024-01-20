@@ -39,6 +39,22 @@ export async function login(username: string, password: string) {
     })
 }
 
+// export async function getUserInfo(username: string) {
+//   return fetch(`${BASE_URL}/user/${username}`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${localStorage.getItem('token')}`,
+//     },
+//   })
+//     .then((res) => res.json())
+//     .then((res) => {
+//       if (res.error) throw res.error
+//       console.log(res)
+//       return res
+//     })
+// }
+
 export async function addNote(
   title: string,
   content: string,

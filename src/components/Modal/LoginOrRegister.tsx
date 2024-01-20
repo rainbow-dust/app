@@ -40,9 +40,11 @@ const Login = ({
     const res = await login(username, password)
     localStorage.setItem('username', res.username)
     localStorage.setItem('token', res.token)
-    window.alert('登录成功')
-    if (res) {
+    if (res?.username) {
+      window.alert('登录成功')
       toggle()
+    } else {
+      window.alert(JSON.stringify(res))
     }
   }
 

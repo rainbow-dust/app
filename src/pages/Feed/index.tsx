@@ -2,17 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { BsHeart } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
-import { getNotes } from '~/services'
+import { cancelLikeNote, getNotes, likeNote } from '~/services'
 
 interface Note {
   _id: string
   title: string
   content: string
-  user: {
+  author: {
     _id: string
     username: string
+    avatar_url: string
   }
   tags: string[]
+  likes_count: number
+  is_liked: boolean
 }
 
 const ContentListQueryPage: React.FC = () => {
@@ -61,9 +64,41 @@ const ContentListQueryPage: React.FC = () => {
             <Link to={`/detail/${content._id}`} key={content._id}>
               <h6>{content.title}</h6>
             </Link>
-            <p style={{ color: '#999' }}>{content.user?.username}</p>
-
             <div>{content.content}</div>
+
+            <div>
+              <Link to={`/people/${content.author.username} `}>
+                <img
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                  }}
+                  src={content.author.avatar_url}
+                ></img>
+                <span style={{ color: '#999' }}>
+                  {content.author?.username}
+                </span>
+              </Link>
+            </div>
+            {content?.is_liked ? (
+              <button
+                onClick={async () => {
+                  await cancelLikeNote(content._id)
+                }}
+              >
+                {content?.likes_count}
+                取消点赞
+              </button>
+            ) : (
+              <button
+                onClick={async () => {
+                  await likeNote(content._id)
+                }}
+              >
+                {content?.likes_count}
+                点赞
+              </button>
+            )}
             {content?.tags?.map((tag) => (
               <span key={tag}>#{tag} </span>
             ))}

@@ -107,6 +107,38 @@ export async function getNote(id: string) {
     })
 }
 
+export async function likeNote(id: string) {
+  return fetch(`${BASE_URL}/note/${id}/like`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res)
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function cancelLikeNote(id: string) {
+  return fetch(`${BASE_URL}/note/${id}/like`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res)
+      if (res.error) throw res.error
+      return res
+    })
+}
+
 export async function addComment(
   note_id: string,
   content: string,

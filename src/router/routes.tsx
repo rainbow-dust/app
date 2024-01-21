@@ -1,7 +1,6 @@
 import { Detail } from '~/pages/Detail'
 import { Feed } from '~/pages/Feed'
-import { People } from '~/pages/People'
-import { Edit } from '~/pages/People/Edit'
+import { PeopleDetail, PeopleEdit } from '~/pages/People'
 import { Publish } from '~/pages/Publish'
 
 export const routes = [
@@ -11,11 +10,11 @@ export const routes = [
   },
   {
     path: '/people/:username',
-    element: <People />,
+    element: <PeopleDetail />,
   },
   {
     path: '/people/edit',
-    element: <Edit />,
+    element: <PeopleEdit />,
   },
   {
     path: '/publish',

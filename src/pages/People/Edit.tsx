@@ -8,7 +8,7 @@ interface UserInfoEdit {
   bio: string
 }
 
-export const Edit = () => {
+export const PeopleEdit = () => {
   const [username, token] = ['username', 'token'].map(
     (item) => localStorage.getItem(item) || '',
   )

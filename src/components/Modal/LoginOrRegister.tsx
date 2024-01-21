@@ -38,10 +38,10 @@ const Login = ({
 
   const handleLogin = async () => {
     const res = await login(username, password)
-    localStorage.setItem('username', res.username)
-    localStorage.setItem('token', res.token)
     if (res?.username) {
       window.alert('登录成功')
+      localStorage.setItem('username', res.username)
+      localStorage.setItem('token', res.token)
       toggle()
     } else {
       window.alert(JSON.stringify(res))

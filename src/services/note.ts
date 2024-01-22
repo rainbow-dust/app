@@ -1,10 +1,16 @@
 import { BASE_URL } from './index'
 
+export interface Pic {
+  url: string
+  width: number
+  height: number
+}
+
 export async function addNote(
   title: string,
   content: string,
   tags: string[],
-  pic_urls: string[],
+  pic_list: Pic[],
 ) {
   return fetch(`${BASE_URL}/note/add`, {
     method: 'POST',
@@ -12,7 +18,7 @@ export async function addNote(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ title, content, tags, pic_urls }),
+    body: JSON.stringify({ title, content, tags, pic_list }),
   })
     .then((res) => res.json())
     .then((res) => {

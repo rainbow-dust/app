@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { addNote } from '~/services'
+import { Pic, addNote } from '~/services'
 
 import { ImgUpload } from './components/ImgUpload'
 import { TagSelect } from './components/TagSelect'
@@ -12,7 +12,7 @@ interface Tag {
 
 export const Publish: React.FC = () => {
   const [chosenTags, setChosenTags] = useState<Tag[]>([])
-  const [fileUrls, setFileUrls] = useState<string[]>([])
+  const [picList, setPicList] = useState<Pic[]>([])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,7 +21,7 @@ export const Publish: React.FC = () => {
       title,
       content,
       chosenTags.map((t) => t._id),
-      fileUrls,
+      picList,
     )
   }
 
@@ -58,7 +58,7 @@ export const Publish: React.FC = () => {
           />
         </div>
         <TagSelect chosenTags={chosenTags} setChosenTags={setChosenTags} />
-        <ImgUpload fileUrls={fileUrls} setFileUrls={setFileUrls} />
+        <ImgUpload picList={picList} setPicList={setPicList} />
         <button type="submit">Publish</button>
       </form>
     </div>

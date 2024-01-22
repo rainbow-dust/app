@@ -18,7 +18,7 @@ interface Note {
     _id: string
     name: string
   }[]
-  likes_count: number
+  like_count: number
   is_liked: boolean
 }
 
@@ -89,7 +89,7 @@ const ContentListQueryPage: React.FC = () => {
                   await cancelLikeNote(content._id)
                 }}
               >
-                {content?.likes_count}
+                {content?.like_count}
                 取消点赞
               </button>
             ) : (
@@ -98,7 +98,7 @@ const ContentListQueryPage: React.FC = () => {
                   await likeNote(content._id)
                 }}
               >
-                {content?.likes_count}
+                {content?.like_count}
                 点赞
               </button>
             )}

@@ -20,7 +20,7 @@ export const Publish: React.FC = () => {
     addNote(
       title,
       content,
-      chosenTags.map((t) => t.name),
+      chosenTags.map((t) => t._id),
       fileUrls,
     )
   }

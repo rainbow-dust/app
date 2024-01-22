@@ -13,7 +13,10 @@ interface Note {
     username: string
     avatar_url: string
   }
-  tags: string[]
+  tags: {
+    _id: string
+    name: string
+  }[]
   likes_count: number
   is_liked: boolean
 }
@@ -67,13 +70,13 @@ const ContentListQueryPage: React.FC = () => {
             <div>{content.content}</div>
 
             <div>
-              <Link to={`/people/${content.author.username} `}>
+              <Link to={`/people/${content?.author?.username} `}>
                 <img
                   style={{
                     width: '24px',
                     height: '24px',
                   }}
-                  src={content.author.avatar_url}
+                  src={content.author?.avatar_url}
                 ></img>
                 <span style={{ color: '#999' }}>
                   {content.author?.username}
@@ -100,7 +103,7 @@ const ContentListQueryPage: React.FC = () => {
               </button>
             )}
             {content?.tags?.map((tag) => (
-              <span key={tag}>#{tag} </span>
+              <span key={tag._id}>#{tag?.name} </span>
             ))}
             <hr />
           </li>

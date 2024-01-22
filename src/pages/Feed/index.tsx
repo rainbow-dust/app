@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { BsHeart } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import useSWR from 'swr'
 
 import { cancelLikeNote, getNotes, likeNote } from '~/services'
 
@@ -22,17 +23,16 @@ interface Note {
 }
 
 const ContentListQueryPage: React.FC = () => {
-  const [contentList, setContentList] = useState<Note[]>([])
-
-  useEffect(() => {
-    // Fetch content list data from API or database
-    const fetchContentList = async () => {
-      const res = await getNotes()
-      setContentList(res.noteList)
-    }
-
-    fetchContentList()
-  }, [])
+  const { data: contentList } = useSWR<Note[]>(
+    [
+      '/api/note/query/list', // url key for cache also as the api url
+      {
+        pageCurrent: 1,
+        pageSize: 10,
+      },
+    ],
+    ([, body]) => getNotes(body),
+  )
 
   return (
     <div>
@@ -62,7 +62,7 @@ const ContentListQueryPage: React.FC = () => {
         </span>
       </div>
       <ul>
-        {contentList.map((content) => (
+        {contentList?.map((content) => (
           <li key={content._id}>
             <Link to={`/detail/${content._id}`} key={content._id}>
               <h6>{content.title}</h6>

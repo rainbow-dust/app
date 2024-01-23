@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from 'react'
 
-import { getNote } from '~/services'
+import { Pic, getNote } from '~/services'
 
 interface Note {
   _id: string
   title: string
   content: string
-  pic_urls: string[]
+  pic_list: Pic[]
 }
 
 export const Content: FC<{ noteId: string }> = ({ noteId }) => {
@@ -23,13 +23,13 @@ export const Content: FC<{ noteId: string }> = ({ noteId }) => {
     <>
       <h2>{note?.title}</h2>
       <p>{note?.content}</p>
-      {note?.pic_urls.map((url, i) => (
+      {note?.pic_list.map((pic, i) => (
         <img
           style={{
             maxWidth: '100%',
           }}
           key={i}
-          src={url}
+          src={'http://192.168.2.153:9527' + pic.url}
           alt="url"
         />
       ))}

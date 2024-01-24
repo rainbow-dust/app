@@ -30,9 +30,11 @@ export async function addNote(
 export async function getNotes({
   pageCurrent,
   pageSize,
+  tags,
 }: {
   pageCurrent: number
   pageSize: number
+  tags?: string[]
 }) {
   return fetch(`${BASE_URL}/note/query/list`, {
     method: 'POST',
@@ -40,7 +42,7 @@ export async function getNotes({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ pageCurrent, pageSize }),
+    body: JSON.stringify({ pageCurrent, pageSize, tags }),
   })
     .then((res) => res.json())
     .then((res) => {

@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 
+// import useSWR, { useSWRConfig } from 'swr'
+
 import {
   addComment,
   cancelLikeComment,
@@ -149,6 +151,7 @@ const Replier: FC<{
 }
 
 export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
+  // 我不确定这里要怎么做... swr 的数据似乎很强调和后端保持一致，但这里需要组成嵌套的...吗？
   const [rootComments, setRootComments] = useState<RootComment[]>([])
   const fetchRootComments = async (noteId: string) => {
     const res = await getRootComments(noteId)
@@ -212,7 +215,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   return (
     <>
       <ul>
-        {rootComments.map((comment) => (
+        {rootComments?.map((comment) => (
           <Comment
             key={comment._id}
             comment={comment}

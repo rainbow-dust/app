@@ -24,10 +24,20 @@ interface Note {
 const PAGE_SIZE = 10
 
 export const Feed = () => {
+  // 如果可能的话... 我想拆... 将数据请求/下拉触发/数据渲染 分开
+
+  const [queryStr, setQueryStr] = React.useState('')
+  const queryTags = () => queryStr.split(' ').filter((i) => i)
+
   const { data, mutate, size, setSize, isValidating, isLoading } =
     useSWRInfinite<Note[]>(
       (index) => ['key-/note/query/list', index],
-      ([, index]) => getNotes({ pageCurrent: index + 1, pageSize: PAGE_SIZE }),
+      ([, index]) =>
+        getNotes({
+          pageCurrent: index + 1,
+          pageSize: PAGE_SIZE,
+          tags: queryTags(),
+        }),
     )
 
   const notes: Note[] = data ? [].concat(...data) : []
@@ -55,6 +65,19 @@ export const Feed = () => {
   return (
     <div style={{ fontFamily: 'sans-serif' }}>
       {isEmpty ? <p>Yay, no notes found.</p> : null}
+      <input
+        value={queryStr}
+        onChange={(e) => {
+          setQueryStr(e.target.value)
+        }}
+      />
+      <button
+        onClick={() => {
+          mutate()
+        }}
+      >
+        filter
+      </button>
       <ul>
         {notes?.map((content) => (
           <li key={content._id}>

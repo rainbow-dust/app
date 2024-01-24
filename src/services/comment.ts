@@ -32,7 +32,7 @@ export async function getRootComments(note_id: string) {
     .then((res) => res.json())
     .then((res) => {
       if (res.error) throw res.error
-      return res
+      return res.data
     })
 }
 

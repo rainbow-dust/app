@@ -1,6 +1,8 @@
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
+import useSWR from 'swr'
 
-import { Pic, getNote } from '~/services'
+import { getNote } from '~/services'
+import type { Pic } from '~/services'
 
 interface Note {
   _id: string
@@ -10,20 +12,15 @@ interface Note {
 }
 
 export const Content: FC<{ noteId: string }> = ({ noteId }) => {
-  const [note, setNote] = useState<Note>()
-  useEffect(() => {
-    const fetchNote = async () => {
-      const res = await getNote(noteId)
-      setNote(res)
-    }
-    fetchNote()
-  }, [noteId])
+  const { data: note } = useSWR<Note>(['key-/note/query/detail', noteId], () =>
+    getNote(noteId),
+  )
 
   return (
     <>
       <h2>{note?.title}</h2>
       <p>{note?.content}</p>
-      {note?.pic_list.map((pic, i) => (
+      {note?.pic_list?.map((pic, i) => (
         <img
           style={{
             maxWidth: '100%',

@@ -91,13 +91,13 @@ export const Feed = () => {
       (index) => ['key-/note/query/list', index],
       ([, index]) =>
         getNotes({
-          pageCurrent: index + 1,
+          pageCurrent: (index as number) + 1,
           pageSize: PAGE_SIZE,
           tags: queryTags(),
         }),
     )
 
-  const notes: Note[] = data ? [].concat(...data) : []
+  const notes: Note[] = data ? data.flat() : []
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
   const isEmpty = data?.[0]?.length === 0

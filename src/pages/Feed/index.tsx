@@ -1,7 +1,6 @@
-import React from 'react'
-import { BsHeart } from 'react-icons/bs'
+import React, { useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 
 import { cancelLikeNote, getNotes, likeNote } from '~/services'
 
@@ -22,47 +21,42 @@ interface Note {
   is_liked: boolean
 }
 
-const ContentListQueryPage: React.FC = () => {
-  const { data: contentList } = useSWR<Note[]>(
-    [
-      '/api/note/query/list', // url key for cache also as the api url
-      {
-        pageCurrent: 1,
-        pageSize: 1000,
-      },
-    ],
-    ([, body]) => getNotes(body),
-  )
+const PAGE_SIZE = 10
 
+export const Feed = () => {
+  const { data, mutate, size, setSize, isValidating, isLoading } =
+    useSWRInfinite<Note[]>(
+      (index) => ['key-/note/query/list', index],
+      ([, index]) => getNotes({ pageCurrent: index + 1, pageSize: PAGE_SIZE }),
+    )
+
+  const notes: Note[] = data ? [].concat(...data) : []
+  const isLoadingMore =
+    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
+  const isEmpty = data?.[0]?.length === 0
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
+  const isRefreshing = isValidating && data && data.length === size
+
+  const observer = useRef<IntersectionObserver>()
+  const lazyLoadingRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isLoadingMore) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting && !isReachingEnd) {
+          setSize(size + 1)
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [isLoadingMore, isReachingEnd, setSize, size],
+  )
   return (
-    <div>
-      <h1>Content List</h1>
-      <div
-        style={{
-          position: 'relative',
-          width: '16px',
-          height: '16px',
-        }}
-      >
-        <BsHeart />
-        <span
-          style={{
-            position: 'absolute',
-            top: '-3px',
-            right: '-1px',
-            fontSize: '8px',
-            width: '8px',
-            height: '8px',
-            color: 'red',
-            backgroundColor: 'white',
-            fontFamily: 'sans-serif',
-          }}
-        >
-          1222
-        </span>
-      </div>
+    <div style={{ fontFamily: 'sans-serif' }}>
+      {isEmpty ? <p>Yay, no notes found.</p> : null}
       <ul>
-        {contentList?.map((content) => (
+        {notes?.map((content) => (
           <li key={content._id}>
             <Link to={`/detail/${content._id}`} key={content._id}>
               <h6>{content.title}</h6>
@@ -87,6 +81,7 @@ const ContentListQueryPage: React.FC = () => {
               <button
                 onClick={async () => {
                   await cancelLikeNote(content._id)
+                  mutate() // mutate() 会触发重新请求数据...但是感觉不应该因为点赞就重新请求数据吧...
                 }}
               >
                 {content?.like_count}
@@ -96,6 +91,7 @@ const ContentListQueryPage: React.FC = () => {
               <button
                 onClick={async () => {
                   await likeNote(content._id)
+                  mutate()
                 }}
               >
                 {content?.like_count}
@@ -109,15 +105,14 @@ const ContentListQueryPage: React.FC = () => {
           </li>
         ))}
       </ul>
-    </div>
-  )
-}
 
-export const Feed = () => {
-  return (
-    <div>
-      <h1>Feed</h1>
-      <ContentListQueryPage />
+      <div ref={lazyLoadingRef}>
+        {isLoadingMore || isRefreshing
+          ? 'loading...'
+          : isReachingEnd
+          ? 'no more notes'
+          : 'load more'}
+      </div>
     </div>
   )
 }

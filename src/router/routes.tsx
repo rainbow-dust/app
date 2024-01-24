@@ -1,5 +1,5 @@
 import { Detail } from '~/pages/Detail'
-import { Explore } from '~/pages/Explore'
+// import { Explore } from '~/pages/Explore'
 import { Feed } from '~/pages/Feed'
 import { PeopleDetail, PeopleEdit } from '~/pages/People'
 import { Publish } from '~/pages/Publish'
@@ -27,7 +27,7 @@ export const routes = [
   },
   {
     path: '/',
-    element: <Explore />,
+    element: <Feed />,
   },
   {
     path: '*',

@@ -23,6 +23,63 @@ interface Note {
 
 const PAGE_SIZE = 10
 
+const Note: React.FC<{ content: Note }> = ({ content }) => {
+  const [note, setNote] = React.useState<Note>(content)
+
+  return (
+    <li key={note._id}>
+      <Link to={`/detail/${note._id}`} key={note._id}>
+        <h6>{note.title}</h6>
+      </Link>
+      <div>{note.content}</div>
+
+      <div>
+        <Link to={`/people/${note?.author?.username} `}>
+          <img
+            style={{
+              width: '24px',
+              height: '24px',
+            }}
+            src={note.author?.avatar_url}
+          ></img>
+          <span style={{ color: '#999' }}>{note.author?.username}</span>
+        </Link>
+      </div>
+      {note?.is_liked ? (
+        <button
+          onClick={async () => {
+            const data = await cancelLikeNote(note._id)
+            if (data.ok == 0) return
+            setNote({
+              ...data,
+            })
+          }}
+        >
+          {note?.like_count}
+          取消点赞
+        </button>
+      ) : (
+        <button
+          onClick={async () => {
+            const data = await likeNote(note._id)
+            if (data.ok == 0) return
+            setNote({
+              ...data,
+            })
+          }}
+        >
+          {note?.like_count}
+          点赞
+        </button>
+      )}
+      {note?.tags?.map((tag) => (
+        <span key={tag._id}>#{tag?.name} </span>
+      ))}
+      <hr />
+    </li>
+  )
+}
+
 export const Feed = () => {
   // 如果可能的话... 我想拆... 将数据请求/下拉触发/数据渲染 分开
 
@@ -80,52 +137,7 @@ export const Feed = () => {
       </button>
       <ul>
         {notes?.map((content) => (
-          <li key={content._id}>
-            <Link to={`/detail/${content._id}`} key={content._id}>
-              <h6>{content.title}</h6>
-            </Link>
-            <div>{content.content}</div>
-
-            <div>
-              <Link to={`/people/${content?.author?.username} `}>
-                <img
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                  }}
-                  src={content.author?.avatar_url}
-                ></img>
-                <span style={{ color: '#999' }}>
-                  {content.author?.username}
-                </span>
-              </Link>
-            </div>
-            {content?.is_liked ? (
-              <button
-                onClick={async () => {
-                  await cancelLikeNote(content._id)
-                  mutate() // mutate() 会触发重新请求数据...但是感觉不应该因为点赞就重新请求数据吧...
-                }}
-              >
-                {content?.like_count}
-                取消点赞
-              </button>
-            ) : (
-              <button
-                onClick={async () => {
-                  await likeNote(content._id)
-                  mutate()
-                }}
-              >
-                {content?.like_count}
-                点赞
-              </button>
-            )}
-            {content?.tags?.map((tag) => (
-              <span key={tag._id}>#{tag?.name} </span>
-            ))}
-            <hr />
-          </li>
+          <Note key={content._id} content={content} />
         ))}
       </ul>
 

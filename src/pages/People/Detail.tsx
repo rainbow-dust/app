@@ -10,6 +10,7 @@ interface UserInfo {
 
 interface NoteData {
   noteList: {
+    _id: string
     title: string
     content: string
   }[]
@@ -107,19 +108,22 @@ export const PeopleDetail = () => {
           {data?.bio}
         </div>
       </div>
-      <button
-        onClick={() => {
-          navigate(`/people/edit`)
-        }}
-      >
-        go to edit
-      </button>
+      {username === localStorage.getItem('username') && (
+        <button
+          onClick={() => {
+            navigate(`/people/edit`)
+          }}
+        >
+          go to edit
+        </button>
+      )}
       <div className="people-creations">
         <h2>Creations</h2>
         {creationsLoading && <div>Loading...</div>}
         {creationsError && <div>Error</div>}
         {creations?.noteList?.map((item) => (
           <div
+            key={item._id}
             className="creation-item
           border-b border-gray-200
           pb-4

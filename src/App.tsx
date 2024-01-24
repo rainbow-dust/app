@@ -3,8 +3,11 @@ import './App.css'
 import { BottomMenu } from '~/components/BottomMenu'
 import { NavBar } from '~/components/Navbar'
 import { Router } from '~/router/router'
+import { getUnReadNoticeCount } from '~/services'
 
 function App() {
+  getUnReadNoticeCount()
+
   return (
     <>
       <NavBar></NavBar>

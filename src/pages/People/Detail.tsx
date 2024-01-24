@@ -18,7 +18,13 @@ interface NoteData {
 export const PeopleDetail = () => {
   const { username } = useParams<{ username: string }>()
   const navigate = useNavigate()
-  const fetcher = (url: string) => fetch(url).then((res) => res.json())
+  const fetcher = (url: string) =>
+    fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((res) => res.json())
 
   const { data, error, isLoading } = useSWR<UserInfo>(
     `/api/user/${username}`,
@@ -34,6 +40,7 @@ export const PeopleDetail = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         username: username,

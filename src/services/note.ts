@@ -74,7 +74,6 @@ export async function likeNote(id: string) {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res)
       if (res.error) throw res.error
       return res
     })
@@ -90,7 +89,6 @@ export async function cancelLikeNote(id: string) {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res)
       if (res.error) throw res.error
       return res
     })

@@ -28,7 +28,7 @@ const ContentListQueryPage: React.FC = () => {
       '/api/note/query/list', // url key for cache also as the api url
       {
         pageCurrent: 1,
-        pageSize: 10,
+        pageSize: 1000,
       },
     ],
     ([, body]) => getNotes(body),

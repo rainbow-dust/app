@@ -60,6 +60,7 @@ export const Publish: React.FC = () => {
         <TagSelect chosenTags={chosenTags} setChosenTags={setChosenTags} />
         <ImgUpload picList={picList} setPicList={setPicList} />
         <button type="submit">Publish</button>
+        <input type="file" accept="image/*" multiple />
       </form>
     </div>
   )

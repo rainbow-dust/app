@@ -17,7 +17,7 @@ export const BottomMenu: React.FC = () => {
     {
       name: '通知',
       icon: '',
-      path: '/notification',
+      path: '/notice',
     },
     {
       name: '我的',

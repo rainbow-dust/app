@@ -191,7 +191,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   })
 
   const handleReply = (
-    content: string,
+    // content: string,
     rootCommentId?: string,
     meetioneeId?: string,
   ) => {

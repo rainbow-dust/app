@@ -1,8 +1,8 @@
 import './App.css'
 
-import { BottomMenu } from '~/components/BottomMenu'
-import { NavBar } from '~/components/Navbar'
-import { Router } from '~/router/router'
+import { RouterProvider } from 'react-router-dom'
+
+import { router } from '~/router/router.ts'
 import { getUnReadNoticeCount } from '~/services'
 
 function App() {
@@ -10,15 +10,7 @@ function App() {
 
   return (
     <>
-      <NavBar></NavBar>
-      <div
-        style={{
-          padding: '3.5rem',
-        }}
-      >
-        <Router></Router>
-      </div>
-      <BottomMenu></BottomMenu>
+      <RouterProvider router={router} />
     </>
   )
 }

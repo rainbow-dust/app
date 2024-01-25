@@ -11,7 +11,7 @@ export const Notice = () => {
     <div>
       <h1>Notice</h1>
       <div className="notice-list">
-        {data?.map((item) => (
+        {data?.map((item: { _id: string }) => (
           <div key={item._id} className="notice-item">
             {JSON.stringify(item)}
           </div>

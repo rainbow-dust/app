@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import useSWRInfinite from 'swr/infinite'
 
 import { cancelLikeNote, getNotes, likeNote } from '~/services'
@@ -81,6 +81,8 @@ const Note: React.FC<{ content: Note }> = ({ content }) => {
 }
 
 export const Feed = () => {
+  const location = useLocation()
+
   // 如果可能的话... 我想拆... 将数据请求/下拉触发/数据渲染 分开
 
   const [queryStr, setQueryStr] = React.useState('')
@@ -135,6 +137,11 @@ export const Feed = () => {
       >
         filter
       </button>
+
+      <Link to="/feed/123" state={{ previousLocation: location }}>
+        Modal1
+      </Link>
+
       <ul>
         {notes?.map((content) => (
           <Note key={content._id} content={content} />
@@ -148,6 +155,7 @@ export const Feed = () => {
           ? 'no more notes'
           : 'load more'}
       </div>
+      <Outlet />
     </div>
   )
 }

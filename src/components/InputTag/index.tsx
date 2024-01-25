@@ -34,11 +34,7 @@ export const InputTag: React.FC = () => {
           ></span>
         </span>
       ))}
-      <span
-        className="tags-input"
-        placeholder="添加标签"
-        onKeyDown={handleKeyDown}
-      >
+      <span className="tags-input" onKeyDown={handleKeyDown}>
         {value}
       </span>
       <span className="caret"></span>

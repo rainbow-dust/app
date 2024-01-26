@@ -25,7 +25,6 @@ export default class EasyAgentSDK {
   onPagesHide = NOOP
 
   constructor(options: Options) {
-    if (fufuSDK) return
     this.appId = options.appId
     this.baseUrl = options.baseUrl || window.location.origin
     this.onPageShow = options.onPageShow || NOOP
@@ -70,74 +69,28 @@ export default class EasyAgentSDK {
       // 刷新任务队列
       this.flushQueue()
     })
-
-    // 监听页面滚动
-    interface ScrollData {
-      scrollStartTop: number
-      scrollStartLeft: number
-      scrollStartTime: number
-      scrollEndTop: number
-      scrollEndLeft: number
-      scrollEndTime: number
-    }
-
-    const lastScrollData: ScrollData = {
-      scrollStartTop: 0,
-      scrollStartLeft: 0,
-      scrollStartTime: 0,
-      scrollEndTop: 0,
-      scrollEndLeft: 0,
-      scrollEndTime: 0,
-    }
-
-    window.addEventListener(
-      'scroll',
-      debounce(() => {
-        const { scrollX, scrollY } = window
-        const { scrollStartTop, scrollStartLeft, scrollStartTime } =
-          lastScrollData
-        const scrollEndTop = scrollY
-        const scrollEndLeft = scrollX
-        const scrollEndTime = performance.now()
-
-        // 记录用户滚动数据
-        this.actionReport({
-          data: {
-            scrollStartTop,
-            scrollStartLeft,
-            scrollStartTime,
-            scrollEndTop,
-            scrollEndLeft,
-            scrollEndTime,
-          },
-        })
-
-        // 更新滚动数据
-        lastScrollData.scrollStartTop = scrollEndTop
-        lastScrollData.scrollStartLeft = scrollEndLeft
-        lastScrollData.scrollStartTime = scrollEndTime
-      }, 200),
-    )
   }
 
   // Json 转 FormData
-  json2FormData(data: { [key: string]: unknown }) {
-    const formData = new FormData()
-    Object.keys(data).forEach((key) => formData.append(key, data[key]))
-    return formData
+  json2Blob(data: { [key: string]: unknown }) {
+    const blob = new Blob([JSON.stringify(data)], {
+      type: 'application/json',
+    })
+    return blob
   }
 
   // 自定义上报类型
   report(config: Config) {
     QUEUE.push(() => {
-      const formData = this.json2FormData({
+      const blob = this.json2Blob({
         ...this.config,
         ...config,
         time: new Date().toLocaleString(),
         appId: this.appId,
         pageUrl: window.location.href,
       })
-      navigator.sendBeacon(`${this.baseUrl}${config.url || ''}`, formData)
+      // https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon
+      navigator.sendBeacon(`${this.baseUrl}${config.url || ''}`, blob)
     })
   }
 
@@ -178,11 +131,13 @@ fufuSDK = new EasyAgentSDK({
   appId: 'application_id',
   baseUrl: 'https://localhost:9527/ping',
   onPageShow() {
+    console.log('onPageShow')
     fufuSDK?.actionReport({
       data: {}, // 其他必要传递的信息
     })
   },
   onPagesHide() {
+    console.log('onPagesHide')
     fufuSDK?.actionReport({
       data: {}, // 其他必要传递的信息
     })
@@ -217,6 +172,53 @@ document.addEventListener('click', (e: MouseEvent) => {
   fufuSDK?.flushQueue()
   // }
 })
+
+// 监听页面滚动
+interface ScrollData {
+  scrollStartTop: number
+  scrollStartLeft: number
+  scrollStartTime: number
+  scrollEndTop: number
+  scrollEndLeft: number
+  scrollEndTime: number
+}
+
+const lastScrollData: ScrollData = {
+  scrollStartTop: 0,
+  scrollStartLeft: 0,
+  scrollStartTime: 0,
+  scrollEndTop: 0,
+  scrollEndLeft: 0,
+  scrollEndTime: 0,
+}
+
+document.addEventListener(
+  'scroll',
+  debounce(() => {
+    const { scrollX, scrollY } = window
+    const { scrollStartTop, scrollStartLeft, scrollStartTime } = lastScrollData
+    const scrollEndTop = scrollY
+    const scrollEndLeft = scrollX
+    const scrollEndTime = performance.now()
+
+    // 记录用户滚动数据
+    fufuSDK?.actionReport({
+      data: {
+        scrollStartTop,
+        scrollStartLeft,
+        scrollStartTime,
+        scrollEndTop,
+        scrollEndLeft,
+        scrollEndTime,
+      },
+    })
+
+    // 更新滚动数据
+    lastScrollData.scrollStartTop = scrollEndTop
+    lastScrollData.scrollStartLeft = scrollEndLeft
+    lastScrollData.scrollStartTime = scrollEndTime
+  }, 200),
+)
 
 // 重写 fetch 请求，上报网络状况
 const oldFetch = window.fetch

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  fufu-tracker:
+    specifier: ^0.0.3
+    version: registry.npmjs.org/fufu-tracker@0.0.3
   react:
     specifier: ^18.2.0
     version: registry.npmjs.org/react@18.2.0
@@ -4199,6 +4202,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  registry.npmjs.org/fufu-tracker@0.0.3:
+    resolution: {integrity: sha512-apptQXUQTlK20atNiUyYq3Vs2I11Yl3n2MJYOOQBdKxG/N0Ik3moUQk825EEIs1vqb2JeMlkodsjg+8Pel9WaQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/fufu-tracker/-/fufu-tracker-0.0.3.tgz}
+    name: fufu-tracker
+    version: 0.0.3
+    dev: false
 
   registry.npmjs.org/function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz}

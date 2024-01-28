@@ -35,7 +35,15 @@ export const NavBar = () => {
         barbar
       </div>
       <div>
-        <Search></Search>
+        <Search
+          options={[]}
+          handleKeyDownFn={() => {}}
+          searchFn={() => {}}
+          noDataLabel=""
+          placeholder="搜索"
+          loading={false}
+          multiple={false}
+        ></Search>
       </div>
       <div>
         {username ? (

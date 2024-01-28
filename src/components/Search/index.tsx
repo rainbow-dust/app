@@ -55,7 +55,6 @@ export const Search: React.FC<{
     setSearchValue(e.currentTarget.value)
   }
 
-  const [hoveredIndex, setHoveredIndex] = useState(0)
   const inputMirrorRef = useRef<HTMLSpanElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -69,34 +68,18 @@ export const Search: React.FC<{
 
   return (
     <div>
-      <div
-        style={{
-          position: 'relative',
-        }}
-      >
+      <div className={Classes['search']}>
         <div
           className={Classes['tag-input']}
-          onMouseEnter={setHoveredIndex.bind(null, 2)}
-          onMouseLeave={setHoveredIndex.bind(null, -1)}
           onClick={() => {
             inputRef.current!.focus()
-          }}
-          style={{
-            width: '170px',
-            minHeight: '20px',
-            border: hoveredIndex === 2 ? '1px solid red' : '1px solid black',
-            borderRadius: '4px',
-            display: 'flex',
           }}
         >
           {tags.map((tag) => {
             return (
               <span
                 key={tag}
-                style={{
-                  margin: '2px 2px',
-                  border: '1px solid black',
-                }}
+                className={Classes['tag-input-tag']}
                 onClick={() => {
                   setTags(tags.filter((t) => t !== tag))
                 }}
@@ -106,13 +89,7 @@ export const Search: React.FC<{
             )
           })}
           <input
-            style={{
-              width: '2px',
-              height: '20px',
-              border: 'none',
-              outline: 'none',
-              background: 'transparent',
-            }}
+            className={Classes['tag-input-input']}
             ref={inputRef}
             value={searchValue}
             onChange={(e) => {
@@ -121,16 +98,7 @@ export const Search: React.FC<{
             onKeyDown={handleKeyDown}
           />
           {/* 可以通过这个 mirror 得到渲染后的文字宽度...tmd原来是这样用的 */}
-          <span
-            ref={inputMirrorRef}
-            className={Classes['tag-input-mirror']}
-            style={{
-              color: 'transparent',
-              position: 'absolute',
-              top: '0',
-              right: '0',
-            }}
-          >
+          <span ref={inputMirrorRef} className={Classes['tag-input-mirror']}>
             {searchValue}
           </span>
         </div>
@@ -141,22 +109,12 @@ export const Search: React.FC<{
               setShowDropdown(false)
             }}
           >
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                width: '100%',
-                zIndex: 100,
-                background: 'white',
-              }}
-            >
-              <div className={Classes.selectItem}>1</div>
-              <div className={Classes['select-item']}>1</div>
-              <div className={Classes['select-item']}>1</div>
-              <div className={Classes['select-item']}>1</div>
-              <div className={Classes['select-item']}>2</div>
-              <div className={Classes['select-item']}>3</div>
+            <div className={Classes['dropdown']}>
+              <div className={Classes['dropdown-item']}>1</div>
+              <div className={Classes['dropdown-item']}>1</div>
+              <div className={Classes['dropdown-item']}>1</div>
+              <div className={Classes['dropdown-item']}>2</div>
+              <div className={Classes['dropdown-item']}>3</div>
             </div>
           </ClickOutSide>
         )}

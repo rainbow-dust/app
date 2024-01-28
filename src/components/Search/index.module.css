@@ -1,0 +1,13 @@
+.select-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  cursor: pointer;
+}

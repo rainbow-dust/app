@@ -39,6 +39,10 @@ export const Search: React.FC<{
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setShowDropdown(true)
     if (e.key === 'Enter') {
+      if (tags.includes(searchValue)) {
+        setSearchValue('')
+        return
+      }
       setTags([...tags, searchValue])
       setSearchValue('')
       console.log('enter')
@@ -144,9 +148,12 @@ export const Search: React.FC<{
                 left: 0,
                 width: '100%',
                 zIndex: 100,
+                background: 'white',
               }}
-              className={Classes['select-list']}
             >
+              <div className={Classes.selectItem}>1</div>
+              <div className={Classes['select-item']}>1</div>
+              <div className={Classes['select-item']}>1</div>
               <div className={Classes['select-item']}>1</div>
               <div className={Classes['select-item']}>2</div>
               <div className={Classes['select-item']}>3</div>

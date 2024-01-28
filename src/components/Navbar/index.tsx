@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { Search } from '~/components/Search'
+
 import { LoginOrRegisterModal } from '../Modal/LoginOrRegister'
 import Classes from './index.module.css'
 
@@ -31,6 +33,9 @@ export const NavBar = () => {
         }}
       >
         barbar
+      </div>
+      <div>
+        <Search></Search>
       </div>
       <div>
         {username ? (

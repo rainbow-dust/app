@@ -104,8 +104,12 @@ export const Search: React.FC<{
   // 以及很多很大的东西...像样式，主题，适配... 以及后端那些...
 
   return (
-    <div>
-      <div className={Classes['search']}>
+    <div className={Classes['search']}>
+      <div
+        style={{
+          position: 'relative',
+        }}
+      >
         <div
           className={Classes['tag-input']}
           style={showDropdown ? { border: '1px solid #1890ff' } : {}}

@@ -1,14 +1,28 @@
 .search {
   position: relative;
+  width: 200px;
+}
+
+@media (max-width: 600px) {
+  .search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    z-index: 100;
+    background: white;
+  }
 }
 
 .tag-input {
-  width: 200px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background: white;
   cursor: text;
   overflow: visible;
 }

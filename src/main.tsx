@@ -6,12 +6,6 @@ import App from './App.tsx'
 
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
-
 // const fufu = new FufuTracker({
 //   appId: 'furina',
 //   reportUrl: 'http://localhost:9527/ping',
@@ -20,5 +14,17 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 // setInterval(() => {
 //   fufu.send()
 // }, 10000)
+
+import { getUnReadNoticeCount } from '~/services'
+
+window.addEventListener('click', () => {
+  if (localStorage.getItem('token')) getUnReadNoticeCount()
+})
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
 
 console.log('hello world', import.meta.env)

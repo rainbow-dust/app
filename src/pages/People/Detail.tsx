@@ -111,7 +111,7 @@ export const PeopleDetail = () => {
       {username === localStorage.getItem('username') && (
         <button
           onClick={() => {
-            navigate(`/people/edit`)
+            navigate(`/people/${username}/edit`)
           }}
         >
           go to edit

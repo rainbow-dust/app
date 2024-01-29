@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
         Component: Notice,
       },
       {
-        path: 'people/:id',
+        path: 'people/:username',
         Component: PeopleDetail,
       },
       {

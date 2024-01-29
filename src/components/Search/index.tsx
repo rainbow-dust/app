@@ -148,6 +148,29 @@ export const Search: React.FC<{
             }}
           >
             <div className={Classes['dropdown']}>
+              <div
+                style={{
+                  backgroundColor: '#1890ff',
+                  color: 'white',
+                  padding: '5px',
+                  borderRadius: '2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img
+                  src="https://avatars.githubusercontent.com/u/32326916?s=460&u=5d3c1f3b0c8b9b9d8d8f0b6d6c4f9f0e3e7e0d3f&v=4"
+                  alt="avatar"
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    marginRight: '5px',
+                  }}
+                />
+                this is some special item
+              </div>
               <div className={Classes['dropdown-item']}>1</div>
               <div className={Classes['dropdown-item']}>1</div>
               <div className={Classes['dropdown-item']}>1</div>

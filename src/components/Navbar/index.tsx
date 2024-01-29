@@ -1,26 +1,40 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Search } from '~/components/Search'
+import { CurrentUserContext } from '~/hooks/useCurrentUser'
 
 import { LoginOrRegisterModal } from '../Modal/LoginOrRegister'
 import Classes from './index.module.css'
 
 export const NavBar = () => {
-  const [username, setUsername] = useState(localStorage.getItem('username'))
   const navigate = useNavigate()
-
+  // 登录
+  const currentUser = useContext(CurrentUserContext)
   const logout = () => {
     localStorage.removeItem('username')
     localStorage.removeItem('token')
-    setUsername('')
+    currentUser.setUser({
+      username: '',
+      token: '',
+    })
   }
-
   const [isLoginOrRegisterModalOpen, setIsLoginOrRegisterModalOpen] =
     useState(false)
   const toggleLoginOrRegisterModal = () => {
     setIsLoginOrRegisterModalOpen(!isLoginOrRegisterModalOpen)
   }
+
+  // 亮暗
+  const [isDark, setIsDark] = useState(localStorage.getItem('isDark') === '')
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.setAttribute('dark', '')
+    } else {
+      document.documentElement.removeAttribute('dark')
+    }
+    localStorage.setItem('isDark', isDark.toString())
+  }, [isDark])
 
   return (
     // <div className="fixed w-full bg-white z-10 shadow-sm">
@@ -46,9 +60,9 @@ export const NavBar = () => {
         ></Search>
       </div>
       <div>
-        {username ? (
+        {currentUser.user.username ? (
           <div>
-            <span>{username}</span>
+            <span>{currentUser.user.username}</span>
             <button
               onClick={() => {
                 logout()
@@ -65,6 +79,26 @@ export const NavBar = () => {
         isOpen={isLoginOrRegisterModalOpen}
         toggle={toggleLoginOrRegisterModal}
       />
+
+      <div className={Classes['toggle-theme']}>
+        {isDark ? (
+          <button
+            onClick={() => {
+              setIsDark(false)
+            }}
+          >
+            🌚
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setIsDark(true)
+            }}
+          >
+            🌞
+          </button>
+        )}
+      </div>
     </div>
   )
 }

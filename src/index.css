@@ -9,3 +9,24 @@ body,
   padding: 0;
   height: 100%;
 }
+
+:root {
+  --color-primary: #f7fafc;
+  --color-secondary: #edf2f7;
+  --background-color: #f7fafc;
+  --text-color: #2d3748;
+
+}
+
+:root[dark] {
+  --color-primary: #1a202c;
+  --color-secondary: #2d3748;
+  --background-color: #1a202c;
+  --text-color: #f7fafc;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Roboto', sans-serif;
+}

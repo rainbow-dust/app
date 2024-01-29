@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
+import { CurrentUserContext } from '~/hooks/useCurrentUser'
 import { login, register } from '~/services'
 
 import { Modal } from './base'
@@ -14,7 +15,6 @@ export const LoginOrRegisterModal = ({
   toggle,
 }: LoginOrRegisterProps) => {
   const [isLogin, setIsLogin] = useState<boolean>(true)
-
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
       {isLogin ? (
@@ -36,13 +36,16 @@ const Login = ({
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
+  const { setUser } = useContext(CurrentUserContext)
+
   const handleLogin = async () => {
     const res = await login(username, password)
     if (res?.username) {
       window.alert('登录成功')
-      localStorage.setItem('username', res.username)
+      await localStorage.setItem('username', res.username)
       localStorage.setItem('token', res.token)
       toggle()
+      setUser(res)
     } else {
       window.alert(JSON.stringify(res))
     }

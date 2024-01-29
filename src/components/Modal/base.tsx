@@ -44,7 +44,11 @@ const Modal = ({ isOpen, toggle, children }: ModalProps) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onClick={toggle}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  toggle()
+                }
+              }}
             >
               <div
                 style={{

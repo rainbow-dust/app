@@ -1,11 +1,2 @@
-import { useState } from 'react'
-
-export const useTheme = () => {
-  const [theme, setTheme] = useState('light')
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'))
-  }
-
-  return { theme, toggleTheme }
-}
+// 要有一个 context 用来存储全局的 theme...然后需要与 localStorage 同步，还要给 html 标签加上 dark 属性，还要给个toggle...
+// 有必要吗...? 真正需要保证的其实只是 html 和 localStorage 的同步... 毕竟是打算用 css 变量去实现的...

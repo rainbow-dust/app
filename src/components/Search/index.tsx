@@ -65,20 +65,20 @@ export const Search: React.FC<{
   }, [searchValue, inputRef])
 
   // 听 input 是否 focus，然后给 tag-input 加上 focus 的样式
-  useEffect(() => {
-    const handleFocus = () => {
-      console.log('focus')
-    }
-    const handleBlur = () => {
-      console.log('blur')
-    }
-    inputRef.current!.addEventListener('focus', handleFocus)
-    inputRef.current!.addEventListener('blur', handleBlur)
-    return () => {
-      inputRef.current!.removeEventListener('focus', handleFocus)
-      inputRef.current!.removeEventListener('blur', handleBlur)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const handleFocus = () => {
+  //     console.log('focus')
+  //   }
+  //   const handleBlur = () => {
+  //     console.log('blur')
+  //   }
+  //   inputRef.current!.addEventListener('focus', handleFocus)
+  //   inputRef.current!.addEventListener('blur', handleBlur)
+  //   return () => {
+  //     inputRef.current!.removeEventListener('focus', handleFocus)
+  //     inputRef.current!.removeEventListener('blur', handleBlur)
+  //   }
+  // }, [])
 
   // 远程 tag 搜索
   // const [cells, setCells] = useState<string[]>([])

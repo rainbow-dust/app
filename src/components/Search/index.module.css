@@ -4,14 +4,25 @@
 }
 
 @media (max-width: 600px) {
-  .search {
+  .search.active {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: calc(100vw - 40px);
+    padding: 10px 20px;
     height: 60px;
     z-index: 100;
     background: white;
+    animation: expand 0.2s ease;
+  }
+}
+
+@keyframes expand {
+  from {
+    width: 200px;
+  }
+  to {
+    width: calc(100vw - 40px);
   }
 }
 

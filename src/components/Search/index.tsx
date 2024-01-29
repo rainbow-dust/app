@@ -32,12 +32,10 @@ export const Search: React.FC<{
     multiple,
   )
 
-  const [showDropdown, setShowDropdown] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [tags, setTags] = useState<string[]>([]) // 这里的 tag 就应该是 selectedCells....
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setShowDropdown(true)
     if (e.key === 'Enter') {
       if (tags.includes(searchValue)) {
         setSearchValue('')
@@ -64,21 +62,18 @@ export const Search: React.FC<{
     }
   }, [searchValue, inputRef])
 
-  // 听 input 是否 focus，然后给 tag-input 加上 focus 的样式
-  // useEffect(() => {
-  //   const handleFocus = () => {
-  //     console.log('focus')
-  //   }
-  //   const handleBlur = () => {
-  //     console.log('blur')
-  //   }
-  //   inputRef.current!.addEventListener('focus', handleFocus)
-  //   inputRef.current!.addEventListener('blur', handleBlur)
-  //   return () => {
-  //     inputRef.current!.removeEventListener('focus', handleFocus)
-  //     inputRef.current!.removeEventListener('blur', handleBlur)
-  //   }
-  // }, [])
+  // 听 input 是否 focus，然后给 tag-input 加上 focus 的样式...不...focus 和 active 可能得是两回事...
+  const [isActive, setIsActive] = useState(false)
+  useEffect(() => {
+    const handleFocus = () => {
+      setIsActive(true)
+    }
+    inputRef.current!.addEventListener('focus', handleFocus)
+    const inputRefCurrent = inputRef.current
+    return () => {
+      inputRefCurrent!.removeEventListener('focus', handleFocus)
+    }
+  }, [])
 
   // 远程 tag 搜索
   // const [cells, setCells] = useState<string[]>([])
@@ -104,53 +99,55 @@ export const Search: React.FC<{
   // 以及很多很大的东西...像样式，主题，适配... 以及后端那些...
 
   return (
-    <div className={Classes['search']}>
+    <div
+      className={Classes['search'] + (isActive ? ' ' + Classes['active'] : '')}
+    >
       <div
         style={{
           position: 'relative',
         }}
       >
-        <div
-          className={Classes['tag-input']}
-          style={showDropdown ? { border: '1px solid #1890ff' } : {}}
-          onClick={() => {
-            inputRef.current!.focus()
+        <ClickOutSide
+          onClickOutSide={() => {
+            setIsActive(false)
+            console.log('click outside')
           }}
         >
-          {tags.map((tag) => {
-            return (
-              <span
-                key={tag}
-                className={Classes['tag-input-tag']}
-                onClick={() => {
-                  setTags(tags.filter((t) => t !== tag))
-                }}
-              >
-                {tag}
-              </span>
-            )
-          })}
-          <input
-            className={Classes['tag-input-input']}
-            ref={inputRef}
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value)
-            }}
-            onKeyDown={handleKeyDown}
-          />
-          {/* 可以通过这个 mirror 得到渲染后的文字宽度...tmd原来是这样用的 */}
-          <span ref={inputMirrorRef} className={Classes['tag-input-mirror']}>
-            {searchValue}
-          </span>
-        </div>
-        {showDropdown && (
-          <ClickOutSide
-            onClickOutSide={() => {
-              console.log('click outside')
-              setShowDropdown(false)
+          <div
+            className={Classes['tag-input']}
+            style={isActive ? { border: '1px solid #1890ff' } : {}}
+            onClick={() => {
+              inputRef.current!.focus()
             }}
           >
+            {tags.map((tag) => {
+              return (
+                <span
+                  key={tag}
+                  className={Classes['tag-input-tag']}
+                  onClick={() => {
+                    setTags(tags.filter((t) => t !== tag))
+                  }}
+                >
+                  {tag}
+                </span>
+              )
+            })}
+            <input
+              className={Classes['tag-input-input']}
+              ref={inputRef}
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value)
+              }}
+              onKeyDown={handleKeyDown}
+            />
+            {/* 可以通过这个 mirror 得到渲染后的文字宽度...tmd原来是这样用的 */}
+            <span ref={inputMirrorRef} className={Classes['tag-input-mirror']}>
+              {searchValue}
+            </span>
+          </div>
+          {isActive && (
             <div className={Classes['dropdown']}>
               <div
                 style={{
@@ -181,13 +178,13 @@ export const Search: React.FC<{
               <div className={Classes['dropdown-item']}>2</div>
               <div className={Classes['dropdown-item']}>3</div>
             </div>
-            {/* <Dropdown
+          )}{' '}
+          {/* <Dropdown
               cells={cells}
               selectedCells={selectedCells}
               setSelectedCells={setSelectedCells}
             /> */}
-          </ClickOutSide>
-        )}
+        </ClickOutSide>
       </div>
     </div>
   )

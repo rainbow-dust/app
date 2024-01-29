@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { Message } from '~/components/Message'
 import { Pic, addNote } from '~/services'
 
 import { ImgUpload } from './components/ImgUpload'
@@ -25,7 +26,10 @@ export const Publish: React.FC = () => {
       picList,
     ).then((res) => {
       if (res) {
-        window.alert('Note published successfully')
+        Message({
+          message: '发布成功' + JSON.stringify(res),
+          type: 'success',
+        })
       }
     })
   }

@@ -1,0 +1,7 @@
+.message {
+  position: fixed;
+  top: 10vh;
+  left: 50%;
+  max-width: 500px;
+  transform: translateX(-50%);
+}

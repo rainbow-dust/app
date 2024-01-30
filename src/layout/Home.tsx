@@ -1,20 +1,24 @@
 import { Outlet } from 'react-router-dom'
 
-import { BottomMenu } from '~/components/BottomMenu'
+import { ChannelList } from '~/components/ChannelList'
 import { NavBar } from '~/components/Navbar'
+
+import Classes from './Home.module.css'
 
 export const HomeLayout = () => {
   return (
     <>
-      <NavBar />
-      <div
-        style={{
-          padding: '3.5rem',
-        }}
-      >
-        <Outlet />
+      <div className={Classes['home-layout']}>
+        <div className={Classes['home-layout-navbar']}>
+          <NavBar />
+        </div>
+        <div className={Classes['home-layout-content']}>
+          <Outlet />
+        </div>
+        <div className={Classes['home-layout-channel']}>
+          <ChannelList />
+        </div>
       </div>
-      <BottomMenu />
     </>
   )
 }

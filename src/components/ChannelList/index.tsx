@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import { NoticeContext } from '~/hooks/useNotice'
 
 import Classes from './index.module.css'
 
 export const ChannelList: React.FC = () => {
   const navigate = useNavigate()
+  const { count } = useContext(NoticeContext)
+  console.log('count', count)
+
   const ChannelList = [
     {
       name: '发现',
@@ -17,7 +22,7 @@ export const ChannelList: React.FC = () => {
       path: '/publish',
     },
     {
-      name: '通知',
+      name: '通知' + (count ? `(${count})` : ''),
       icon: '',
       path: '/notice',
     },

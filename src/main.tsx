@@ -15,12 +15,6 @@ import './index.css'
 //   fufu.send()
 // }, 10000)
 
-import { getUnReadNoticeCount } from '~/services'
-
-window.addEventListener('click', () => {
-  if (localStorage.getItem('token')) getUnReadNoticeCount()
-})
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

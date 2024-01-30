@@ -15,10 +15,10 @@ import { createBrowserRouter } from 'react-router-dom'
 import { HomeLayout } from '~/layout/Home'
 import { Detail } from '~/pages/Detail'
 import { Explore } from '~/pages/Explore'
-import { Feed } from '~/pages/Feed'
 import { Notice } from '~/pages/Notice'
 import { PeopleDetail, PeopleEdit } from '~/pages/People'
 import { Publish } from '~/pages/Publish'
+import { Timeline } from '~/pages/Timeline'
 
 export const router = createBrowserRouter([
   {
@@ -26,12 +26,12 @@ export const router = createBrowserRouter([
     Component: HomeLayout,
     children: [
       {
-        path: 'feed',
-        Component: Feed,
+        path: 'explore',
+        Component: Explore,
         children: [
           {
             path: ':id',
-            Component: Explore, //for test...
+            Component: Timeline, //for test...
           },
         ],
       },

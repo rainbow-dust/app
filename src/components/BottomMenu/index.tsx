@@ -7,7 +7,7 @@ export const BottomMenu: React.FC = () => {
     {
       name: '发现',
       icon: '',
-      path: '/feed',
+      path: '/explore',
     },
     {
       name: '发布',

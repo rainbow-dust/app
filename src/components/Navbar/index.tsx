@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Search } from '~/components/Search'
 import { CurrentUserContext } from '~/hooks/useCurrentUser'
+import { queryTags } from '~/services'
 
 import { LoginOrRegisterModal } from '../Modal/LoginOrRegister'
 import Classes from './index.module.css'
@@ -36,6 +37,22 @@ export const NavBar = () => {
     localStorage.setItem('isDark', isDark.toString())
   }, [isDark])
 
+  // 搜索
+  const [str, setStr] = useState('')
+  const [tags, setTags] = useState<string[]>([])
+
+  const searchFn = async (str: string) => {
+    const res = await queryTags(str)
+
+    const options = res.map((t: { name: string; _id: string }) => {
+      return {
+        value: t.name,
+        label: t.name,
+      }
+    })
+    return options
+  }
+
   return (
     // <div className="fixed w-full bg-white z-10 shadow-sm">
     //   <div className="py-4 border-b-[1px]">barbar</div>
@@ -50,13 +67,11 @@ export const NavBar = () => {
       </div>
       <div>
         <Search
-          options={[]}
-          handleKeyDownFn={() => {}}
-          searchFn={() => {}}
-          noDataLabel=""
-          placeholder="搜索"
-          loading={false}
-          multiple={false}
+          str={str}
+          tags={tags}
+          setStr={setStr}
+          setTags={setTags}
+          searchFn={searchFn}
         ></Search>
       </div>
       <div>

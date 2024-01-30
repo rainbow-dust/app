@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 import { Message } from '~/components/Message'
-import { Pic, addNote } from '~/services'
+import { Search } from '~/components/Search'
+import { Pic, addNote, queryTags } from '~/services'
 
 import { ImgUpload } from './components/ImgUpload'
-import { TagSelect } from './components/TagSelect'
 import Classes from './index.module.css'
 
 interface Tag {
@@ -13,7 +13,22 @@ interface Tag {
 }
 
 export const Publish: React.FC = () => {
-  const [chosenTags, setChosenTags] = useState<Tag[]>([])
+  // 搜索 tag
+  const [str, setStr] = useState('')
+  const [tags, setTags] = useState<string[]>([])
+
+  const searchFn = async (str: string) => {
+    const res = await queryTags(str)
+
+    const options = res.map((t: Tag) => {
+      return {
+        value: t.name,
+        label: t.name,
+      }
+    })
+    return options
+  }
+
   const [picList, setPicList] = useState<Pic[]>([])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +37,7 @@ export const Publish: React.FC = () => {
     addNote(
       title,
       content,
-      chosenTags.map((t) => t._id),
+      tags.map((t) => t), // 这里是 tag 的 name...
       picList,
     ).then((res) => {
       if (res) {
@@ -67,7 +82,13 @@ export const Publish: React.FC = () => {
             style={{}}
           />
         </div>
-        <TagSelect chosenTags={chosenTags} setChosenTags={setChosenTags} />
+        <Search
+          str={str}
+          tags={tags}
+          setStr={setStr}
+          setTags={setTags}
+          searchFn={searchFn}
+        />
         <ImgUpload picList={picList} setPicList={setPicList} />
         <div>i have read and agree to xxxxxxx</div>
         <button

@@ -15,7 +15,7 @@ const TypeToIcon = {
   warning: '⚠️',
 }
 
-const CONTAINER_ID = 'wdu-message__container'
+const CONTAINER_ID = 'dioda-message__container'
 const MESSAGE_QUEUE: Array<MessageProps> = []
 
 // 创建容器

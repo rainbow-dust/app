@@ -1,54 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 
 import { ClickOutSide } from './ClickOutSide'
 import Classes from './index.module.css'
 
-export const Search: React.FC<{
-  options: string[]
-  handleKeyDownFn: () => void
-  searchFn: () => void
-  noDataLabel: string
-  placeholder: string
-  loading: boolean
-  multiple: boolean
-}> = ({
-  options,
-  handleKeyDownFn,
-  searchFn,
-  noDataLabel,
-  placeholder,
-  loading,
-  multiple,
-}) => {
-  // TODO:
-  console.log(
-    'search',
-    options,
-    handleKeyDownFn,
-    searchFn,
-    noDataLabel,
-    placeholder,
-    loading,
-    multiple,
-  )
+interface Option {
+  value: string
+  label: string
+}
 
-  const [searchValue, setSearchValue] = useState('')
-  const [tags, setTags] = useState<string[]>([]) // 这里的 tag 就应该是 selectedCells....
+export const Search: FC<{
+  str: string
+  tags: string[]
+  setStr: (str: string) => void
+  setTags: (tags: string[]) => void
+  searchFn: (str: string) => Promise<Option[]>
+}> = ({ str, tags, setStr, setTags, searchFn }) => {
+  const [options, setOptions] = useState<Option[]>([])
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      if (tags.includes(searchValue)) {
-        setSearchValue('')
+      if (tags.includes(str)) {
+        setStr('')
         return
       }
-      setTags([...tags, searchValue])
-      setSearchValue('')
+      setTags([...tags, str])
+      setStr('')
       return
     }
     if (e.key === 'Escape') {
       return
     }
-    setSearchValue(e.currentTarget.value)
+    setStr(e.currentTarget.value)
+    const options = await searchFn(e.currentTarget.value)
+    setOptions(options)
   }
 
   const inputMirrorRef = useRef<HTMLSpanElement>(null)
@@ -57,10 +41,10 @@ export const Search: React.FC<{
   // 同步 inputMirror 和 input 的宽度 css
   useEffect(() => {
     if (inputMirrorRef.current!.innerText) {
-      inputMirrorRef.current!.innerText = searchValue
+      inputMirrorRef.current!.innerText = str
       inputRef.current!.style.width = inputMirrorRef.current!.offsetWidth + 'px'
     }
-  }, [searchValue, inputRef])
+  }, [str, inputRef])
 
   // 听 input 是否 focus，然后给 tag-input 加上 focus 的样式...不...focus 和 active 可能得是两回事...
   const [isActive, setIsActive] = useState(false)
@@ -74,23 +58,6 @@ export const Search: React.FC<{
       inputRefCurrent!.removeEventListener('focus', handleFocus)
     }
   }, [])
-
-  // 远程 tag 搜索
-  // const [cells, setCells] = useState<string[]>([])
-  // const [selectedCells, setSelectedCells] = useState<string[]>([])
-  // useEffect(() => {
-  //   if (searchValue) {
-  //     const res = searchFn()
-  //     setCells(res)
-  //   }
-  // }, [searchValue, searchFn])
-
-  // 最终提交...虽然可能也是搜索...
-  // useEffect(() => {
-  //   if (handleKeyDownFn) {
-  //     handleKeyDownFn()
-  //   }
-  // }, [handleKeyDownFn])
 
   // 之后做什么呢...? 嗯，还剩，嗯... 弹窗问题...不只是这里，还有那个 notes 的弹窗也是...
   // 以及很早很早以前你想的要不要给 notes 单页面搞单个 note 的相关推荐... 也许是要做的...
@@ -136,47 +103,37 @@ export const Search: React.FC<{
             <input
               className={Classes['tag-input-input']}
               ref={inputRef}
-              value={searchValue}
+              value={str}
               onChange={(e) => {
-                setSearchValue(e.target.value)
+                setStr(e.target.value)
               }}
               onKeyDown={handleKeyDown}
             />
             {/* 可以通过这个 mirror 得到渲染后的文字宽度...tmd原来是这样用的 */}
             <span ref={inputMirrorRef} className={Classes['tag-input-mirror']}>
-              {searchValue}
+              {str}
             </span>
           </div>
           {isActive && (
             <div className={Classes['dropdown']}>
-              <div
-                style={{
-                  backgroundColor: '#1890ff',
-                  color: 'white',
-                  padding: '5px',
-                  borderRadius: '2px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <img
-                  src="https://avatars.githubusercontent.com/u/32326916?s=460&u=5d3c1f3b0c8b9b9d8d8f0b6d6c4f9f0e3e7e0d3f&v=4"
-                  alt="avatar"
-                  style={{
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    marginRight: '5px',
-                  }}
-                />
-                this is some special item
-              </div>
-              <div className={Classes['dropdown-item']}>1</div>
-              <div className={Classes['dropdown-item']}>1</div>
-              <div className={Classes['dropdown-item']}>1</div>
-              <div className={Classes['dropdown-item']}>2</div>
-              <div className={Classes['dropdown-item']}>3</div>
+              {options.map((option) => {
+                return (
+                  <div
+                    key={option.value}
+                    className={Classes['dropdown-item']}
+                    onClick={() => {
+                      if (tags.includes(option.value)) {
+                        setTags(tags.filter((t) => t !== option.value))
+                      } else {
+                        setTags([...tags, option.value])
+                      }
+                    }}
+                  >
+                    {option.label}
+                    {tags.includes(option.value) ? '✅' : ''}
+                  </div>
+                )
+              })}
             </div>
           )}{' '}
           {/* <Dropdown

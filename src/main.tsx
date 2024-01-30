@@ -3,6 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import App from './App.tsx'
+import { Message } from './components/Message/index.tsx'
 
 import './index.css'
 
@@ -31,7 +32,12 @@ Object.defineProperty(window, 'fetch', {
       return originFetch(url, {
         // 这里可以加些公共的东西，比如 token，然后后写的 options 会覆盖这些默认的
         ...options,
-      }).then(checkStatus)
+      })
+        .then(checkStatus)
+        .catch((err) => {
+          Message.error(err.message)
+          throw err
+        })
       // checkStatus 这里可以做返回错误处理，实现返回拦截
       // .then((response) => response.json())
     }

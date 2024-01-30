@@ -10,7 +10,7 @@
 // so that when we open the modal we still see the current page in
 // the background.
 
-import { createBrowserRouter } from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 import { HomeLayout } from '~/layout/Home'
 import { Detail } from '~/pages/Detail'
@@ -24,6 +24,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     Component: HomeLayout,
+
     children: [
       {
         path: 'explore',
@@ -44,16 +45,20 @@ export const router = createBrowserRouter([
         Component: Notice,
       },
       {
-        path: 'people/:username',
-        Component: PeopleDetail,
-      },
-      {
         path: 'people/edit',
         Component: PeopleEdit,
       },
       {
+        path: 'people/:username',
+        Component: PeopleDetail,
+      },
+      {
         path: 'publish',
         Component: Publish,
+      },
+      {
+        Component: () => Navigate({ to: '/explore', replace: true }),
+        path: '*',
       },
     ],
   },

@@ -13,11 +13,12 @@ import {
 interface Comment {
   _id: string
   content: string
-  likes: number
+  like_count: number
   is_liked?: boolean
   author: {
     _id: string
     username: string
+    avatar_url: string
   }
   created_at: string
 }
@@ -39,7 +40,10 @@ const Comment: FC<{
   handleReply: (
     content: string,
     rootCommentId?: string,
-    meetioneeId?: string,
+    meetionee?: {
+      _id: string
+      username: string
+    },
   ) => void
   unfoldReply: (commentId: string) => void
   likeComment: (commentId: string) => void
@@ -53,18 +57,31 @@ const Comment: FC<{
 }) => {
   return (
     <li>
+      <p>
+        <img
+          style={{
+            width: '24px',
+            height: '24px',
+          }}
+          src={comment.author.avatar_url}
+        ></img>
+        <span style={{ color: '#999' }}>{comment.author.username}</span>
+      </p>
       <p>{comment.content}</p>
-      <p>{comment.author?.username}</p>
       <p>{comment.created_at}</p>
-      <p>{comment.likes}</p>
+      <p></p>
       {comment.is_liked ? (
-        <button onClick={() => cancelLikeComment(comment._id)}>取消点赞</button>
+        <button onClick={() => cancelLikeComment(comment._id)}>
+          {comment.like_count}取消点赞
+        </button>
       ) : (
-        <button onClick={() => likeComment(comment._id)}>点赞</button>
+        <button onClick={() => likeComment(comment._id)}>
+          {comment.like_count}点赞
+        </button>
       )}
       <button
         onClick={() =>
-          handleReply(comment.content, comment._id, comment.author._id)
+          handleReply(comment.content, comment._id, comment.author)
         }
       >
         回复
@@ -79,20 +96,30 @@ const Comment: FC<{
         {comment.children &&
           comment.children.map((child) => (
             <li key={child._id}>
+              <p>
+                <img
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                  }}
+                  src={child.author.avatar_url}
+                ></img>
+                <span style={{ color: '#999' }}>{child.author.username}</span>
+              </p>
               <p>{child.content}</p>
-              <p>{child.author.username}</p>
               <p>{child.created_at}</p>
-              <p>{child.likes}</p>
               {child.is_liked ? (
                 <button onClick={() => cancelLikeComment(child._id)}>
-                  取消点赞
+                  {child.like_count}取消点赞
                 </button>
               ) : (
-                <button onClick={() => likeComment(child._id)}>点赞</button>
+                <button onClick={() => likeComment(child._id)}>
+                  {child.like_count}点赞
+                </button>
               )}
               <button
                 onClick={() =>
-                  handleReply(child.content, comment._id, child.author._id)
+                  handleReply(child.content, comment._id, child.author)
                 }
               >
                 回复
@@ -107,7 +134,10 @@ const Comment: FC<{
 const Replier: FC<{
   isReplierActive: boolean
   replyRootCommentId?: string
-  replyMeetioneeId?: string
+  replyMeetionee?: {
+    _id: string
+    username: string
+  }
   handleAddComment: (
     content: string,
     rootCommentId?: string,
@@ -116,23 +146,23 @@ const Replier: FC<{
 }> = ({
   isReplierActive,
   replyRootCommentId,
-  replyMeetioneeId,
+  replyMeetionee,
   handleAddComment,
 }) => {
   const [content, setContent] = useState('')
   return (
     <div
       style={{
-        position: 'fixed',
+        // position: 'absolute',
         bottom: isReplierActive ? '200px' : '80px',
-        left: '0',
-        width: '100%',
-        backgroundColor: '#fff',
+        // left: '0',
+        // width: '100%',
+        // backgroundColor: '#fff',
       }}
     >
       <label htmlFor="reply">
         回复
-        {replyMeetioneeId && <span>@{replyMeetioneeId}</span>}
+        {replyMeetionee && <span>@{replyMeetionee.username}</span>}
       </label>
       <input
         type="text"
@@ -141,7 +171,7 @@ const Replier: FC<{
       />
       <button
         onClick={() =>
-          handleAddComment(content, replyRootCommentId, replyMeetioneeId)
+          handleAddComment(content, replyRootCommentId, replyMeetionee?._id)
         }
       >
         评论
@@ -155,7 +185,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   const [rootComments, setRootComments] = useState<RootComment[]>([])
   const fetchRootComments = async (noteId: string) => {
     const res = await getRootComments(noteId)
-    setRootComments(res.data)
+    setRootComments(res)
   }
 
   useEffect(() => {
@@ -179,25 +209,31 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   // 应该有变量，去控制 Replier 的唤起和不唤起，以及唤起的时候，传递给 Replier 的参数
   const [isReplierActive, setIsReplierActive] = useState(false)
   const [replyRootCommentId, setReplyRootCommentId] = useState<string>()
-  const [replyMeetioneeId, setReplyMeetioneeId] = useState<string>()
+  const [replyMeetionee, setreplyMeetionee] = useState<{
+    _id: string
+    username: string
+  }>()
   // 点击其他地方，取消唤起并清空参数
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement
     if (target.tagName !== 'BUTTON' && target.tagName !== 'INPUT') {
       setIsReplierActive(false)
       setReplyRootCommentId(undefined)
-      setReplyMeetioneeId(undefined)
+      setreplyMeetionee(undefined)
     }
   })
 
   const handleReply = (
-    // content: string,
+    content: string,
     rootCommentId?: string,
-    meetioneeId?: string,
+    meetionee?: {
+      _id: string
+      username: string
+    },
   ) => {
     setIsReplierActive(true)
     setReplyRootCommentId(rootCommentId)
-    setReplyMeetioneeId(meetioneeId)
+    setreplyMeetionee(meetionee)
   }
 
   const handleAddComment = async (
@@ -209,7 +245,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
     fetchRootComments(noteId)
     setIsReplierActive(false)
     setReplyRootCommentId(undefined)
-    setReplyMeetioneeId(undefined)
+    setreplyMeetionee(undefined)
   }
 
   return (
@@ -230,7 +266,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
         <Replier
           isReplierActive={isReplierActive}
           replyRootCommentId={replyRootCommentId}
-          replyMeetioneeId={replyMeetioneeId}
+          replyMeetionee={replyMeetionee}
           handleAddComment={handleAddComment}
         />
       </div>

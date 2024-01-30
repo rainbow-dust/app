@@ -18,7 +18,6 @@ export const useNotice = () => {
     const mo = () => {
       if (localStorage.getItem('token')) {
         getUnReadNoticeCount().then((res) => setCount(res))
-        console.log('useNotice')
       }
     }
     window.addEventListener('click', mo)

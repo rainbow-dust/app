@@ -8,8 +8,6 @@ import Classes from './index.module.css'
 export const ChannelList: React.FC = () => {
   const navigate = useNavigate()
   const { count } = useContext(NoticeContext)
-  console.log('count', count)
-
   const ChannelList = [
     {
       name: '发现',

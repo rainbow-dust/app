@@ -26,10 +26,7 @@ export const Publish: React.FC = () => {
       picList,
     ).then((res) => {
       if (res) {
-        Message({
-          message: '发布成功' + JSON.stringify(res),
-          type: 'success',
-        })
+        Message.success('发布成功')
       }
     })
   }

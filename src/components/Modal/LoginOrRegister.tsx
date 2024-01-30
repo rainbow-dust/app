@@ -42,19 +42,13 @@ const Login = ({
   const handleLogin = async () => {
     const res = await login(username, password)
     if (res?.username) {
-      Message({
-        message: '登录成功',
-        type: 'success',
-      })
+      Message.success('登录成功')
       await localStorage.setItem('username', res.username)
       localStorage.setItem('token', res.token)
       toggle()
       setUser(res)
     } else {
-      Message({
-        message: '登录失败' + JSON.stringify(res),
-        type: 'error',
-      })
+      Message.error('登录失败' + JSON.stringify(res))
     }
   }
 
@@ -109,16 +103,10 @@ const Register = ({
   const handleRegister = async () => {
     const res = await register(username, password)
     if (res?.username) {
-      Message({
-        message: '注册成功',
-        type: 'success',
-      })
+      Message.success('注册成功')
       setIsLogin(true)
     } else {
-      Message({
-        message: '注册失败' + JSON.stringify(res),
-        type: 'error',
-      })
+      Message.error('注册失败' + JSON.stringify(res))
     }
   }
 

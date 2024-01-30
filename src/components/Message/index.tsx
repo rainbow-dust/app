@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { createRoot } from 'react-dom/client'
+import ReactDOM, { createRoot } from 'react-dom/client'
 
 import Classes from './index.module.css'
 
 interface MessageProps {
   message: string
   type: 'success' | 'error' | 'warning'
-  id?: string
+  id: string
 }
 
 const TypeToIcon = {
@@ -47,16 +47,13 @@ function removeMessage(id: string) {
 function BaseMessage(props: MessageProps) {
   const { type, message, id } = props
 
-  const refMessage = useRef<unknown>()
+  const refMessage = useRef<HTMLParagraphElement>(null)
 
   useEffect(() => {
     const clear = () => removeMessage(id) // Move the definition of 'clear' inside the useEffect callback or wrap it in its own useCallback hook
 
     const timer = setTimeout(() => {
-      refMessage.current.style.transform = 'translateY(-100%)'
-      setTimeout(() => {
-        clear()
-      }, 300)
+      clear()
     }, 3000)
 
     return () => {
@@ -73,7 +70,7 @@ function BaseMessage(props: MessageProps) {
 }
 
 // 组件渲染
-let containerRoot: unknown
+let containerRoot: ReactDOM.Root
 function renderMessage(messageQueue: Array<MessageProps>) {
   const container = createContainer()
   if (!containerRoot) {
@@ -87,7 +84,17 @@ function renderMessage(messageQueue: Array<MessageProps>) {
   containerRoot.render(MessageComponents)
 }
 
-export const Message = addMessage
+export const Message = {
+  success(message: string) {
+    addMessage({ message, type: 'success', id: uuid(8) })
+  },
+  error(message: string) {
+    addMessage({ message, type: 'error', id: uuid(8) })
+  },
+  warning(message: string) {
+    addMessage({ message, type: 'warning', id: uuid(8) })
+  },
+}
 
 function uuid(number: number) {
   const str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'

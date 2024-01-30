@@ -14,7 +14,29 @@ import './index.css'
 // setInterval(() => {
 //   fufu.send()
 // }, 10000)
-
+const originFetch = fetch
+const checkStatus = (response: Response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  }
+  const error = new Error(response.statusText)
+  throw error
+}
+Object.defineProperty(window, 'fetch', {
+  configurable: true,
+  enumerable: true,
+  // writable: true,
+  get() {
+    return (url: string, options: RequestInit) => {
+      return originFetch(url, {
+        // 这里可以加些公共的东西，比如 token，然后后写的 options 会覆盖这些默认的
+        ...options,
+      }).then(checkStatus)
+      // checkStatus 这里可以做返回错误处理，实现返回拦截
+      // .then((response) => response.json())
+    }
+  },
+})
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

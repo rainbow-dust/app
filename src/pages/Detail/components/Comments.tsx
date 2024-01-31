@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react'
 
-// import useSWR, { useSWRConfig } from 'swr'
-
 import {
   addComment,
   cancelLikeComment,
@@ -31,11 +29,6 @@ interface Comment {
   child_comment_count?: number
 }
 
-interface RootComment extends Comment {}
-
-// 处理 root 和 非 root ..感觉也应该放到外面的组件里去...？
-// 这样做主要是...md 回显怎么做，如果每个小东西里面都有个useState就方便好多了...
-
 export const RenderComment: FC<{
   commentInit: Comment
   options: {
@@ -53,7 +46,6 @@ export const RenderComment: FC<{
       ) => void
     } | null
   }
-  // 还可能直接传一串子组件
   children?: React.ReactNode[]
 }> = ({ commentInit, options, children }) => {
   const [comment, setComment] = useState(commentInit)
@@ -184,8 +176,7 @@ const Replier: FC<{
 }
 
 export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
-  // 我不确定这里要怎么做... swr 的数据似乎很强调和后端保持一致，但这里需要组成嵌套的...吗？
-  const [rootComments, setRootComments] = useState<RootComment[]>([])
+  const [rootComments, setRootComments] = useState<Comment[]>([])
   const fetchRootComments = async (noteId: string) => {
     const res = await getRootComments(noteId)
     setRootComments(res)

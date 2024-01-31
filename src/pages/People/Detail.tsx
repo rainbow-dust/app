@@ -1,19 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
+import { Feed } from '~/components/Feed'
+import { getNotes } from '~/services'
+
+import Classes from './Detail.module.css'
+
 interface UserInfo {
   username: string
   avatar_url: string
   password: string
   bio: string
-}
-
-interface NoteData {
-  noteList: {
-    _id: string
-    title: string
-    content: string
-  }[]
 }
 
 export const PeopleDetail = () => {
@@ -32,134 +29,43 @@ export const PeopleDetail = () => {
     fetcher,
   )
 
-  const {
-    data: creations,
-    error: creationsError,
-    isLoading: creationsLoading,
-  } = useSWR<NoteData>(`/api/note/query/list`, (url: string) =>
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({
-        username: username,
-        pageCurrent: 1,
-        pageSize: 100,
+  const swrOp = {
+    key: (index: number) => ['key-/note/query/list', index],
+    fetcher: ([, index]: [string, number]) =>
+      getNotes({
+        pageCurrent: (index as number) + 1,
+        pageSize: 10,
+        username,
       }),
-    }).then((res) => res.json()),
-  )
+  }
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error</div>
   return (
     <div>
       <h1>Info</h1>
-      <div
-        className="people-info
-      border-b border-gray-200
-      pb-4
-      mb-4
-      flex
-      flex-col
-      items-center
-      justify-center
-
-      
-      "
-      >
-        <div
-          className="people-avatar
-        w-24
-        h-24
-        rounded-full
-        overflow-hidden
-        mb-4
-        
-        
-        "
-        >
+      <div className={Classes['people-info']}>
+        <div className={Classes['people-avatar']}>
           <img
-            className="w-full h-full object-cover"
-            src={data?.avatar_url}
+            src={'http://192.168.2.153:9527' + data?.avatar_url}
             alt={data?.username}
           />
         </div>
-        <div
-          className="people-name
-        font-bold
-        text-lg
-        mb-2
-        
-        
-        "
-        >
-          {data?.username}
-        </div>
-        <div
-          className="people-bio
-        text-gray-500
-        text-sm
-        mb-2
-        
-        "
-        >
-          {data?.bio}
-        </div>
+        <div>{data?.username}</div>
+        <div>{data?.bio}</div>
       </div>
       {username === localStorage.getItem('username') && (
         <button
           onClick={() => {
-            navigate(`/people/${username}/edit`)
+            navigate(`/people/edit`)
           }}
         >
           go to edit
         </button>
       )}
-      <div className="people-creations">
+      <div className={Classes['people-creations']}>
         <h2>Creations</h2>
-        {creationsLoading && <div>Loading...</div>}
-        {creationsError && <div>Error</div>}
-        {creations?.noteList?.map((item) => (
-          <div
-            key={item._id}
-            className="creation-item
-          border-b border-gray-200
-          pb-4
-          mb-4
-          flex
-          flex-col
-          items-start
-          justify-center
-          
-          
-          "
-          >
-            <div
-              className="creation-title
-            font-bold
-            text-lg
-            mb-2
-            
-            
-            "
-            >
-              {item.title}
-            </div>
-            <div
-              className="creation-content
-            text-gray-500
-            text-sm
-            mb-2
-            
-            
-            "
-            >
-              {item.content}
-            </div>
-          </div>
-        ))}
+        <Feed swrOp={swrOp} />
       </div>
     </div>
   )

@@ -46,7 +46,7 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
                 width: '24px',
                 height: '24px',
               }}
-              src={note.author?.avatar_url}
+              src={'http://192.168.2.153:9527' + note.author?.avatar_url}
             ></img>
             <span style={{ color: '#999' }}>{note.author?.username}</span>
           </Link>

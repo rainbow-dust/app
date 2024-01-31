@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
+import { upload } from '~/services'
+
 interface UserInfoEdit {
   username: string
   avatar_url: string
@@ -50,6 +52,32 @@ export const PeopleEdit = () => {
     })
   }
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+    const tobe = []
+    for (let i = 0; i < files.length; i++) {
+      const { width, height } = await new Promise<{
+        width: number
+        height: number
+      }>((resolve) => {
+        const img = new Image()
+        img.onload = () => {
+          resolve({ width: img.width, height: img.height })
+        }
+        img.src = URL.createObjectURL(files[i])
+      })
+
+      const { url } = await upload(files[i])
+      tobe.push({ url, width, height })
+    }
+
+    setUserInfo({
+      ...userInfo,
+      avatar_url: tobe[0].url,
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const res = await fetch(`/api/user`, {
@@ -82,13 +110,17 @@ export const PeopleEdit = () => {
           />
         </div>
         <div>
-          <label htmlFor="avatar_url">avatar_url</label>
+          <img
+            src={'http://192.168.2.153:9527' + userInfo.avatar_url}
+            alt={userInfo.username}
+            style={{ width: '100px' }}
+          />
+          <label htmlFor="avatar">avatar:</label>
           <input
-            type="text"
-            name="avatar_url"
-            id="avatar_url"
-            value={userInfo.avatar_url}
-            onChange={handleChange}
+            type="file"
+            id="file"
+            accept="image/*"
+            onChange={handleFileChange}
           />
         </div>
         <div>

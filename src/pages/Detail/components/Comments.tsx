@@ -20,25 +20,25 @@ interface Comment {
     username: string
     avatar_url: string
   }
+  mentionee?: {
+    _id: string
+    username: string
+    avatar_url: string
+  }
   created_at: string
 }
-
-// interface CommentCreateDto {
-//   note_id: string
-//   content: string
-//   root_comment_id?: string
-//   meetionee_id?: string
-// }
 
 interface RootComment extends Comment {
   children?: Comment[]
   child_comment_count?: number
 }
 
+// 处理 root 和 非 root ..感觉也应该放到外面的组件里去...？
+// 这样做主要是...md 回显怎么做，如果每个小东西里面都有个useState就方便好多了...
+
 const Comment: FC<{
   comment: RootComment
   handleReply: (
-    content: string,
     rootCommentId?: string,
     meetionee?: {
       _id: string
@@ -79,13 +79,8 @@ const Comment: FC<{
           {comment.like_count}点赞
         </button>
       )}
-      <button
-        onClick={() =>
-          handleReply(comment.content, comment._id, comment.author)
-        }
-      >
-        回复
-      </button>
+      {/* 根评论回复不传 mentionee */}
+      <button onClick={() => handleReply(comment._id)}>回复</button>
 
       {comment.child_comment_count && comment.child_comment_count > 0 && (
         <button onClick={() => unfoldReply(comment._id)}>
@@ -96,7 +91,7 @@ const Comment: FC<{
         {comment.children &&
           comment.children.map((child) => (
             <li key={child._id}>
-              <p>
+              <span>
                 <img
                   style={{
                     width: '24px',
@@ -105,7 +100,22 @@ const Comment: FC<{
                   src={child.author.avatar_url}
                 ></img>
                 <span style={{ color: '#999' }}>{child.author.username}</span>
-              </p>
+              </span>
+              {child.mentionee && (
+                <span>
+                  →
+                  <img
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                    }}
+                    src={child.mentionee?.avatar_url}
+                  ></img>
+                  <span style={{ color: '#999' }}>
+                    {child.mentionee?.username}
+                  </span>
+                </span>
+              )}
               <p>{child.content}</p>
               <p>{child.created_at}</p>
               {child.is_liked ? (
@@ -117,11 +127,7 @@ const Comment: FC<{
                   {child.like_count}点赞
                 </button>
               )}
-              <button
-                onClick={() =>
-                  handleReply(child.content, comment._id, child.author)
-                }
-              >
+              <button onClick={() => handleReply(comment._id, child.author)}>
                 回复
               </button>
             </li>
@@ -209,7 +215,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   // 应该有变量，去控制 Replier 的唤起和不唤起，以及唤起的时候，传递给 Replier 的参数
   const [isReplierActive, setIsReplierActive] = useState(false)
   const [replyRootCommentId, setReplyRootCommentId] = useState<string>()
-  const [replyMeetionee, setreplyMeetionee] = useState<{
+  const [replyMeetionee, setReplyMeetionee] = useState<{
     _id: string
     username: string
   }>()
@@ -219,12 +225,13 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
     if (target.tagName !== 'BUTTON' && target.tagName !== 'INPUT') {
       setIsReplierActive(false)
       setReplyRootCommentId(undefined)
-      setreplyMeetionee(undefined)
+      setReplyMeetionee(undefined)
     }
   })
 
   const handleReply = (
-    content: string,
+    // 这个函数的调用只是唤起 Replier，并不会真正的添加评论，只是单纯确认位置，所以 content 是不需要的
+    // 以及，调用时...点击根评论的回复按钮应该是传 rootCommentId 但没有 meetionee
     rootCommentId?: string,
     meetionee?: {
       _id: string
@@ -233,7 +240,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
   ) => {
     setIsReplierActive(true)
     setReplyRootCommentId(rootCommentId)
-    setreplyMeetionee(meetionee)
+    setReplyMeetionee(meetionee)
   }
 
   const handleAddComment = async (
@@ -245,7 +252,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
     fetchRootComments(noteId)
     setIsReplierActive(false)
     setReplyRootCommentId(undefined)
-    setreplyMeetionee(undefined)
+    setReplyMeetionee(undefined)
   }
 
   return (

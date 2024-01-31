@@ -24,8 +24,11 @@ export const router = createBrowserRouter([
   {
     path: '/',
     Component: HomeLayout,
-
     children: [
+      {
+        path: '/',
+        Component: () => Navigate({ to: '/explore', replace: true }),
+      },
       {
         path: 'explore',
         Component: Explore,
@@ -55,10 +58,6 @@ export const router = createBrowserRouter([
       {
         path: 'publish',
         Component: Publish,
-      },
-      {
-        Component: () => Navigate({ to: '/explore', replace: true }),
-        path: '*',
       },
     ],
   },

@@ -59,7 +59,7 @@ export const RenderComment: FC<{
                 width: '24px',
                 height: '24px',
               }}
-              src={comment.author.avatar_url}
+              src={'http://192.168.2.153:9527' + comment.author.avatar_url}
             ></img>
             <span style={{ color: '#999' }}>{comment.author.username}</span>
           </span>

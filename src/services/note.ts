@@ -6,6 +6,23 @@ export interface Pic {
   height: number
 }
 
+export interface Note {
+  _id: string
+  title: string
+  content: string
+  author: {
+    _id: string
+    username: string
+    avatar_url: string
+  }
+  tags: {
+    _id: string
+    name: string
+  }[]
+  like_count: number
+  is_liked: boolean
+}
+
 export async function addNote(
   title: string,
   content: string,

@@ -2,8 +2,7 @@ import { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { cancelLikeNote, likeNote } from '~/services'
-
-import type { Note } from './index'
+import type { Note } from '~/services'
 
 export const NoteCell: FC<{ content: Note }> = ({ content }) => {
   const [note, setNote] = useState<Note>(content)

@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
-import { getNotes } from '~/services'
+import { Note, getNotes } from '~/services'
 
 // 哪些应该放在这里？
 
@@ -14,15 +15,27 @@ export const Explore = () => {
   const [queryStr, setQueryStr] = useState('')
   const queryTags = () => queryStr.split(' ').filter((i) => i)
 
-  const swrOp = {
-    key: (index: number) => ['key-/note/query/list', index],
-    fetcher: ([, index]: [string, number]) =>
-      getNotes({
-        pageCurrent: (index as number) + 1,
-        pageSize: PAGE_SIZE,
-        tags: queryTags(),
-      }),
-  }
+  const { data, mutate, size, setSize, isValidating, isLoading } =
+    useSWRInfinite<Note[]>(
+      (index: number) => ['key-/note/query/list', index],
+      ([, index]: [string, number]) =>
+        getNotes({
+          pageCurrent: (index as number) + 1,
+          pageSize: PAGE_SIZE,
+          tags: queryTags(),
+        }),
+    )
+
+  console.log('data', data, mutate)
+
+  const notes: Note[] = data ? data.flat() : []
+  const isLoadingMore =
+    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
+  const isEmpty = data?.[0]?.length === 0
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
+  const isRefreshing = isValidating && data && data.length === size
+
   return (
     <div>
       <Link to="/explore/123">123Modal</Link>
@@ -33,7 +46,17 @@ export const Explore = () => {
         }}
       />
 
-      <Feed swrOp={swrOp} />
+      <Feed
+        notes={notes}
+        options={{
+          isEmpty,
+          isReachingEnd,
+          isRefreshing,
+          isLoadingMore,
+          setSize,
+          size,
+        }}
+      />
       <Outlet />
     </div>
   )

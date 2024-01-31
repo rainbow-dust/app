@@ -1,10 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
-import { getNotes } from '~/services'
+import { Note, getNotes } from '~/services'
 
 import Classes from './Detail.module.css'
+
+const PAGE_SIZE = 10
 
 interface UserInfo {
   username: string
@@ -24,48 +27,77 @@ export const PeopleDetail = () => {
       },
     }).then((res) => res.json())
 
-  const { data, error, isLoading } = useSWR<UserInfo>(
-    `/api/user/${username}`,
-    fetcher,
-  )
+  const {
+    data: user,
+    error: userError,
+    isLoading: userLoading,
+  } = useSWR<UserInfo>(`/api/user/${username}`, fetcher)
 
-  const swrOp = {
-    key: (index: number) => ['key-/note/query/list', index],
-    fetcher: ([, index]: [string, number]) =>
-      getNotes({
-        pageCurrent: (index as number) + 1,
-        pageSize: 10,
-        username,
-      }),
-  }
+  const { data, mutate, size, setSize, isValidating, isLoading } =
+    useSWRInfinite<Note[]>(
+      (index: number) => ['key-/note/query/list', index],
+      ([, index]: [string, number]) =>
+        getNotes({
+          pageCurrent: (index as number) + 1,
+          pageSize: PAGE_SIZE,
+          username,
+        }),
+    )
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error</div>
+  console.log('data', data, mutate)
+
+  const notes: Note[] = data ? data.flat() : []
+  const isLoadingMore =
+    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
+  const isEmpty = data?.[0]?.length === 0
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
+  const isRefreshing = isValidating && data && data.length === size
+
   return (
     <div>
-      <h1>Info</h1>
-      <div className={Classes['people-info']}>
-        <div className={Classes['people-avatar']}>
-          <img
-            src={'http://192.168.2.153:9527' + data?.avatar_url}
-            alt={data?.username}
-          />
+      {userLoading ? (
+        <div>Loading...</div>
+      ) : userError ? (
+        <div>Error</div>
+      ) : (
+        <div className="info">
+          <h1>Info</h1>
+          <div className={Classes['people-info']}>
+            <div className={Classes['people-avatar']}>
+              <img
+                src={'http://192.168.2.153:9527' + user?.avatar_url}
+                alt={user?.username}
+              />
+            </div>
+            <div>{user?.username}</div>
+            <div>{user?.bio}</div>
+          </div>
+          {username === localStorage.getItem('username') && (
+            <button
+              onClick={() => {
+                navigate(`/people/edit`)
+              }}
+            >
+              go to edit
+            </button>
+          )}
         </div>
-        <div>{data?.username}</div>
-        <div>{data?.bio}</div>
-      </div>
-      {username === localStorage.getItem('username') && (
-        <button
-          onClick={() => {
-            navigate(`/people/edit`)
-          }}
-        >
-          go to edit
-        </button>
-      )}
+      )}{' '}
       <div className={Classes['people-creations']}>
         <h2>Creations</h2>
-        <Feed swrOp={swrOp} />
+        <Feed
+          notes={notes}
+          options={{
+            isEmpty,
+            isReachingEnd,
+            isRefreshing,
+            isLoadingMore,
+            setSize,
+            size,
+          }}
+        />
+        {/* 这个...多个页面使用会有bug...我就说，应该把 feed 拆更细一点，然后把 swr 的整个控制都放在外部，就是放到 pages 这边组件里，传值到小组件里就好... */}
       </div>
     </div>
   )

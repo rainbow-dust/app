@@ -35,7 +35,7 @@ export const PeopleDetail = () => {
 
   const { data, mutate, size, setSize, isValidating, isLoading } =
     useSWRInfinite<Note[]>(
-      (index: number) => ['key-/note/query/list', index],
+      (index: number) => ['key-username/note/query/list', index], // 缓存什么的和 key相关
       ([, index]: [string, number]) =>
         getNotes({
           pageCurrent: (index as number) + 1,

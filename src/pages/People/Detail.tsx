@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
-import { Note, getNotes } from '~/services'
+import { Note, getNotes, getUserLikes } from '~/services'
 
 import Classes from './Detail.module.css'
 
@@ -45,6 +45,11 @@ export const PeopleDetail = () => {
     )
 
   console.log('data', data, mutate)
+
+  //
+  getUserLikes(username as string).then((res) => {
+    console.log('res', res)
+  })
 
   const notes: Note[] = data ? data.flat() : []
   const isLoadingMore =

@@ -104,11 +104,9 @@ export const RenderComment: FC<{
         <button
           onClick={() => {
             if (options.root) {
-              console.log('root comment reply', options)
               options.root.handleReply(comment._id)
             }
             if (options.child) {
-              console.log('child comment reply')
               options.child.handleReply(comment._id, comment.author)
             }
           }}

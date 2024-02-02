@@ -28,3 +28,33 @@ export async function login(username: string, password: string) {
       return res
     })
 }
+
+export async function follow(username: string) {
+  return fetch(`${BASE_URL}/user/follow/${username}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}
+
+export async function cancelFollow(username: string) {
+  return fetch(`${BASE_URL}/user/follow/${username}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
+    })
+}

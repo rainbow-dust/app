@@ -31,7 +31,10 @@ export const PeopleEdit = () => {
       },
     }).then((res) => res.json())
 
-  const { data, error, isLoading } = useSWR(`/api/user/${username}`, fetcher)
+  const { data, error, isLoading } = useSWR(
+    `/api/user/info/${username}`,
+    fetcher,
+  )
 
   useEffect(() => {
     if (data) {

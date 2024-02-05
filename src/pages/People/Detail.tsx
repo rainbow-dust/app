@@ -33,7 +33,7 @@ const UserInfo = ({ username }: { username: string }) => {
     data: user,
     error: userError,
     isLoading: userLoading,
-  } = useSWR<UserInfo>(`/api/user/${username}`, fetcher)
+  } = useSWR<UserInfo>(`/api/user/info/${username}`, fetcher)
 
   return (
     <div>

@@ -14,6 +14,14 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
           <h3>{note.title}</h3>
         </Link>
         <div>{note.content}</div>
+        <div>
+          <img
+            style={{
+              maxWidth: '100px',
+            }}
+            src={'http://192.168.2.153:9527' + note?.cover?.url}
+          ></img>
+        </div>
         {note?.tags?.map((tag) => (
           <span
             key={tag._id}

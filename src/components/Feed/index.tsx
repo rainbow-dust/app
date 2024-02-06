@@ -16,6 +16,7 @@ export const Feed: FC<{
     size: number
   }
 }> = ({ notes, options }) => {
+  // 在这里给 note 加上一个宽高...以及布局...这个应该是 Feed 的职责
   return (
     <div style={{ fontFamily: 'sans-serif' }}>
       {options.isEmpty ? <p>Yay, no notes found.</p> : null}

@@ -19,6 +19,8 @@ export interface Note {
     _id: string
     name: string
   }[]
+  pic_list: Pic[]
+  cover: Pic
   like_count: number
   is_liked: boolean
 }

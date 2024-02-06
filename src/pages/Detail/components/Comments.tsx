@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 
+import { ReplierContext } from '~/hooks/useReplier'
 import {
   addComment,
   cancelLikeComment,
@@ -7,6 +8,8 @@ import {
   getRootComments,
   likeComment,
 } from '~/services'
+
+import { Replier } from './Interaction'
 
 interface Comment {
   _id: string
@@ -25,6 +28,7 @@ interface Comment {
   }
   created_at: string
 
+  root_comment_id?: string
   children?: Comment[]
   child_comment_count?: number
 }
@@ -71,7 +75,7 @@ export const RenderComment: FC<{
                   width: '24px',
                   height: '24px',
                 }}
-                src={comment.mentionee.avatar_url}
+                src={'http://192.168.2.153:9527' + comment.mentionee.avatar_url}
               ></img>
               <span style={{ color: '#999' }}>
                 {comment.mentionee.username}
@@ -107,7 +111,10 @@ export const RenderComment: FC<{
               options.root.handleReply(comment._id)
             }
             if (options.child) {
-              options.child.handleReply(comment._id, comment.author)
+              options.child.handleReply(
+                comment.root_comment_id as string,
+                comment.author,
+              )
             }
           }}
         >
@@ -121,55 +128,6 @@ export const RenderComment: FC<{
         {children ? <ul>{children}</ul> : null}
       </li>
     </>
-  )
-}
-
-const Replier: FC<{
-  isReplierActive: boolean
-  replyRootCommentId?: string
-  replyMeetionee?: {
-    _id: string
-    username: string
-  }
-  handleAddComment: (
-    content: string,
-    rootCommentId?: string,
-    meetioneeId?: string,
-  ) => void
-}> = ({
-  isReplierActive,
-  replyRootCommentId,
-  replyMeetionee,
-  handleAddComment,
-}) => {
-  const [content, setContent] = useState('')
-  return (
-    <div
-      style={{
-        // position: 'absolute',
-        bottom: isReplierActive ? '200px' : '80px',
-        // left: '0',
-        // width: '100%',
-        // backgroundColor: '#fff',
-      }}
-    >
-      <label htmlFor="reply">
-        回复
-        {replyMeetionee && <span>@{replyMeetionee.username}</span>}
-      </label>
-      <input
-        type="text"
-        placeholder="评论"
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <button
-        onClick={() =>
-          handleAddComment(content, replyRootCommentId, replyMeetionee?._id)
-        }
-      >
-        评论
-      </button>
-    </div>
   )
 }
 
@@ -198,23 +156,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
     setRootComments(newRootComments)
   }
 
-  // 应该有变量，去控制 Replier 的唤起和不唤起，以及唤起的时候，传递给 Replier 的参数
-  const [isReplierActive, setIsReplierActive] = useState(false)
-  const [replyRootCommentId, setReplyRootCommentId] = useState<string>()
-  const [replyMeetionee, setReplyMeetionee] = useState<{
-    _id: string
-    username: string
-  }>()
-  // 点击其他地方，取消唤起并清空参数
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement
-    if (target.tagName !== 'BUTTON' && target.tagName !== 'INPUT') {
-      setIsReplierActive(false)
-      setReplyRootCommentId(undefined)
-      setReplyMeetionee(undefined)
-    }
-  })
-
+  const { setReplier } = useContext(ReplierContext)
   const handleReply = (
     // 这个函数的调用只是唤起 Replier，并不会真正的添加评论，只是单纯确认位置，所以 content 是不需要的
     // 以及，调用时...点击根评论的回复按钮应该是传 rootCommentId 但没有 meetionee
@@ -224,9 +166,12 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
       username: string
     },
   ) => {
-    setIsReplierActive(true)
-    setReplyRootCommentId(rootCommentId)
-    setReplyMeetionee(meetionee)
+    setReplier({
+      isActive: true,
+      rootCommentId: rootCommentId,
+      noteId: noteId,
+      meetionee: meetionee,
+    })
   }
 
   const handleAddComment = async (
@@ -234,11 +179,19 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
     rootCommentId?: string,
     meetioneeId?: string,
   ) => {
-    await addComment(noteId, content, rootCommentId, meetioneeId)
+    await addComment({
+      content,
+      note_id: noteId,
+      root_comment_id: rootCommentId,
+      mentionee_id: meetioneeId,
+    })
     fetchRootComments(noteId)
-    setIsReplierActive(false)
-    setReplyRootCommentId(undefined)
-    setReplyMeetionee(undefined)
+    setReplier({
+      isActive: false,
+      rootCommentId: undefined,
+      noteId: '',
+      meetionee: undefined,
+    })
   }
 
   return (
@@ -272,12 +225,7 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
         ))}
       </ul>
       <div>
-        <Replier
-          isReplierActive={isReplierActive}
-          replyRootCommentId={replyRootCommentId}
-          replyMeetionee={replyMeetionee}
-          handleAddComment={handleAddComment}
-        />
+        <Replier handleAddComment={handleAddComment} />
       </div>
     </>
   )

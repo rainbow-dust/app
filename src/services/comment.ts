@@ -1,18 +1,18 @@
 import { BASE_URL } from './index'
 
-export async function addComment(
-  note_id: string,
-  content: string,
-  root_comment_id?: string,
-  mentionee_id?: string,
-) {
+export async function addComment(param: {
+  note_id: string
+  content: string
+  root_comment_id?: string
+  mentionee_id?: string
+}) {
   return fetch(`${BASE_URL}/comment/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ note_id, content, root_comment_id, mentionee_id }),
+    body: JSON.stringify({ ...param }),
   })
     .then((res) => res.json())
     .then((res) => {

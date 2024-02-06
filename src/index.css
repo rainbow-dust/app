@@ -10,6 +10,11 @@ body,
   height: 100%;
 }
 
+/* 隐藏滚动条 */
+body::-webkit-scrollbar {
+  display: none;
+}
+
 :root {
   --color-primary: #f7fafc;
   --color-secondary: #edf2f7;

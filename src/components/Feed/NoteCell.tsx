@@ -10,7 +10,7 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
   return (
     <li key={note._id}>
       <div>
-        <Link to={`/detail/${note._id}`} key={note._id}>
+        <Link to={`/explore/${note._id}`} key={note._id}>
           <h3>{note.title}</h3>
         </Link>
         <div>{note.content}</div>

@@ -18,7 +18,6 @@ import { Explore } from '~/pages/Explore'
 import { Notice } from '~/pages/Notice'
 import { PeopleDetail, PeopleEdit } from '~/pages/People'
 import { Publish } from '~/pages/Publish'
-import { Timeline } from '~/pages/Timeline'
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +34,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ':id',
-            Component: Timeline, //for test...
+            Component: Detail,
           },
         ],
       },

@@ -33,6 +33,7 @@ const UserInfo = ({ username }: { username: string }) => {
     data: user,
     error: userError,
     isLoading: userLoading,
+    mutate: mutateUser,
   } = useSWR<UserInfo>(`/api/user/info/${username}`, fetcher)
 
   return (
@@ -77,6 +78,7 @@ const UserInfo = ({ username }: { username: string }) => {
               onClick={async () => {
                 const res = await cancelFollow(username)
                 console.log('res', res)
+                mutateUser()
               }}
             >
               取消关注
@@ -86,6 +88,7 @@ const UserInfo = ({ username }: { username: string }) => {
               onClick={async () => {
                 const res = await follow(username)
                 console.log('res', res)
+                mutateUser()
               }}
             >
               关注

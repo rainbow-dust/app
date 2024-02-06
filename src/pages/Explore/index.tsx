@@ -1,14 +1,10 @@
 import { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
 import { Note, getNotes } from '~/services'
 
-// 哪些应该放在这里？
-
-// 请求数据的逻辑
-// 不对...tmd.. 跳转和连续/持久化数据流，是不是俩相矛盾的东西啊...
 const PAGE_SIZE = 10
 
 export const Explore = () => {
@@ -26,8 +22,6 @@ export const Explore = () => {
         }),
     )
 
-  console.log('data', data, mutate)
-
   const notes: Note[] = data ? data.flat() : []
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined')
@@ -38,14 +32,19 @@ export const Explore = () => {
 
   return (
     <div>
-      <Link to="/explore/123">123Modal</Link>
       <input
         value={queryStr}
         onChange={(e) => {
           setQueryStr(e.target.value)
         }}
       />
-
+      <button
+        onClick={() => {
+          mutate()
+        }}
+      >
+        Search
+      </button>
       <Feed
         notes={notes}
         options={{

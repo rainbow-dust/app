@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import React, { createContext, useState } from 'react'
 
 interface ReplierType {
   isActive: boolean
@@ -9,9 +9,9 @@ interface ReplierType {
     _id: string
   }
 }
-interface ReplierContextType {
+export interface ReplierContextType {
   replier: ReplierType
-  setReplier: (replier: ReplierType) => void
+  setReplier: React.Dispatch<React.SetStateAction<ReplierType>>
 }
 
 export const ReplierContext = createContext<ReplierContextType>({
@@ -19,6 +19,7 @@ export const ReplierContext = createContext<ReplierContextType>({
     isActive: false,
     noteId: '',
     rootCommentId: undefined,
+    meetionee: undefined,
   },
   setReplier: () => {},
 })
@@ -28,6 +29,7 @@ export const useReplier = () => {
     isActive: false,
     noteId: '',
     rootCommentId: undefined,
+    meetionee: undefined,
   })
   return { replier, setReplier }
 }

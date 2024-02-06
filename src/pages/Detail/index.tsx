@@ -22,6 +22,7 @@ export const Detail = () => {
         right: 0,
         bottom: 0,
         background: 'white',
+        padding: '20px 0 100px 0',
         overflowY: 'scroll',
         zIndex: 100,
       }}
@@ -33,7 +34,7 @@ export const Detail = () => {
               navigate(-1)
             }}
           >
-            Back
+            Back←
           </button>
           <Content noteId={id} />
           <h3>Comments</h3>

@@ -14,11 +14,16 @@ export const Replier: FC<{
   return (
     <div
       style={{
-        // position: 'absolute',
-        bottom: replier.isActive ? '200px' : '80px',
-        // left: '0',
-        // width: '100%',
-        // backgroundColor: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '10px',
+        borderTop: '1px solid #eee',
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100vw',
+        backdropFilter: 'blur(10px)',
+        boxSizing: 'border-box',
       }}
     >
       <label htmlFor="reply">

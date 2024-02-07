@@ -8,21 +8,32 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
   const [note, setNote] = useState<Note>(content)
 
   return (
-    <li key={note._id}>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        padding: '10px',
+        border: '1px solid rgb(70 148 223)',
+        borderRadius: '4px',
+        marginBottom: '10px',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+      }}
+    >
       <div>
         <Link to={`/explore/${note._id}`} key={note._id}>
-          <h3>{note.title}</h3>
+          {/* <div>{note.content}</div> */}
+          <div>
+            <img
+              style={{
+                width: '100%',
+              }}
+              src={'http://192.168.2.153:9527' + note?.cover?.url}
+            ></img>
+          </div>
         </Link>
-        <div>{note.content}</div>
-        <div>
-          <img
-            style={{
-              maxWidth: '100px',
-            }}
-            src={'http://192.168.2.153:9527' + note?.cover?.url}
-          ></img>
-        </div>
-        {note?.tags?.map((tag) => (
+
+        {/* {note?.tags?.map((tag) => (
           <span
             key={tag._id}
             style={{
@@ -36,57 +47,78 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
           >
             {tag?.name}{' '}
           </span>
-        ))}
+        ))} */}
       </div>
 
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          padding: '10px 0',
         }}
       >
-        <span>
-          <Link to={`/people/${note?.author?.username} `}>
+        <div
+          style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+          }}
+        >
+          {note.title}
+        </div>
+
+        <span
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '14px',
+          }}
+        >
+          <Link
+            to={`/people/${note?.author?.username} `}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: '#999',
+            }}
+          >
             <img
               style={{
-                width: '24px',
-                height: '24px',
+                width: '20px',
+                height: '20px',
               }}
               src={'http://192.168.2.153:9527' + note.author?.avatar_url}
             ></img>
             <span style={{ color: '#999' }}>{note.author?.username}</span>
           </Link>
+          {note?.is_liked ? (
+            <button
+              onClick={async () => {
+                const data = await cancelLikeNote(note._id)
+                if (data.ok == 0) return
+                setNote({
+                  ...data,
+                })
+              }}
+            >
+              {note?.like_count}
+              取消点赞
+            </button>
+          ) : (
+            <button
+              onClick={async () => {
+                const data = await likeNote(note._id)
+                if (data.ok == 0) return
+                setNote({
+                  ...data,
+                })
+              }}
+            >
+              {note?.like_count}
+              点赞
+            </button>
+          )}
         </span>
-        {note?.is_liked ? (
-          <button
-            onClick={async () => {
-              const data = await cancelLikeNote(note._id)
-              if (data.ok == 0) return
-              setNote({
-                ...data,
-              })
-            }}
-          >
-            {note?.like_count}
-            取消点赞
-          </button>
-        ) : (
-          <button
-            onClick={async () => {
-              const data = await likeNote(note._id)
-              if (data.ok == 0) return
-              setNote({
-                ...data,
-              })
-            }}
-          >
-            {note?.like_count}
-            点赞
-          </button>
-        )}
       </div>
-      <hr />
-    </li>
+    </div>
   )
 }

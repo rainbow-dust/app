@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 
 import { Note } from '~/services'
 
@@ -27,67 +27,73 @@ export const Feed: FC<{
 }> = ({ notes, options }) => {
   // 在这里给 note 加上一个宽高...以及布局...这个应该是 Feed 的职责
 
-  const [notesWithLayout, setNotesWithLayout] = useState<NoteWithLayout[]>([])
+  const [renderedNote, setRenderedNote] = useState<NoteWithLayout[]>([])
   const [totalHeight, setTotalHeight] = useState<number>(0)
 
   // 获取当前外层的宽度，然后计算出每个 note 的宽高，然后进行布局，用 useRef
 
   const ref = useRef<HTMLDivElement>(null)
 
-  const columnHeight = useMemo<number[]>(() => [0, 0, 0], [])
-  const getNotesWithLayout = useCallback(
-    (notes: Note[]) => {
-      const notesWithLayout: NoteWithLayout[] = []
-      // 获取窗口宽度，除 3 后取整作为列宽
-      const width = Math.floor((ref.current?.offsetWidth || 600) / 3)
-      // 获取 note.cover 中的宽高，计算出 note 的高度
-      notes.forEach((note) => {
-        const height =
-          Math.floor(note.cover?.height * (width / note.cover?.width)) || 200
-        notesWithLayout.push({
-          ...note,
-          layout: {
-            width: width,
-            height: height || 200,
-          },
-        })
+  const GAP_V = 10
+  const GAP_H = 10
+  const DEFAULT_WIDTH = 230 // 参考宽度
+  let columnHeight: number[]
+  const getNotesWithLayout = (notes: Note[]) => {
+    const notesWithLayout: NoteWithLayout[] = []
+    // 参考宽度与ref宽度作比，给出一个列数
+    const columnCount = Math.floor(
+      (ref.current?.offsetWidth || 600) / DEFAULT_WIDTH,
+    )
+    columnHeight = Array(columnCount).fill(0)
+    const width = (ref.current?.offsetWidth || 600) / columnCount - GAP_H
+    // 获取 note.cover 中的宽高，计算出 note 的高度后
+    notes.forEach((note) => {
+      const height =
+        Math.max(
+          Math.floor(note.cover?.height * (width / note.cover?.width)) + 80,
+          200,
+        ) || 100
+      notesWithLayout.push({
+        ...note,
+        layout: {
+          width,
+          height,
+        },
       })
-      // columnHeight 全都初始化为 0
-      columnHeight.fill(0)
-      // 进行布局，每次选择高度最小的列进行布局
-      notesWithLayout.forEach((note) => {
-        const minHeight = Math.min(...columnHeight)
-        const minIndex = columnHeight.indexOf(minHeight)
-        note.layout.x = minIndex * width
-        note.layout.y = minHeight
-        columnHeight[minIndex] += note.layout.height || 200
-      })
+    })
+    // 进行布局，每次选择高度最小的列进行布局
+    // 注意处理间距
+    notesWithLayout.forEach((note) => {
+      const minHeight = Math.min(...columnHeight)
+      const index = columnHeight.indexOf(minHeight)
+      note.layout.x = index * (width + GAP_H)
+      note.layout.y = minHeight
+      columnHeight[index] += note.layout.height + GAP_V
+    })
 
-      return notesWithLayout
-    },
-    [columnHeight],
-  )
+    setTotalHeight(Math.min(...columnHeight))
+    return notesWithLayout
+  }
 
-  //监听 notes 的变化，重新计算布局
+  // 我只能说 react 和 windowing 的结合真的很难搞
+  // const getVisibleNotes = (notes: NoteWithLayout[], ranger:{
+  //   top: number
+  //   bottom: number
+  // } = {
+  //   top: window.scrollY,
+  //   bottom: window.scrollY + window.innerHeight
+  // }) => {
+  //   return notes.filter((note) => {
+  //     return (
+  //       note.layout.y! + note.layout.height! > ranger.top &&
+  //       note.layout.y! < ranger.bottom
+  //     )
+  //   })
+  // }
 
   useEffect(() => {
-    // const notesWithLayout = getNotesWithLayout(notes)
-    setNotesWithLayout(getNotesWithLayout(notes))
-    setTotalHeight(Math.min(...columnHeight))
-    // const handleScroll = () => {
-    //   const scrollTop = document.documentElement.scrollTop
-    //   const windowHeight = window.innerHeight
-    //   const visibleNotes = notesWithLayout.filter(
-    //     (note) =>
-    //       note.layout.y! < scrollTop + windowHeight &&
-    //       note.layout.y! + note.layout.height! > scrollTop
-    //   )
-    //   setNotesWithLayout(visibleNotes)
-    //   console.log(visibleNotes)
-    // }
-    // window.addEventListener('scroll', handleScroll)
-    // return () => window.removeEventListener('scroll', handleScroll)
-  }, [columnHeight, getNotesWithLayout, notes])
+    setRenderedNote(getNotesWithLayout(notes))
+  }, [notes])
 
   return (
     <div style={{ fontFamily: 'sans-serif', width: '100%' }} ref={ref}>
@@ -98,7 +104,7 @@ export const Feed: FC<{
         }}
       >
         <ul>
-          {notesWithLayout?.map((content) => (
+          {renderedNote?.map((content) => (
             <div
               key={content._id}
               style={{

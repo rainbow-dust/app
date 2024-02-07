@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 export const ContentAuthor: FC<{
   author?: { username: string; avatar_url: string }

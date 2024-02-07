@@ -5,6 +5,8 @@ import useSWRInfinite from 'swr/infinite'
 import { Feed } from '~/components/Feed'
 import { Note, getNotes } from '~/services'
 
+import './index.module.css'
+
 const PAGE_SIZE = 10
 
 export const Explore = () => {
@@ -29,6 +31,8 @@ export const Explore = () => {
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
   const isRefreshing = isValidating && data && data.length === size
+
+  // 想给 outlet 加上一个动画。。。
 
   return (
     <div>
@@ -56,6 +60,7 @@ export const Explore = () => {
           size,
         }}
       />
+
       <Outlet />
     </div>
   )

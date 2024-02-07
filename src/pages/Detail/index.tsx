@@ -33,6 +33,12 @@ export const Detail = () => {
             onClick={() => {
               navigate(-1)
             }}
+            style={{
+              position: 'fixed',
+              top: 20,
+              left: 20,
+              zIndex: 100,
+            }}
           >
             Back←
           </button>

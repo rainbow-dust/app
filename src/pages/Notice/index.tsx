@@ -3,6 +3,8 @@ import useSWR from 'swr'
 
 import { getNoticeList } from '~/services'
 
+import Classes from './index.module.css'
+
 interface Notice {
   _id: string
   type: NoticeType
@@ -40,9 +42,9 @@ export const Notice = () => {
   return (
     <div>
       <h1>Notice</h1>
-      <div className="notice-list">
+      <div className={Classes['notice-list']}>
         {data?.map((item: Notice) => (
-          <div key={item._id} className="notice-item">
+          <div key={item._id} className={Classes['notice-item']}>
             <span>
               {noticeTypeToIcon[item.type as keyof typeof NoticeType]}
             </span>
@@ -50,10 +52,9 @@ export const Notice = () => {
             <Link to={`/people/${item.from.username}`}>
               {item.from.username}
             </Link>
-            <span>{item.description}</span>
+            <span> 在 {item.created} </span>
+            <span>{item.description} </span>
             <Link to={`/detail/${item.topic}`}>{item.topic}</Link>
-
-            <span>{item.created}</span>
           </div>
         ))}
       </div>

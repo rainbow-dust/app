@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { NoticeContext } from '~/hooks/useNotice'
@@ -31,22 +31,17 @@ export const ChannelList: React.FC = () => {
     },
   ]
 
-  const [active, setActive] = useState(0)
-
-  const handleClick = (index: number) => {
-    setActive(index)
-    navigate(ChannelList[index].path)
-  }
-
   return (
     <div className={Classes['channel-list']}>
-      {ChannelList.map((item, index) => (
+      {ChannelList.map((item) => (
         <div
           key={item.name}
           className={`${Classes['channel-list-item']} ${
-            active === index ? 'text-blue-500' : 'text-gray-500'
+            window.location.pathname === item.path
+              ? 'text-blue-500'
+              : 'text-gray-500'
           }`}
-          onClick={() => handleClick(index)}
+          onClick={() => navigate(item.path)}
         >
           <div className="cursor-pointer">{item.name}</div>
         </div>

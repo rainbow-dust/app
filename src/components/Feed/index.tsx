@@ -41,11 +41,14 @@ export const Feed: FC<{
   const getNotesWithLayout = (notes: Note[]) => {
     const notesWithLayout: NoteWithLayout[] = []
     // 参考宽度与ref宽度作比，给出一个列数
-    const columnCount = Math.floor(
-      (ref.current?.offsetWidth || 600) / DEFAULT_WIDTH,
+    const columnCount = Math.max(
+      Math.floor((ref.current?.offsetWidth || 600) / DEFAULT_WIDTH),
+      2,
     )
     columnHeight = Array(columnCount).fill(0)
-    const width = (ref.current?.offsetWidth || 600) / columnCount - GAP_H
+    const width =
+      (ref.current?.offsetWidth || 600) / columnCount -
+      (GAP_H * (columnCount - 1)) / columnCount
     // 获取 note.cover 中的宽高，计算出 note 的高度后
     notes.forEach((note) => {
       const height =
@@ -103,21 +106,19 @@ export const Feed: FC<{
           height: totalHeight,
         }}
       >
-        <ul>
-          {renderedNote?.map((content) => (
-            <div
-              key={content._id}
-              style={{
-                position: 'absolute',
-                width: content.layout.width,
-                height: content.layout.height,
-                transform: `translate(${content.layout.x}px, ${content.layout.y}px)`,
-              }}
-            >
-              <NoteCell key={content._id} content={content} />
-            </div>
-          ))}
-        </ul>
+        {renderedNote?.map((content) => (
+          <div
+            key={content._id}
+            style={{
+              position: 'absolute',
+              width: content.layout.width,
+              height: content.layout.height,
+              transform: `translate(${content.layout.x}px, ${content.layout.y}px)`,
+            }}
+          >
+            <NoteCell key={content._id} content={content} />
+          </div>
+        ))}
       </div>
       <LazyLoading
         isLoadingMore={options.isLoadingMore || options.isRefreshing}

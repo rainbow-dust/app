@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import useSWRInfinite from 'swr/infinite'
 
@@ -10,19 +10,20 @@ import './index.module.css'
 const PAGE_SIZE = 10
 
 export const Explore = () => {
-  const [queryStr, setQueryStr] = useState('')
-  const queryTags = () => queryStr.split(' ').filter((i) => i)
+  // const [queryStr, setQueryStr] = useState('')
+  // const queryTags = () => queryStr.split(' ').filter((i) => i)
 
-  const { data, mutate, size, setSize, isValidating, isLoading } =
-    useSWRInfinite<Note[]>(
-      (index: number) => ['key-/note/query/list', index],
-      ([, index]: [string, number]) =>
-        getNotes({
-          pageCurrent: (index as number) + 1,
-          pageSize: PAGE_SIZE,
-          tags: queryTags(),
-        }),
-    )
+  const { data, size, setSize, isValidating, isLoading } = useSWRInfinite<
+    Note[]
+  >(
+    (index: number) => ['key-/note/query/list', index],
+    ([, index]: [string, number]) =>
+      getNotes({
+        pageCurrent: (index as number) + 1,
+        pageSize: PAGE_SIZE,
+        // tags: queryTags(),
+      }),
+  )
 
   const notes: Note[] = data ? data.flat() : []
   const isLoadingMore =
@@ -36,7 +37,7 @@ export const Explore = () => {
 
   return (
     <div>
-      <input
+      {/* <input
         value={queryStr}
         onChange={(e) => {
           setQueryStr(e.target.value)
@@ -48,7 +49,7 @@ export const Explore = () => {
         }}
       >
         Search
-      </button>
+      </button> */}
       <Feed
         notes={notes}
         options={{

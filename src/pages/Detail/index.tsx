@@ -43,7 +43,8 @@ export const Detail = () => {
             Back←
           </button>
           <Content noteId={id} />
-          <h3>Comments</h3>
+          <hr />
+          <h4>Comments</h4>
           <ReplierContext.Provider value={replier as ReplierContextType}>
             <Comments noteId={id} />
           </ReplierContext.Provider>

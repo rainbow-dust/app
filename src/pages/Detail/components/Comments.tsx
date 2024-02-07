@@ -55,7 +55,11 @@ export const RenderComment: FC<{
   const [comment, setComment] = useState(commentInit)
   return (
     <>
-      <li>
+      <div
+        style={{
+          margin: '16px',
+        }}
+      >
         <div>
           <span>
             <img
@@ -65,7 +69,7 @@ export const RenderComment: FC<{
               }}
               src={'http://192.168.2.153:9527' + comment.author.avatar_url}
             ></img>
-            <span style={{ color: '#999' }}>{comment.author.username}</span>
+            <span style={{ color: '#666' }}>{comment.author.username}</span>
           </span>
           {comment.mentionee && (
             <span>
@@ -83,50 +87,56 @@ export const RenderComment: FC<{
             </span>
           )}
         </div>
-        <p>{comment.content}</p>
-        <p>{comment.created_at}</p>
-        {comment.is_liked ? (
-          <button
-            onClick={async () => {
-              const res = await cancelLikeComment(comment._id)
-              setComment({ ...comment, ...res })
-            }}
-          >
-            {comment.like_count}取消点赞
-          </button>
-        ) : (
-          <button
-            onClick={async () => {
-              const res = await likeComment(comment._id)
-              setComment({ ...comment, ...res })
-            }}
-          >
-            {comment.like_count}点赞
-          </button>
-        )}
-        {/* 根评论回复不传 mentionee */}
-        <button
-          onClick={() => {
-            if (options.root) {
-              options.root.handleReply(comment._id)
-            }
-            if (options.child) {
-              options.child.handleReply(
-                comment.root_comment_id as string,
-                comment.author,
-              )
-            }
+        <div>{comment.content}</div>
+        <div
+          style={{
+            color: '#999',
           }}
         >
-          回复
-        </button>
-        {options.root?.unfoldReply && (
-          <button onClick={() => options.root?.unfoldReply(comment._id)}>
-            展开{comment.child_comment_count}条回复
+          <span>{comment.created_at}</span>
+          {comment.is_liked ? (
+            <button
+              onClick={async () => {
+                const res = await cancelLikeComment(comment._id)
+                setComment({ ...comment, ...res })
+              }}
+            >
+              {comment.like_count}取消点赞
+            </button>
+          ) : (
+            <button
+              onClick={async () => {
+                const res = await likeComment(comment._id)
+                setComment({ ...comment, ...res })
+              }}
+            >
+              {comment.like_count}点赞
+            </button>
+          )}
+          {/* 根评论回复不传 mentionee */}
+          <button
+            onClick={() => {
+              if (options.root) {
+                options.root.handleReply(comment._id)
+              }
+              if (options.child) {
+                options.child.handleReply(
+                  comment.root_comment_id as string,
+                  comment.author,
+                )
+              }
+            }}
+          >
+            回复
           </button>
-        )}
-        {children ? <ul>{children}</ul> : null}
-      </li>
+          {options.root?.unfoldReply && comment.child_comment_count && (
+            <button onClick={() => options.root?.unfoldReply(comment._id)}>
+              展开{comment.child_comment_count}条回复
+            </button>
+          )}
+        </div>
+        {children ? <div>{children}</div> : null}
+      </div>
     </>
   )
 }
@@ -196,34 +206,32 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
 
   return (
     <>
-      <ul>
-        {rootComments?.map((comment) => (
-          <RenderComment
-            key={comment._id}
-            commentInit={comment}
-            options={{
-              root: {
-                handleReply,
-                unfoldReply,
-              },
-              child: null,
-            }}
-          >
-            {comment.children?.map((childComment) => (
-              <RenderComment
-                key={childComment._id}
-                commentInit={childComment}
-                options={{
-                  root: null,
-                  child: {
-                    handleReply,
-                  },
-                }}
-              />
-            ))}
-          </RenderComment>
-        ))}
-      </ul>
+      {rootComments?.map((comment) => (
+        <RenderComment
+          key={comment._id}
+          commentInit={comment}
+          options={{
+            root: {
+              handleReply,
+              unfoldReply,
+            },
+            child: null,
+          }}
+        >
+          {comment.children?.map((childComment) => (
+            <RenderComment
+              key={childComment._id}
+              commentInit={childComment}
+              options={{
+                root: null,
+                child: {
+                  handleReply,
+                },
+              }}
+            />
+          ))}
+        </RenderComment>
+      ))}
       <div>
         <Replier handleAddComment={handleAddComment} />
       </div>

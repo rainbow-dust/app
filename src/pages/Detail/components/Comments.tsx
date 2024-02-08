@@ -69,7 +69,9 @@ export const RenderComment: FC<{
               }}
               src={'http://192.168.2.153:9527' + comment.author.avatar_url}
             ></img>
-            <span style={{ color: '#666' }}>{comment.author.username}</span>
+            <span style={{ color: 'var(--text-color-secondary)' }}>
+              {comment.author.username}
+            </span>
           </span>
           {comment.mentionee && (
             <span>
@@ -81,7 +83,7 @@ export const RenderComment: FC<{
                 }}
                 src={'http://192.168.2.153:9527' + comment.mentionee.avatar_url}
               ></img>
-              <span style={{ color: '#999' }}>
+              <span style={{ color: 'var(--text-color-secondary)' }}>
                 {comment.mentionee.username}
               </span>
             </span>
@@ -90,7 +92,7 @@ export const RenderComment: FC<{
         <div>{comment.content}</div>
         <div
           style={{
-            color: '#999',
+            color: 'var(--text-color-secondary)',
           }}
         >
           <span>{comment.created_at}</span>

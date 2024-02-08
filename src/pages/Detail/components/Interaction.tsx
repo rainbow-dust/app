@@ -17,7 +17,7 @@ export const Replier: FC<{
         display: 'flex',
         flexDirection: 'column',
         padding: '10px',
-        borderTop: '1px solid #eee',
+        borderTop: '1px solid var(--border-color)',
         position: 'fixed',
         bottom: 0,
         left: 0,

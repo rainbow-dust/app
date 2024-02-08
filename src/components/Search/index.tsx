@@ -82,7 +82,7 @@ export const Search: FC<{
         >
           <div
             className={Classes['tag-input']}
-            style={isActive ? { border: '1px solid #1890ff' } : {}}
+            style={isActive ? { border: '1px solid var(--border-color)' } : {}}
             onClick={() => {
               inputRef.current!.focus()
             }}

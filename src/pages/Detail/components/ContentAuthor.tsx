@@ -10,7 +10,7 @@ export const ContentAuthor: FC<{
         alignItems: 'center',
         padding: '10px 0',
         marginBottom: '10px',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--border-color)',
       }}
     >
       <img

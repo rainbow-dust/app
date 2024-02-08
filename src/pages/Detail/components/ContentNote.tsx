@@ -13,9 +13,9 @@ export const ContentNote: FC<{
         <span
           key={tag._id}
           style={{
-            color: '#999',
+            color: 'var(--text-color-secondary)',
             marginRight: '10px',
-            border: '1px solid #999',
+            border: '1px solid var(--border-color)',
             borderRadius: '4px',
             padding: '0px 2px',
             fontSize: '14px',

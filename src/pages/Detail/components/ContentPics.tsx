@@ -61,7 +61,6 @@ export const ContentPics: FC<{ pic_list?: Pic[] }> = ({ pic_list }) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {currentIndex}
         {pic_list?.map((pic) => (
           <div
             key={pic.url}

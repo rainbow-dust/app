@@ -21,7 +21,7 @@ export const Detail = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'white',
+        background: 'var(--bg-color)',
         padding: '20px 0 100px 0',
         overflowY: 'scroll',
         zIndex: 100,

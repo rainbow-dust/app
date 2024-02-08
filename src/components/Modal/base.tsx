@@ -39,7 +39,7 @@ const Modal = ({ isOpen, toggle, children }: ModalProps) => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundColor: 'rgba(0,0,0,0.5)',
+                backgroundColor: 'var(--bg-color-secondary)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -52,7 +52,7 @@ const Modal = ({ isOpen, toggle, children }: ModalProps) => {
             >
               <div
                 style={{
-                  backgroundColor: '#fff',
+                  backgroundColor: 'var(--bg-color)',
                   padding: '1em',
                   position: 'relative',
                 }}

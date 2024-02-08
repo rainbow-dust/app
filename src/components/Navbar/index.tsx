@@ -27,15 +27,24 @@ export const NavBar = () => {
   }
 
   // 亮暗
-  const [isDark, setIsDark] = useState(localStorage.getItem('isDark') === '')
+  type Theme = 'light' | 'dark' | 'system' | null
+  const [theme, setTheme] = useState<Theme>(
+    localStorage.getItem('theme') as Theme,
+  )
   useEffect(() => {
-    if (isDark) {
+    if (theme === 'system') {
+      const media = window.matchMedia('(prefers-color-scheme: dark)')
+      if (media.matches) {
+        setTheme('dark')
+      } else {
+        setTheme('light')
+      }
+    } else if (theme === 'dark') {
       document.documentElement.setAttribute('dark', '')
     } else {
       document.documentElement.removeAttribute('dark')
     }
-    localStorage.setItem('isDark', isDark.toString())
-  }, [isDark])
+  }, [theme])
 
   // 搜索
   const [str, setStr] = useState('')
@@ -54,9 +63,6 @@ export const NavBar = () => {
   }
 
   return (
-    // <div className="fixed w-full bg-white z-10 shadow-sm">
-    //   <div className="py-4 border-b-[1px]">barbar</div>
-    // </div>
     <div className={Classes.navbar}>
       <div
         onClick={() => {
@@ -96,21 +102,32 @@ export const NavBar = () => {
       />
 
       <div className={Classes['toggle-theme']}>
-        {isDark ? (
+        {theme === 'dark' ? (
           <button
             onClick={() => {
-              setIsDark(false)
+              setTheme('light')
+              localStorage.setItem('theme', 'light')
             }}
           >
             🌚
           </button>
-        ) : (
+        ) : theme === 'light' ? (
           <button
             onClick={() => {
-              setIsDark(true)
+              setTheme('dark')
+              localStorage.setItem('theme', 'dark')
             }}
           >
             🌞
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setTheme('system')
+              localStorage.setItem('theme', 'system')
+            }}
+          >
+            🌞🌚
           </button>
         )}
       </div>

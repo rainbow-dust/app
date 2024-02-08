@@ -13,7 +13,7 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
         width: '100%',
         height: '100%',
         padding: '10px',
-        border: '1px solid rgb(70 148 223)',
+        border: '1px solid var(--border-color)',
         borderRadius: '4px',
         marginBottom: '10px',
         boxSizing: 'border-box',
@@ -37,9 +37,9 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
           <span
             key={tag._id}
             style={{
-              color: '#999',
+              color: var(--text-color-secondary),
               marginRight: '10px',
-              border: '1px solid #999',
+              border: '1px solid var(--border-color)',
               borderRadius: '4px',
               padding: '0px 2px',
               fontSize: '14px',

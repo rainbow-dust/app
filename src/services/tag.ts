@@ -27,6 +27,22 @@ export async function queryTags(query_str: string) {
     .then((res) => res.json())
     .then((res) => {
       if (res.error) throw res.error
-      return res.data
+      return res
+    })
+}
+
+// 查询某个 tag 的详细信息
+export async function queryTagDetail(tagName: string) {
+  return fetch(`${BASE_URL}/tag/query/${tagName}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res
     })
 }

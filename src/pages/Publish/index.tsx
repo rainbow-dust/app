@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Message } from '~/components/Message'
 import { Search } from '~/components/Search'
-import { Pic, addNote, queryTags } from '~/services'
+import { Pic, addNote, addTag, queryTags } from '~/services'
 
 import { ImgUpload } from './components/ImgUpload'
 import Classes from './index.module.css'
@@ -16,6 +16,7 @@ export const Publish: React.FC = () => {
   // 搜索 tag
   const [str, setStr] = useState('')
   const [tags, setTags] = useState<string[]>([])
+  const [isNewTag, setIsNewTag] = useState(false)
 
   const searchFn = async (str: string) => {
     const res = await queryTags(str)
@@ -26,6 +27,17 @@ export const Publish: React.FC = () => {
         label: t.name,
       }
     })
+    setIsNewTag(false)
+    // 有 str，但是没有匹配的 tag
+    if (
+      str &&
+      (options.length === 0 ||
+        (options.length === 1 && options[0].value !== str))
+    ) {
+      setIsNewTag(true)
+    }
+    console.log(str, options, 'aaa', isNewTag)
+
     return options
   }
 
@@ -82,13 +94,35 @@ export const Publish: React.FC = () => {
             style={{}}
           />
         </div>
-        <Search
-          str={str}
-          tags={tags}
-          setStr={setStr}
-          setTags={setTags}
-          searchFn={searchFn}
-        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Search
+            str={str}
+            tags={tags}
+            setStr={setStr}
+            setTags={setTags}
+            searchFn={searchFn}
+          />
+          {isNewTag && (
+            <button
+              style={{
+                marginLeft: '10px',
+              }}
+              onClick={async (e) => {
+                e.preventDefault()
+                const res = await addTag(str)
+                setTags([...tags, res.name])
+              }}
+            >
+              create tag
+            </button>
+          )}
+        </div>
         <ImgUpload picList={picList} setPicList={setPicList} />
         <div>i have read and agree to xxxxxxx</div>
         <button

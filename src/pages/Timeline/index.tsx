@@ -1,21 +1,10 @@
-import { useParams } from 'react-router-dom'
-
 export const Timeline = () => {
-  const { id } = useParams()
-
+  // 这里其实... 计划是。上面是关注的一列用户，一个一个一串圈圈头像，下面是一串文章
+  // 也就是说这里是需要登录的。
+  // 路由上的参数...我突然觉得这个很不好搞，这个其实是需要后端来推流的...
   return (
     <div>
-      <h1
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'white',
-        }}
-      >
-        {id}-Modal
-      </h1>
+      <div>timeline</div>
     </div>
   )
 }

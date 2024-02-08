@@ -1,10 +1,12 @@
 import { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const ContentNote: FC<{
   title?: string
   content?: string
   tags?: { _id: string; name: string }[]
 }> = ({ title, content, tags }) => {
+  const navigate = useNavigate()
   return (
     <>
       <h2>{title}</h2>
@@ -19,6 +21,9 @@ export const ContentNote: FC<{
             borderRadius: '4px',
             padding: '0px 2px',
             fontSize: '14px',
+          }}
+          onClick={() => {
+            navigate(`/tag/${tag.name}`)
           }}
         >
           {tag?.name}{' '}

@@ -96,10 +96,11 @@ export const Publish: React.FC = () => {
           style={{
             width: '100px',
             height: '50px',
-            border: '1px solid black',
+            border: '1px solid var(--border-color)',
             margin: '5px',
             position: 'relative',
-            backgroundColor: 'skyblue',
+            color: 'var(--theme-color)',
+            backgroundColor: 'var(--bg-color)',
             cursor: 'pointer',
           }}
         >

@@ -36,11 +36,13 @@ export const ChannelList: React.FC = () => {
       {ChannelList.map((item) => (
         <div
           key={item.name}
-          className={`${Classes['channel-list-item']} ${
-            window.location.pathname === item.path
-              ? 'text-blue-500'
-              : 'text-gray-500'
-          }`}
+          className={Classes['channel-list-item']}
+          style={{
+            color:
+              window.location.pathname === item.path
+                ? 'var(--theme-color)'
+                : 'var(--text-color-secondary)',
+          }}
           onClick={() => navigate(item.path)}
         >
           <div className="cursor-pointer">{item.name}</div>

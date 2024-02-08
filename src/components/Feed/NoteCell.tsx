@@ -59,6 +59,7 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
           style={{
             fontSize: '18px',
             fontWeight: 'bold',
+            marginBottom: '10px',
           }}
         >
           {note.title}
@@ -78,17 +79,21 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
               display: 'flex',
               alignItems: 'center',
               textDecoration: 'none',
-              color: '#999',
+              color: 'var(--text-color-secondary)',
             }}
           >
             <img
               style={{
                 width: '20px',
                 height: '20px',
+                borderRadius: '50%',
+                marginRight: '10px',
               }}
               src={'http://192.168.2.153:9527' + note.author?.avatar_url}
             ></img>
-            <span style={{ color: '#999' }}>{note.author?.username}</span>
+            <span style={{ color: 'var(--text-color)' }}>
+              {note.author?.username}
+            </span>
           </Link>
           {note?.is_liked ? (
             <button

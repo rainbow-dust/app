@@ -51,10 +51,11 @@ export const ImgUpload: React.FC<{
 
         <label htmlFor="file" style={{ cursor: 'pointer' }}>
           <div
+            // hover 的...抽空把这里的 css 搞出去
             style={{
               width: '100px',
               height: '100px',
-              border: '1px solid black',
+              border: '1px solid var(--border-color)',
               margin: '5px',
               position: 'relative',
             }}

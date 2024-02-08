@@ -11,8 +11,13 @@
 .channel-list-item {
   width: 100%;
   padding: 10px;
+  box-sizing: border-box;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
+}
+
+.channel-list-item:last-child {
+  border-bottom: none;
 }
 
 @media (max-width: 600px) {
@@ -32,6 +37,9 @@
     padding: 10px;
     border-bottom: none;
     border-right: 1px solid var(--border-color);
+  }
+  .channel-list-item:last-child {
+    border-right: none;
   }
 }
 

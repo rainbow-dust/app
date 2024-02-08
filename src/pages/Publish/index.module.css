@@ -6,7 +6,7 @@
   border: none;
   outline: none;
   border-bottom: 2px solid #eee;
-  caret-color: skyblue;
+  caret-color: var(--theme-color);
 
 }
 
@@ -20,5 +20,5 @@
   resize: none;
   padding: 10px;
   box-sizing: border-box;
-  caret-color: skyblue;
+  caret-color: var(--theme-color);
 }

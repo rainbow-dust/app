@@ -1,6 +1,6 @@
 /* @tailwind base; */
 /* @tailwind components; */
-@tailwind utilities;  
+/* @tailwind utilities;   */
 
 html,
 body,
@@ -17,6 +17,7 @@ body::-webkit-scrollbar {
 
 :root {
   --theme-color: #257CC4;
+  --theme-color-secondary: rgba(37, 124, 196, 0.5);
   
   --bg-color: #f7fafc;
   --bg-color-secondary: #edf2f7;
@@ -31,6 +32,7 @@ body::-webkit-scrollbar {
 
 :root[dark] {
   --theme-color: #FFC0CB;
+  --theme-color-secondary: rgba(255, 192, 203, 0.5);
  
   --bg-color: #2d3748;
   --bg-color-secondary: #4a5568;
@@ -58,18 +60,26 @@ a:hover {
   text-decoration: underline;
 }
 
-input, button {
+input, button, textarea, select {
   font-family: 'Roboto', sans-serif;
-  color: var(--text-color);
+  color: var(--theme-color);
   background-color: var(--bg-color-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-color);
   border-radius: 4px;
 }
 
 button:hover {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 124, 196, 0.5);
+  box-shadow: 0 0 0 3px var(--theme-color-secondary);
 }
+
+/* 
+输入框有些是特别的...先不加
+*/
+/* input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--theme-color-secondary);
+} */
 
 button {
   cursor: pointer;

@@ -53,14 +53,15 @@ export const ContentPics: FC<{ pic_list?: Pic[] }> = ({ pic_list }) => {
         className={Classes.pics}
         style={{
           transition: isMoving ? 'none' : 'transform 0.3s',
-          transform: `translateX(calc(-100% * ${
-            (currentIndex - 1) / (pic_list?.length || 1)
-          } + ${offset}px))`,
+          transform: `translateX(calc(${
+            (-100 * currentIndex) / (pic_list?.length || 1)
+          }% + ${offset}px))`,
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
+        {currentIndex}
         {pic_list?.map((pic) => (
           <div
             key={pic.url}

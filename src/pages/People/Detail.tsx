@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
+import { Tabs, useTabs } from '~/components/Tabs'
 import { Note, cancelFollow, follow, getNotes, getUserLikes } from '~/services'
 
 import Classes from './Detail.module.css'
@@ -76,8 +77,7 @@ const UserInfo = ({ username }: { username: string }) => {
           ) : user?.is_following ? (
             <button
               onClick={async () => {
-                const res = await cancelFollow(username)
-                console.log('res', res)
+                await cancelFollow(username)
                 mutateUser()
               }}
             >
@@ -86,8 +86,7 @@ const UserInfo = ({ username }: { username: string }) => {
           ) : (
             <button
               onClick={async () => {
-                const res = await follow(username)
-                console.log('res', res)
+                await follow(username)
                 mutateUser()
               }}
             >
@@ -101,23 +100,23 @@ const UserInfo = ({ username }: { username: string }) => {
 }
 
 const RelatedNotes = ({ username }: { username: string }) => {
-  const { data, mutate, size, setSize, isValidating, isLoading } =
-    useSWRInfinite<Note[]>(
-      (index: number) => ['key-username/note/query/list', index], // 缓存什么的和 key相关
-      ([, index]: [string, number]) =>
-        getNotes({
-          pageCurrent: (index as number) + 1,
-          pageSize: PAGE_SIZE,
-          username,
-        }),
-    )
-
-  console.log('data', data, mutate)
-
-  // 应该给一个 tab 选择是看喜欢 or 作品，然后下面的 feed 组件倒可以用一个。嗯....甚至可以更激进一点，swr 也可以，只是需要换个 fetch 函数？...不不不，缓存可能会乱...emmm 那就连 key 一起换就好
-  getUserLikes(username as string).then((res) => {
-    console.log('res', res)
-  })
+  const { activeTab, setActiveTab } = useTabs()
+  const { data, size, setSize, isValidating, isLoading } = useSWRInfinite<
+    Note[]
+  >(
+    (index: number) => ['key-username/note/query/list' + activeTab, index], // 缓存什么的和 key相关
+    ([, index]: [string, number]) => {
+      return activeTab === 'creations'
+        ? getNotes({
+            pageCurrent: (index as number) + 1,
+            pageSize: PAGE_SIZE,
+            username,
+          })
+        : getUserLikes(username)
+      // getUserLikes... 也许后端得改一改... 目前我是把 like 存到了 note 和 user 里...只是纯粹的关系... 像时间戳这种东西就没存了... 泔! 怎么办! 现在这里会报错是因为 like 的查询完全没分页也不知道该怎么分页...或者就先当这部分数据不重要好了
+      // 我简直...就是个笨蛋
+    },
+  )
 
   const notes: Note[] = data ? data.flat() : []
   const isLoadingMore =
@@ -128,17 +127,37 @@ const RelatedNotes = ({ username }: { username: string }) => {
   const isRefreshing = isValidating && data && data.length === size
 
   return (
-    <Feed
-      notes={notes}
-      options={{
-        isEmpty,
-        isReachingEnd,
-        isRefreshing,
-        isLoadingMore,
-        setSize,
-        size,
-      }}
-    />
+    <>
+      <Tabs
+        tabs={[
+          {
+            id: 'creations',
+            label: '作品',
+            content: <div>作品</div>,
+          },
+          {
+            id: 'likes',
+            label: '喜欢',
+            content: <div>喜欢</div>,
+          },
+        ]}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+
+      {activeTab}
+      <Feed
+        notes={notes}
+        options={{
+          isEmpty,
+          isReachingEnd,
+          isRefreshing,
+          isLoadingMore,
+          setSize,
+          size,
+        }}
+      />
+    </>
   )
 }
 

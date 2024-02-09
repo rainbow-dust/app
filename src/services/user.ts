@@ -8,10 +8,7 @@ export async function register(username: string, password: string) {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res)
       if (res.error) throw res.error
-      // 储存 bearer token...????为什么这边写的不执行？？？
-      localStorage.setItem('token', res.token)
       return res
     })
 }

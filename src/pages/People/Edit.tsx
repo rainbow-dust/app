@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
+import { Message } from '~/components/Message'
 import { upload } from '~/services'
 
 interface UserInfoEdit {
@@ -94,7 +95,9 @@ export const PeopleEdit = () => {
       }),
     })
     const data = await res.json()
-    console.log(data)
+    if (data) {
+      Message.success('success')
+    }
   }
 
   if (isLoading) return <div>Loading...</div>

@@ -69,7 +69,7 @@ export const NavBar = () => {
           navigate('/')
         }}
       >
-        barbar
+        furina
       </div>
       <div>
         <Search

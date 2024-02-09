@@ -8,10 +8,7 @@ export async function addComment(param: {
 }) {
   return fetch(`${BASE_URL}/comment/add`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+
     body: JSON.stringify({ ...param }),
   })
     .then((res) => res.json())
@@ -24,10 +21,6 @@ export async function addComment(param: {
 export async function getRootComments(note_id: string) {
   return fetch(`${BASE_URL}/comment/note/${note_id}/root_comment`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {
@@ -57,10 +50,6 @@ export async function getChildComments(root_comment_id: string) {
 export async function likeComment(comment_id: string) {
   return fetch(`${BASE_URL}/comment/${comment_id}/like`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {
@@ -72,10 +61,6 @@ export async function likeComment(comment_id: string) {
 export async function cancelLikeComment(comment_id: string) {
   return fetch(`${BASE_URL}/comment/${comment_id}/like`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {

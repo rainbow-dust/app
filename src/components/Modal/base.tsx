@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
+import Classes from './base.module.css'
+
 const useModal = () => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -33,31 +35,14 @@ const Modal = ({ isOpen, toggle, children }: ModalProps) => {
         <>
           {isOpen && (
             <div
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backdropFilter: 'blur(5px)',
-                boxShadow: '0 0 10px 0 var(--shadow-color)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+              className={Classes['modal']}
               onClick={(e) => {
                 if (e.target === e.currentTarget) {
                   toggle()
                 }
               }}
             >
-              <div
-                style={{
-                  backgroundColor: 'var(--bg-color)',
-                  padding: '1em',
-                  position: 'relative',
-                }}
-              >
+              <div className={Classes['modal-content']}>
                 {children}
                 <button
                   onClick={toggle}

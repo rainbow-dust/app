@@ -1,0 +1,13 @@
+.content-tag {
+  color: var(--text-color-secondary);
+  border: 1px solid var(--theme-color);
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin: 0px 5px 5px 0px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.content-tag:hover {
+  box-shadow: 0px 0px 5px var(--theme-color);
+}

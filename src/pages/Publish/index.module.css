@@ -22,3 +22,14 @@
   box-sizing: border-box;
   caret-color: var(--theme-color);
 }
+
+.publish-button {
+  width: 100px;
+  height: 50px;
+  border: 1px solid var(--border-color);
+  margin: 5px;
+  position: relative;
+  color: var(--theme-color);
+  background-color: var(--bg-color);
+  cursor: pointer;
+}

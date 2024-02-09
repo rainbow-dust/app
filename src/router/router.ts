@@ -63,6 +63,10 @@ export const router = createBrowserRouter([
         path: 'publish',
         Component: Publish,
       },
+      {
+        path: '*',
+        Component: () => 404,
+      },
     ],
   },
 ])

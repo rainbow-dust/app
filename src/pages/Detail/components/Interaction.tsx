@@ -2,6 +2,8 @@ import { FC, useContext, useState } from 'react'
 
 import { ReplierContext } from '~/hooks/useReplier'
 
+import Classes from './Interaction.module.css'
+
 export const Replier: FC<{
   handleAddComment: (
     content: string,
@@ -12,20 +14,7 @@ export const Replier: FC<{
   const [content, setContent] = useState('')
   const { replier } = useContext(ReplierContext)
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '10px',
-        borderTop: '1px solid var(--border-color)',
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        width: '100vw',
-        backdropFilter: 'blur(10px)',
-        boxSizing: 'border-box',
-      }}
-    >
+    <div className={Classes['replier']}>
       <label htmlFor="reply">
         回复
         {replier.meetionee && <span>@{replier.meetionee.username}</span>}

@@ -1,0 +1,28 @@
+.img-upload {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.img-upload-item {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--border-color);
+  position: relative;
+  margin:5px;
+  cursor: pointer;
+}
+
+.img-upload-item:hover {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 5px 0 var(--theme-color);
+}
+
+
+.img-upload-item-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

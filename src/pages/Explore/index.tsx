@@ -37,19 +37,6 @@ export const Explore = () => {
 
   return (
     <div>
-      {/* <input
-        value={queryStr}
-        onChange={(e) => {
-          setQueryStr(e.target.value)
-        }}
-      />
-      <button
-        onClick={() => {
-          mutate()
-        }}
-      >
-        Search
-      </button> */}
       <Feed
         notes={notes}
         options={{

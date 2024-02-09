@@ -1,8 +1,8 @@
 import React from 'react'
 
-import './ImgUpload.module.css'
-
 import { Pic, upload } from '~/services'
+
+import Classes from './ImgUpload.module.css'
 
 export const ImgUpload: React.FC<{
   picList: Pic[]
@@ -33,76 +33,49 @@ export const ImgUpload: React.FC<{
 
   return (
     <>
-      <div
-        style={{
-          display: 'inline-block',
-        }}
-      >
-        <input
-          type="file"
-          id="file"
-          accept="image/*"
-          multiple
-          onChange={handleFileChange}
-          style={{
-            display: 'none',
-          }}
-        />
-
-        <label htmlFor="file" style={{ cursor: 'pointer' }}>
-          <div
-            // hover 的...抽空把这里的 css 搞出去
+      <div className={Classes['img-upload']}>
+        <div className={Classes['img-upload-item']}>
+          <input
+            type="file"
+            id="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileChange}
             style={{
-              width: '100px',
-              height: '100px',
-              border: '1px solid var(--border-color)',
-              margin: '5px',
-              position: 'relative',
+              display: 'none',
+            }}
+          />
+
+          <label htmlFor="file">
+            <div>
+              <div className={Classes['img-upload-item-inner']}>+</div>
+            </div>
+          </label>
+        </div>
+        {picList.map((pic, index) => (
+          <div
+            key={index}
+            className={Classes['img-upload-item']}
+            onClick={() => {
+              setPicList(picList.filter((_, i) => i !== index))
             }}
           >
-            <div
+            <img
+              src={
+                pic.url.startsWith('http')
+                  ? pic.url
+                  : `http://192.168.2.153:9527${pic.url}`
+              }
               style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%,-50%)',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
               }}
-            >
-              +
-            </div>
+              alt={pic.url}
+            />
           </div>
-        </label>
+        ))}
       </div>
-      {picList.map((pic, index) => (
-        <div
-          key={index}
-          style={{
-            display: 'inline-block',
-            width: '100px',
-            height: '100px',
-            border: '1px solid black',
-            margin: '5px',
-            position: 'relative',
-          }}
-          onClick={() => {
-            setPicList(picList.filter((_, i) => i !== index))
-          }}
-        >
-          <img
-            src={
-              pic.url.startsWith('http')
-                ? pic.url
-                : `http://192.168.2.153:9527${pic.url}`
-            }
-            style={{
-              width: '100px',
-              height: '100px',
-              objectFit: 'cover',
-            }}
-            alt={pic.url}
-          />
-        </div>
-      ))}
     </>
   )
 }

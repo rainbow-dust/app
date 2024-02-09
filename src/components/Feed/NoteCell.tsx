@@ -4,22 +4,13 @@ import { Link } from 'react-router-dom'
 import { cancelLikeNote, likeNote } from '~/services'
 import type { Note } from '~/services'
 
+import Classes from './NoteCell.module.css'
+
 export const NoteCell: FC<{ content: Note }> = ({ content }) => {
   const [note, setNote] = useState<Note>(content)
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        padding: '10px',
-        border: '1px solid var(--border-color)',
-        borderRadius: '4px',
-        marginBottom: '10px',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
+    <div className={Classes['note-cell']}>
       <div>
         <Link to={`/explore/${note._id}`} key={note._id}>
           {/* <div>{note.content}</div> */}
@@ -32,22 +23,6 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
             ></img>
           </div>
         </Link>
-
-        {/* {note?.tags?.map((tag) => (
-          <span
-            key={tag._id}
-            style={{
-              color: var(--text-color-secondary),
-              marginRight: '10px',
-              border: '1px solid var(--border-color)',
-              borderRadius: '4px',
-              padding: '0px 2px',
-              fontSize: '14px',
-            }}
-          >
-            {tag?.name}{' '}
-          </span>
-        ))} */}
       </div>
 
       <div
@@ -73,6 +48,10 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
             fontSize: '14px',
           }}
         >
+          {/* 
+            avatar 可以考虑做一个组件了...
+            甚至 like icon 也可以
+          */}
           <Link
             to={`/people/${note?.author?.username} `}
             style={{

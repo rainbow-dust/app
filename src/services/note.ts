@@ -33,10 +33,7 @@ export async function addNote(
 ) {
   return fetch(`${BASE_URL}/note/add`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+
     body: JSON.stringify({ title, content, tags, pic_list }),
   })
     .then((res) => res.json())
@@ -59,10 +56,7 @@ export async function getNotes({
 }) {
   return fetch(`${BASE_URL}/note/query/list`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+
     body: JSON.stringify({ pageCurrent, pageSize, tags, username }),
   })
     .then((res) => res.json())
@@ -75,10 +69,6 @@ export async function getNotes({
 export async function getNote(id: string) {
   return fetch(`${BASE_URL}/note/${id}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {
@@ -90,10 +80,6 @@ export async function getNote(id: string) {
 export async function likeNote(id: string) {
   return fetch(`${BASE_URL}/note/${id}/like`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {
@@ -105,10 +91,6 @@ export async function likeNote(id: string) {
 export async function cancelLikeNote(id: string) {
   return fetch(`${BASE_URL}/note/${id}/like`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {
@@ -122,10 +104,6 @@ export async function cancelLikeNote(id: string) {
 export async function getUserLikes(username: string) {
   return fetch(`${BASE_URL}/note/${username}/likes`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
   })
     .then((res) => res.json())
     .then((res) => {

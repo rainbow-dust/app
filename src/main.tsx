@@ -31,6 +31,10 @@ Object.defineProperty(window, 'fetch', {
     return (url: string, options: RequestInit) => {
       return originFetch(url, {
         // 这里可以加些公共的东西，比如 token，然后后写的 options 会覆盖这些默认的
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
         ...options,
       })
         .then(checkStatus)

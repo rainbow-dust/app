@@ -28,7 +28,6 @@ export const Publish: React.FC = () => {
       }
     })
     setIsNewTag(false)
-    // 有 str，但是没有匹配的 tag
     if (
       str &&
       (options.length === 0 ||
@@ -36,7 +35,6 @@ export const Publish: React.FC = () => {
     ) {
       setIsNewTag(true)
     }
-    console.log(str, options, 'aaa', isNewTag)
 
     return options
   }
@@ -125,19 +123,7 @@ export const Publish: React.FC = () => {
         </div>
         <ImgUpload picList={picList} setPicList={setPicList} />
         <div>i have read and agree to xxxxxxx</div>
-        <button
-          type="submit"
-          style={{
-            width: '100px',
-            height: '50px',
-            border: '1px solid var(--border-color)',
-            margin: '5px',
-            position: 'relative',
-            color: 'var(--theme-color)',
-            backgroundColor: 'var(--bg-color)',
-            cursor: 'pointer',
-          }}
-        >
+        <button type="submit" className={Classes['publish-button']}>
           Publish
         </button>
       </form>

@@ -19,7 +19,7 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
               style={{
                 width: '100%',
               }}
-              src={'http://192.168.2.153:9527' + note?.cover?.url}
+              src={import.meta.env.VITE_FURINA_APP_IMG_URL + note?.cover?.url}
             ></img>
           </div>
         </Link>
@@ -68,7 +68,10 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
                 borderRadius: '50%',
                 marginRight: '10px',
               }}
-              src={'http://192.168.2.153:9527' + note.author?.avatar_url}
+              src={
+                import.meta.env.VITE_FURINA_APP_IMG_URL +
+                note.author?.avatar_url
+              }
             ></img>
             <span style={{ color: 'var(--text-color)' }}>
               {note.author?.username}

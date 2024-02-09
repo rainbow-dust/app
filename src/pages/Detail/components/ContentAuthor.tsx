@@ -20,7 +20,7 @@ export const ContentAuthor: FC<{
           borderRadius: '50%',
           marginRight: '10px',
         }}
-        src={'http://192.168.2.153:9527' + author?.avatar_url}
+        src={import.meta.env.VITE_FURINA_APP_IMG_URL + author?.avatar_url}
         alt="avatar"
       />
       <span>{author?.username}</span>

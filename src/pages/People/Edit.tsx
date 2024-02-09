@@ -114,7 +114,7 @@ export const PeopleEdit = () => {
         </div>
         <div>
           <img
-            src={'http://192.168.2.153:9527' + userInfo.avatar_url}
+            src={import.meta.env.VITE_FURINA_APP_IMG_URL + userInfo.avatar_url}
             alt={userInfo.username}
             style={{ width: '100px' }}
           />

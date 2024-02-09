@@ -48,7 +48,7 @@ const UserInfo = ({ username }: { username: string }) => {
           <div className={Classes['people-info']}>
             <div className={Classes['people-avatar']}>
               <img
-                src={'http://192.168.2.153:9527' + user?.avatar_url}
+                src={import.meta.env.VITE_FURINA_APP_IMG_URL + user?.avatar_url}
                 alt={user?.username}
               />
             </div>

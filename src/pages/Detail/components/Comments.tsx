@@ -67,7 +67,10 @@ export const RenderComment: FC<{
                 width: '24px',
                 height: '24px',
               }}
-              src={'http://192.168.2.153:9527' + comment.author.avatar_url}
+              src={
+                import.meta.env.VITE_FURINA_APP_IMG_URL +
+                comment.author.avatar_url
+              }
             ></img>
             <span style={{ color: 'var(--text-color-secondary)' }}>
               {comment.author.username}
@@ -81,7 +84,10 @@ export const RenderComment: FC<{
                   width: '24px',
                   height: '24px',
                 }}
-                src={'http://192.168.2.153:9527' + comment.mentionee.avatar_url}
+                src={
+                  import.meta.env.VITE_FURINA_APP_IMG_URL +
+                  comment.mentionee.avatar_url
+                }
               ></img>
               <span style={{ color: 'var(--text-color-secondary)' }}>
                 {comment.mentionee.username}

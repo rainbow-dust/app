@@ -13,7 +13,7 @@ import type { Note } from '~/services'
 
 import { Comments, CommentsRef } from './components/Comments'
 import { Author, NoteText, Pics } from './components/Content'
-import { Interaction } from './components/Interaction'
+import { Interactions } from './components/Interactions'
 
 export const Detail = () => {
   const { id } = useParams()
@@ -98,7 +98,7 @@ export const Detail = () => {
           <h4>Comments</h4>
           <ReplierContext.Provider value={replier as ReplierContextType}>
             <Comments noteId={id} onRef={CommentsRef} />
-            <Interaction
+            <Interactions
               handleAddComment={handleAddComment}
               Like={() => {
                 return (

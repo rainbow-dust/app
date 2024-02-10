@@ -2,7 +2,7 @@ import { FC, useContext, useState } from 'react'
 
 import { ReplierContext } from '~/hooks/useReplier'
 
-import Classes from './Interaction.module.css'
+import Classes from './Replier.module.css'
 
 export const Replier: FC<{
   handleAddComment: (
@@ -34,24 +34,6 @@ export const Replier: FC<{
       >
         评论
       </button>
-    </div>
-  )
-}
-
-export const Interaction: FC<{
-  handleAddComment: (
-    content: string,
-    rootCommentId?: string,
-    meetioneeId?: string,
-  ) => void
-  Like: FC
-  Collect: FC
-}> = ({ handleAddComment, Like, Collect }) => {
-  return (
-    <div className={Classes['interaction']}>
-      <Like />
-      <Collect />
-      <Replier handleAddComment={handleAddComment} />
     </div>
   )
 }

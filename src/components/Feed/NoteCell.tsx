@@ -1,9 +1,11 @@
 import { FC, useState } from 'react'
+import { BsFillHeartFill, BsHeart } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 
 import { cancelLikeNote, likeNote } from '~/services'
 import type { Note } from '~/services'
 
+import Avatar from '../Avatar'
 import Classes from './NoteCell.module.css'
 
 export const NoteCell: FC<{ content: Note }> = ({ content }) => {
@@ -48,62 +50,57 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
             fontSize: '14px',
           }}
         >
-          {/* 
-            avatar 可以考虑做一个组件了...
-            甚至 like icon 也可以
-          */}
-          <Link
-            to={`/people/${note?.author?.username} `}
+          <Avatar
+            imageUrl={
+              import.meta.env.VITE_FURINA_APP_IMG_URL + note.author?.avatar_url
+            }
+            altText={note.author?.username}
+            size={24}
+            peopleLink={`/people/${note.author?.username}`}
+          />
+          <span style={{ color: 'var(--text-color)' }}>
+            {note.author?.username}
+          </span>
+          <span
             style={{
               display: 'flex',
               alignItems: 'center',
-              textDecoration: 'none',
-              color: 'var(--text-color-secondary)',
+              fontSize: '16px',
             }}
           >
-            <img
-              style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                marginRight: '10px',
-              }}
-              src={
-                import.meta.env.VITE_FURINA_APP_IMG_URL +
-                note.author?.avatar_url
-              }
-            ></img>
-            <span style={{ color: 'var(--text-color)' }}>
-              {note.author?.username}
-            </span>
-          </Link>
-          {note?.is_liked ? (
-            <button
-              onClick={async () => {
-                const data = await cancelLikeNote(note._id)
-                if (data.ok == 0) return
-                setNote({
-                  ...data,
-                })
-              }}
-            >
-              {note?.like_count}
-              取消点赞
-            </button>
-          ) : (
-            <button
-              onClick={async () => {
-                const data = await likeNote(note._id)
-                if (data.ok == 0) return
-                setNote({
-                  ...data,
-                })
-              }}
-            >
-              {note?.like_count}
-              点赞
-            </button>
-          )}
+            {note?.is_liked ? (
+              <BsFillHeartFill
+                style={{
+                  color: 'var(--theme-color)',
+                  cursor: 'pointer',
+                  marginRight: '5px',
+                }}
+                onClick={async () => {
+                  const data = await cancelLikeNote(note._id)
+                  if (data.ok == 0) return
+                  setNote({
+                    ...data,
+                  })
+                }}
+              />
+            ) : (
+              <BsHeart
+                style={{
+                  color: 'var(--theme-color)',
+                  cursor: 'pointer',
+                  marginRight: '5px',
+                }}
+                onClick={async () => {
+                  const data = await likeNote(note._id)
+                  if (data.ok == 0) return
+                  setNote({
+                    ...data,
+                  })
+                }}
+              />
+            )}
+            {note?.like_count}
+          </span>
         </span>
       </div>
     </div>

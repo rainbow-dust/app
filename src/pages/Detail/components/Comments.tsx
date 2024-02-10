@@ -1,4 +1,10 @@
 import { FC, useContext, useEffect, useState } from 'react'
+import { BsChatDots, BsHeart, BsHeartFill } from 'react-icons/bs'
+
+import Avatar from '~/components/Avatar'
+// 我也想加动画...可是下面这个东西打包一下子多了 300kb 比我的整个项目还大...
+// import UseAnimations from 'react-useanimations';
+// import heart from 'react-useanimations/lib/heart';
 
 import { ReplierContext } from '~/hooks/useReplier'
 import {
@@ -62,16 +68,15 @@ export const RenderComment: FC<{
       >
         <div>
           <span>
-            <img
-              style={{
-                width: '24px',
-                height: '24px',
-              }}
-              src={
+            <Avatar
+              imageUrl={
                 import.meta.env.VITE_FURINA_APP_IMG_URL +
                 comment.author.avatar_url
               }
-            ></img>
+              altText={comment.author.username}
+              size={24}
+              peopleLink={`/people/${comment.author.username}`}
+            />
             <span style={{ color: 'var(--text-color-secondary)' }}>
               {comment.author.username}
             </span>
@@ -79,71 +84,104 @@ export const RenderComment: FC<{
           {comment.mentionee && (
             <span>
               →
-              <img
-                style={{
-                  width: '24px',
-                  height: '24px',
-                }}
-                src={
+              <Avatar
+                imageUrl={
                   import.meta.env.VITE_FURINA_APP_IMG_URL +
                   comment.mentionee.avatar_url
                 }
-              ></img>
+                altText={comment.mentionee.username}
+                size={24}
+                peopleLink={`/people/${comment.mentionee.username}`}
+              />
               <span style={{ color: 'var(--text-color-secondary)' }}>
                 {comment.mentionee.username}
               </span>
             </span>
           )}
         </div>
-        <div>{comment.content}</div>
         <div
           style={{
-            color: 'var(--text-color-secondary)',
+            marginLeft: '20px',
+            marginTop: '10px',
           }}
         >
-          <span>{comment.created_at}</span>
-          {comment.is_liked ? (
-            <button
-              onClick={async () => {
-                const res = await cancelLikeComment(comment._id)
-                setComment({ ...comment, ...res })
-              }}
-            >
-              {comment.like_count}取消点赞
-            </button>
-          ) : (
-            <button
-              onClick={async () => {
-                const res = await likeComment(comment._id)
-                setComment({ ...comment, ...res })
-              }}
-            >
-              {comment.like_count}点赞
-            </button>
-          )}
-          {/* 根评论回复不传 mentionee */}
-          <button
-            onClick={() => {
-              if (options.root) {
-                options.root.handleReply(comment._id)
-              }
-              if (options.child) {
-                options.child.handleReply(
-                  comment.root_comment_id as string,
-                  comment.author,
-                )
-              }
+          <div>{comment.content}</div>
+          <div
+            style={{
+              color: 'var(--text-color-secondary)',
             }}
           >
-            回复
-          </button>
-          {options.root?.unfoldReply && comment.child_comment_count && (
-            <button onClick={() => options.root?.unfoldReply(comment._id)}>
-              展开{comment.child_comment_count}条回复
-            </button>
-          )}
+            <div
+              style={{
+                fontSize: '14px',
+              }}
+            >
+              {comment.created_at}
+            </div>
+            <span
+            // style={{
+            //   display: 'flex',
+            //   alignItems: 'center',
+            //   marginLeft: '10px',
+            //   fontSize: '16px',
+            // }}
+            >
+              {comment.is_liked ? (
+                <BsHeartFill
+                  style={{
+                    color: 'var(--theme-color)',
+                    cursor: 'pointer',
+                  }}
+                  onClick={async () => {
+                    const res = await cancelLikeComment(comment._id)
+                    setComment({ ...comment, ...res })
+                  }}
+                />
+              ) : (
+                <BsHeart
+                  style={{
+                    color: 'var(--theme-color)',
+                    cursor: 'pointer',
+                  }}
+                  onClick={async () => {
+                    const res = await likeComment(comment._id)
+                    setComment({ ...comment, ...res })
+                  }}
+                />
+              )}
+              {comment.like_count}
+            </span>
+
+            {/* 根评论回复不传 mentionee */}
+            <BsChatDots
+              style={{
+                color: 'var(--theme-color)',
+                cursor: 'pointer',
+                marginRight: '5px',
+              }}
+              onClick={() => {
+                if (options.root) {
+                  options.root.handleReply(comment._id)
+                }
+                if (options.child) {
+                  options.child.handleReply(
+                    comment.root_comment_id as string,
+                    comment.author,
+                  )
+                }
+              }}
+            />
+            {comment.child_comment_count ??
+              (comment.child_comment_count === 0 && '回复')}
+
+            {options.root?.unfoldReply && comment.child_comment_count && (
+              <button onClick={() => options.root?.unfoldReply(comment._id)}>
+                展开{comment.child_comment_count}条回复
+              </button>
+            )}
+          </div>
+          {children ? <div>{children}</div> : null}
         </div>
-        {children ? <div>{children}</div> : null}
       </div>
     </>
   )

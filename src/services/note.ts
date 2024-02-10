@@ -108,6 +108,6 @@ export async function getUserLikes(username: string) {
     .then((res) => res.json())
     .then((res) => {
       if (res.error) throw res.error
-      return res
+      return res.data
     })
 }

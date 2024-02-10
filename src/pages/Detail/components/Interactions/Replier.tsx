@@ -12,28 +12,53 @@ export const Replier: FC<{
   ) => void
 }> = ({ handleAddComment }) => {
   const [content, setContent] = useState('')
-  const { replier } = useContext(ReplierContext)
+  const { replier, setReplier } = useContext(ReplierContext)
   return (
-    <div className={Classes['replier']}>
+    <div className={replier.isActive ? Classes['replier'] : ''}>
       <label htmlFor="reply">
         {replier.meetionee && <span>@{replier.meetionee.username}</span>}
       </label>
+
       <input
         type="text"
         placeholder="评论"
+        onFocus={() => {
+          setReplier({
+            isActive: true,
+            rootCommentId: replier.rootCommentId,
+            noteId: replier.noteId,
+            meetionee: replier.meetionee,
+          })
+        }}
         onChange={(e) => setContent(e.target.value)}
       />
-      <button
-        onClick={() =>
-          handleAddComment(
-            content,
-            replier.rootCommentId,
-            replier.meetionee?._id,
-          )
-        }
-      >
-        评论
-      </button>
+      {replier.isActive && (
+        <div>
+          <button
+            onClick={() =>
+              handleAddComment(
+                content,
+                replier.rootCommentId,
+                replier.meetionee?._id,
+              )
+            }
+          >
+            评论
+          </button>
+          <button
+            onClick={() => {
+              setReplier({
+                isActive: false,
+                rootCommentId: undefined,
+                noteId: '',
+                meetionee: undefined,
+              })
+            }}
+          >
+            取消
+          </button>
+        </div>
+      )}
     </div>
   )
 }

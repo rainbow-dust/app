@@ -1,11 +1,11 @@
-import { FC, useState } from 'react'
-import { BsFillHeartFill, BsHeart } from 'react-icons/bs'
+import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { cancelLikeNote, likeNote } from '~/services'
 import type { Note } from '~/services'
 
 import Avatar from '../Avatar'
+import { IconLike } from '../Icons'
 import Classes from './NoteCell.module.css'
 
 export const NoteCell: FC<{ content: Note }> = ({ content }) => {
@@ -68,37 +68,23 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
               fontSize: '16px',
             }}
           >
-            {note?.is_liked ? (
-              <BsFillHeartFill
-                style={{
-                  color: 'var(--theme-color)',
-                  cursor: 'pointer',
-                  marginRight: '5px',
-                }}
-                onClick={async () => {
-                  const data = await cancelLikeNote(note._id)
-                  if (data.ok == 0) return
-                  setNote({
-                    ...data,
-                  })
-                }}
-              />
-            ) : (
-              <BsHeart
-                style={{
-                  color: 'var(--theme-color)',
-                  cursor: 'pointer',
-                  marginRight: '5px',
-                }}
-                onClick={async () => {
-                  const data = await likeNote(note._id)
-                  if (data.ok == 0) return
-                  setNote({
-                    ...data,
-                  })
-                }}
-              />
-            )}
+            <IconLike
+              isLiked={note?.is_liked}
+              handleLike={async () => {
+                const data = await likeNote(note._id)
+                if (data.ok == 0) return
+                setNote({
+                  ...data,
+                })
+              }}
+              handleCancelLike={async () => {
+                const data = await cancelLikeNote(note._id)
+                if (data.ok == 0) return
+                setNote({
+                  ...data,
+                })
+              }}
+            />
             {note?.like_count}
           </span>
         </span>

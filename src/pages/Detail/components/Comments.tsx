@@ -1,7 +1,8 @@
 import { FC, useContext, useEffect, useState } from 'react'
-import { BsChatDots, BsHeart, BsHeartFill } from 'react-icons/bs'
+import { BsChatDots } from 'react-icons/bs'
 
 import Avatar from '~/components/Avatar'
+import { IconLike } from '~/components/Icons'
 // 我也想加动画...可是下面这个东西打包一下子多了 300kb 比我的整个项目还大...
 // import UseAnimations from 'react-useanimations';
 // import heart from 'react-useanimations/lib/heart';
@@ -126,29 +127,17 @@ export const RenderComment: FC<{
             //   fontSize: '16px',
             // }}
             >
-              {comment.is_liked ? (
-                <BsHeartFill
-                  style={{
-                    color: 'var(--theme-color)',
-                    cursor: 'pointer',
-                  }}
-                  onClick={async () => {
-                    const res = await cancelLikeComment(comment._id)
-                    setComment({ ...comment, ...res })
-                  }}
-                />
-              ) : (
-                <BsHeart
-                  style={{
-                    color: 'var(--theme-color)',
-                    cursor: 'pointer',
-                  }}
-                  onClick={async () => {
-                    const res = await likeComment(comment._id)
-                    setComment({ ...comment, ...res })
-                  }}
-                />
-              )}
+              <IconLike
+                isLiked={comment?.is_liked || false}
+                handleLike={async () => {
+                  const res = await likeComment(comment._id)
+                  setComment({ ...comment, ...res })
+                }}
+                handleCancelLike={async () => {
+                  const res = await cancelLikeComment(comment._id)
+                  setComment({ ...comment, ...res })
+                }}
+              />
               {comment.like_count}
             </span>
 
@@ -279,7 +268,16 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
         </RenderComment>
       ))}
       <div>
+        {/* 
+         Interaction 可以是一堆幌子，而真正的评论框是在 Replier 里面的...
+         不然要传的参数函数太多了...
+        */}
         <Replier handleAddComment={handleAddComment} />
+        {/* <Interaction
+          handleAddComment={handleAddComment}
+          handleLikeNote={() => {}}
+          handleCollectNote={() => {}}
+        /> */}
       </div>
     </>
   )

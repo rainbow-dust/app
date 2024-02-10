@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import Classes from './ContentNote.module.css'
+import Classes from './NoteText.module.css'
 
-export const ContentNote: FC<{
+export const NoteText: FC<{
   title?: string
   content?: string
   tags?: { _id: string; name: string }[]

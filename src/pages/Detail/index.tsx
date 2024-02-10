@@ -8,12 +8,11 @@ import {
   ReplierContextType,
   useReplier,
 } from '~/hooks/useReplier'
-import { Note, addComment, cancelLikeNote, getNote, likeNote } from '~/services'
+import { addComment, cancelLikeNote, getNote, likeNote } from '~/services'
+import type { Note } from '~/services'
 
 import { Comments, CommentsRef } from './components/Comments'
-import { ContentAuthor } from './components/ContentAuthor'
-import { ContentNote } from './components/ContentNote'
-import { ContentPics } from './components/ContentPics'
+import { Author, NoteText, Pics } from './components/Content'
 import { Interaction } from './components/Interaction'
 
 export const Detail = () => {
@@ -87,9 +86,9 @@ export const Detail = () => {
             Back←
           </button>
           <div className="content">
-            <ContentAuthor author={note?.author} />
-            <ContentPics pic_list={note?.pic_list} />
-            <ContentNote
+            <Author author={note?.author} />
+            <Pics pic_list={note?.pic_list} />
+            <NoteText
               title={note?.title}
               content={note?.content}
               tags={note?.tags}

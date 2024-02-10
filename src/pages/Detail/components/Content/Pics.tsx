@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 
 import type { Pic } from '~/services'
 
-import Classes from './ContentPics.module.css'
+import Classes from './Pics.module.css'
 
-export const ContentPics: FC<{ pic_list?: Pic[] }> = ({ pic_list }) => {
+export const Pics: FC<{ pic_list?: Pic[] }> = ({ pic_list }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [isMoving, setIsMoving] = React.useState(false)
   const [startX, setStartX] = React.useState(0)

@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import Avatar from '~/components/Avatar'
 
-export const ContentAuthor: FC<{
+export const Author: FC<{
   author?: { username: string; avatar_url: string }
 }> = ({ author }) => {
   return (

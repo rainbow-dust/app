@@ -23,6 +23,7 @@ export interface Note {
   cover: Pic
   like_count: number
   is_liked: boolean
+  created_at: string
 }
 
 export async function addNote(

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { cancelLikeNote, likeNote } from '~/services'
@@ -13,13 +13,13 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
 
   return (
     <div className={Classes['note-cell']}>
-      <div>
+      <div className={Classes['note-top']}>
         <Link to={`/explore/${note._id}`} key={note._id}>
-          {/* <div>{note.content}</div> */}
           <div>
             <img
               style={{
                 width: '100%',
+                borderRadius: '10px',
               }}
               src={import.meta.env.VITE_FURINA_APP_IMG_URL + note?.cover?.url}
             ></img>
@@ -27,15 +27,10 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
         </Link>
       </div>
 
-      <div
-        style={{
-          padding: '10px 0',
-        }}
-      >
+      <div className={Classes['note-bottom']}>
         <div
           style={{
-            fontSize: '18px',
-            fontWeight: 'bold',
+            fontSize: '16px',
             marginBottom: '10px',
           }}
         >
@@ -50,24 +45,26 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
             fontSize: '14px',
           }}
         >
-          <Avatar
-            imageUrl={
-              import.meta.env.VITE_FURINA_APP_IMG_URL + note.author?.avatar_url
-            }
-            altText={note.author?.username}
-            size={24}
-            peopleLink={`/people/${note.author?.username}`}
-          />
-          <span style={{ color: 'var(--text-color)' }}>
-            {note.author?.username}
-          </span>
           <span
             style={{
               display: 'flex',
               alignItems: 'center',
-              fontSize: '16px',
             }}
           >
+            <Avatar
+              imageUrl={
+                import.meta.env.VITE_FURINA_APP_IMG_URL +
+                note.author?.avatar_url
+              }
+              altText={note.author?.username}
+              size={24}
+              peopleLink={`/people/${note.author?.username}`}
+            />
+            <span style={{ color: 'var(--text-color)', marginLeft: '5px' }}>
+              {note.author?.username}
+            </span>
+          </span>
+          <span>
             <IconLike
               isLiked={note?.is_liked}
               handleLike={async () => {
@@ -85,7 +82,13 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
                 })
               }}
             />
-            {note?.like_count}
+            <span
+              style={{
+                marginLeft: '5px',
+              }}
+            >
+              {note?.like_count}
+            </span>
           </span>
         </span>
       </div>

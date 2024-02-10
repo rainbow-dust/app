@@ -2,7 +2,8 @@ import { createRef, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
-import { IconLike } from '~/components/Icons'
+import { IconCollect, IconLike } from '~/components/Icons'
+import { getDate } from '~/hooks/useDate'
 import {
   ReplierContext,
   ReplierContextType,
@@ -54,6 +55,8 @@ export const Detail = () => {
     })
   }
 
+  if (!id) return <div>note not found...</div>
+
   if (!note) return <div>loading...</div>
 
   return (
@@ -70,59 +73,91 @@ export const Detail = () => {
         zIndex: 100,
       }}
     >
-      {id && (
-        <>
-          <button
-            onClick={() => {
-              navigate(-1)
-            }}
+      <>
+        <button
+          onClick={() => {
+            navigate(-1)
+          }}
+          style={{
+            position: 'fixed',
+            top: 20,
+            left: 20,
+            zIndex: 100,
+          }}
+        >
+          Back←
+        </button>
+        <div
+          className="content"
+          style={{
+            margin: '0 20px',
+          }}
+        >
+          <Author author={note.author} />
+          <Pics pic_list={note.pic_list} />
+          <NoteText
+            title={note.title}
+            content={note.content}
+            tags={note.tags}
+          />
+          <div
             style={{
-              position: 'fixed',
-              top: 20,
-              left: 20,
-              zIndex: 100,
+              color: 'var(--text-color-secondary)',
+              margin: '10px 0',
             }}
           >
-            Back←
-          </button>
-          <div className="content">
-            <Author author={note?.author} />
-            <Pics pic_list={note?.pic_list} />
-            <NoteText
-              title={note?.title}
-              content={note?.content}
-              tags={note?.tags}
-            />
+            {/* es-lint 报错纯看命名的吗... */}
+            {getDate(note.created_at)}
           </div>
-          <hr />
-          <h4>Comments</h4>
-          <ReplierContext.Provider value={replier as ReplierContextType}>
+        </div>
+        <hr />
+        <ReplierContext.Provider value={replier as ReplierContextType}>
+          <div
+            style={{
+              margin: '0 20px',
+            }}
+          >
             <Comments noteId={id} onRef={CommentsRef} />
-            <Interactions
-              handleAddComment={handleAddComment}
-              Like={() => {
-                return (
-                  <>
-                    <IconLike
-                      isLiked={note?.is_liked || false}
-                      handleLike={async () => {
-                        await likeNote(note._id)
-                        mutateNote()
-                      }}
-                      handleCancelLike={async () => {
-                        await cancelLikeNote(note._id)
-                        mutateNote()
-                      }}
-                    />
-                    {note?.like_count}
-                  </>
-                )
-              }}
-              Collect={() => <div>collect</div>}
-            />
-          </ReplierContext.Provider>
-        </>
-      )}
+          </div>
+          <Interactions
+            handleAddComment={handleAddComment}
+            Like={() => {
+              return (
+                <>
+                  <IconLike
+                    isLiked={note?.is_liked || false}
+                    handleLike={async () => {
+                      await likeNote(note._id)
+                      mutateNote()
+                    }}
+                    handleCancelLike={async () => {
+                      await cancelLikeNote(note._id)
+                      mutateNote()
+                    }}
+                  />
+                  {note?.like_count}
+                </>
+              )
+            }}
+            Collect={() => {
+              return (
+                <IconCollect
+                  isCollected={true}
+                  handleCollect={async () => {
+                    // await likeNote(note._id)
+                    // mutateNote()
+                  }}
+                  handleCancelCollect={async () => {
+                    // await cancelLikeNote(note._id)
+                    // mutateNote()
+                  }}
+                />
+              )
+            }}
+            // 短按是放到默认收藏夹，长按是吊起收藏夹选择...那怎么才能确定有没有收藏呢....
+          />
+        </ReplierContext.Provider>
+      </>
     </div>
   )
 }

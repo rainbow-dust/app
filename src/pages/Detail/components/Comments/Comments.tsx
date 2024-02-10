@@ -83,8 +83,27 @@ export const Comments: FC<{
     unfoldReply,
   }))
 
+  if (!rootComments) return <div>loading...</div>
+  if (rootComments.length === 0)
+    return (
+      <div
+        style={{
+          color: 'var(--text-color-secondary)',
+        }}
+      >
+        还没有评论哦，快来一条吧
+      </div>
+    )
+
   return (
     <>
+      <div
+        style={{
+          color: 'var(--text-color-secondary)',
+        }}
+      >
+        共{rootComments.length}条评论
+      </div>
       {rootComments?.map((comment) => (
         <CommentCell
           key={comment._id}

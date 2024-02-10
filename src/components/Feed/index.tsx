@@ -36,6 +36,7 @@ export const Feed: FC<{
 
   const GAP_V = 10
   const GAP_H = 10
+  const BOTTOM_GAP = 60 // 底部文字, actions 的留空
   const DEFAULT_WIDTH = 230 // 参考宽度
   let columnHeight: number[]
   const getNotesWithLayout = (notes: Note[]) => {
@@ -53,7 +54,8 @@ export const Feed: FC<{
     notes.forEach((note) => {
       const height =
         Math.max(
-          Math.floor(note.cover?.height * (width / note.cover?.width)) + 80,
+          Math.floor(note.cover?.height * (width / note.cover?.width)) +
+            BOTTOM_GAP,
           200,
         ) || 100
       notesWithLayout.push({

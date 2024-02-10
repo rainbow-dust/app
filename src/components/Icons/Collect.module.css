@@ -1,19 +1,20 @@
-.like {
+.collect {
+  font-size: 18px;
   cursor: pointer;
 }
 
-.like.ed {
-  color: var(--theme-color);
+.collect.ed {
+  color: #f0c14b;
   animation: like 0.5s;
 }
 
-.like.tobe {
+.collect.tobe {
   color: var(--text-color);
   animation: cancel-like 0.5s;
 }
 
-.like:hover {
-  color: var(--theme-color);
+.collect:hover {
+  color: #f0c14b;
 }
 
 @keyframes like {

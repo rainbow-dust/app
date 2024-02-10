@@ -1,0 +1,42 @@
+.like {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.like.ed {
+  color: var(--theme-color);
+  animation: like 0.5s;
+}
+
+.like.tobe {
+  color: var(--text-color);
+  animation: cancel-like 0.5s;
+}
+
+.like:hover {
+  color: var(--theme-color);
+}
+
+@keyframes like {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes cancel-like {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

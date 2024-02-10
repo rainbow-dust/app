@@ -3,6 +3,7 @@ import { BsChatDots } from 'react-icons/bs'
 
 import Avatar from '~/components/Avatar'
 import { IconLike } from '~/components/Icons'
+import { getDate } from '~/hooks/useDate'
 import { cancelLikeComment, likeComment } from '~/services'
 
 import { Comment } from './Comments'
@@ -84,57 +85,81 @@ export const CommentCell: FC<{
                 fontSize: '14px',
               }}
             >
-              {comment.created_at}
+              {getDate(comment.created_at)}
             </div>
-            <span
-            // style={{
-            //   display: 'flex',
-            //   alignItems: 'center',
-            //   marginLeft: '10px',
-            //   fontSize: '16px',
-            // }}
-            >
-              <IconLike
-                isLiked={comment?.is_liked || false}
-                handleLike={async () => {
-                  const res = await likeComment(comment._id)
-                  setComment({ ...comment, ...res })
-                }}
-                handleCancelLike={async () => {
-                  const res = await cancelLikeComment(comment._id)
-                  setComment({ ...comment, ...res })
-                }}
-              />
-              {comment.like_count}
-            </span>
-
-            {/* 根评论回复不传 mentionee */}
-            <BsChatDots
+            <div
+              className={'actions'}
               style={{
-                color: 'var(--theme-color)',
-                cursor: 'pointer',
-                marginRight: '5px',
+                display: 'flex',
+                alignItems: 'center',
               }}
-              onClick={() => {
-                if (options.root) {
-                  options.root.handleReply(comment._id)
-                }
-                if (options.child) {
-                  options.child.handleReply(
-                    comment.root_comment_id as string,
-                    comment.author,
-                  )
-                }
-              }}
-            />
-            {comment.child_comment_count ??
-              (comment.child_comment_count === 0 && '回复')}
+            >
+              <span
+                style={{
+                  marginRight: '8px',
+                }}
+              >
+                <IconLike
+                  isLiked={comment?.is_liked || false}
+                  handleLike={async () => {
+                    const res = await likeComment(comment._id)
+                    setComment({ ...comment, ...res })
+                  }}
+                  handleCancelLike={async () => {
+                    const res = await cancelLikeComment(comment._id)
+                    setComment({ ...comment, ...res })
+                  }}
+                />
+                <span
+                  style={{
+                    marginLeft: '8px',
+                  }}
+                >
+                  {comment.like_count}
+                </span>
+              </span>
 
-            {options.root?.unfoldReply && comment.child_comment_count && (
-              <button onClick={() => options.root?.unfoldReply(comment._id)}>
-                展开{comment.child_comment_count}条回复
-              </button>
-            )}
+              {/* 根评论回复不传 mentionee */}
+              <span
+                style={{
+                  marginLeft: '10px',
+                }}
+              >
+                <BsChatDots
+                  style={{
+                    color: 'var(--theme-color)',
+                    cursor: 'pointer',
+                    marginRight: '5px',
+                    verticalAlign: 'middle',
+                  }}
+                  onClick={() => {
+                    if (options.root) {
+                      options.root.handleReply(comment._id)
+                    }
+                    if (options.child) {
+                      options.child.handleReply(
+                        comment.root_comment_id as string,
+                        comment.author,
+                      )
+                    }
+                  }}
+                />
+                <span
+                  style={{
+                    marginRight: '5px',
+                  }}
+                >
+                  {comment.child_comment_count ??
+                    (comment.child_comment_count === 0 && '回复')}
+                </span>
+              </span>
+
+              {options.root?.unfoldReply && comment.child_comment_count && (
+                <button onClick={() => options.root?.unfoldReply(comment._id)}>
+                  展开{comment.child_comment_count}条回复
+                </button>
+              )}
+            </div>
           </div>
           {children ? <div>{children}</div> : null}
         </div>

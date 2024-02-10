@@ -56,6 +56,8 @@ export const PeopleEdit = () => {
     })
   }
 
+  // 这里应该...裁剪图片...图片以 base64 的形式展示，然后上传的时候再转成 blob
+  // md 裁剪图片...
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files) return

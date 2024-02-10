@@ -16,7 +16,6 @@ export const Replier: FC<{
   return (
     <div className={Classes['replier']}>
       <label htmlFor="reply">
-        回复
         {replier.meetionee && <span>@{replier.meetionee.username}</span>}
       </label>
       <input
@@ -38,3 +37,18 @@ export const Replier: FC<{
     </div>
   )
 }
+
+// export const Interaction: FC<{
+//   handleAddComment: (
+//     content: string,
+//     rootCommentId?: string,
+//     meetioneeId?: string,
+//   ) => void
+
+// 下面这些可以直接传 icon 进来。但不管怎样应该先把 reply 不放到 comment 里面
+// handleLikeNote: () => void
+// handleCancelLikeNote: () => void
+// handleCollectNote: () => void
+
+// isLiked: boolean
+// isCollected: boolean

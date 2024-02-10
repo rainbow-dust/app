@@ -1,3 +1,4 @@
+import { createRef, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import {
@@ -5,14 +6,45 @@ import {
   ReplierContextType,
   useReplier,
 } from '~/hooks/useReplier'
+import { addComment } from '~/services'
 
 import { Comments } from './components/Comments'
 import { Content } from './components/Content'
+import { Replier } from './components/Interaction'
 
 export const Detail = () => {
   const { id } = useParams()
   const replier = useReplier()
   const navigate = useNavigate()
+
+  const { setReplier } = useContext(ReplierContext)
+  const CommentsRef = createRef()
+
+  const handleAddComment = async (
+    content: string,
+    rootCommentId?: string,
+    meetioneeId?: string,
+  ) => {
+    await addComment({
+      content,
+      note_id: id as string,
+      root_comment_id: rootCommentId,
+      mentionee_id: meetioneeId,
+    })
+
+    if (rootCommentId) {
+      CommentsRef.current?.unfoldReply(rootCommentId)
+    } else {
+      CommentsRef.current?.fetchRootComments(id as string)
+    }
+    setReplier({
+      isActive: false,
+      rootCommentId: undefined,
+      noteId: '',
+      meetionee: undefined,
+    })
+  }
+
   return (
     <div
       style={{
@@ -46,7 +78,8 @@ export const Detail = () => {
           <hr />
           <h4>Comments</h4>
           <ReplierContext.Provider value={replier as ReplierContextType}>
-            <Comments noteId={id} />
+            <Comments noteId={id} onRef={CommentsRef} />
+            <Replier handleAddComment={handleAddComment} />
           </ReplierContext.Provider>
         </>
       )}

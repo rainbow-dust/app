@@ -1,22 +1,15 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useImperativeHandle, useState } from 'react'
 import { BsChatDots } from 'react-icons/bs'
 
 import Avatar from '~/components/Avatar'
 import { IconLike } from '~/components/Icons'
-// 我也想加动画...可是下面这个东西打包一下子多了 300kb 比我的整个项目还大...
-// import UseAnimations from 'react-useanimations';
-// import heart from 'react-useanimations/lib/heart';
-
 import { ReplierContext } from '~/hooks/useReplier'
 import {
-  addComment,
   cancelLikeComment,
   getChildComments,
   getRootComments,
   likeComment,
 } from '~/services'
-
-import { Replier } from './Interaction'
 
 interface Comment {
   _id: string
@@ -176,7 +169,13 @@ export const RenderComment: FC<{
   )
 }
 
-export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
+export const Comments: FC<{
+  onRef?: React.Ref<{
+    fetchRootComments: (noteId: string) => void
+    unfoldReply: (commentId: string) => void
+  }>
+  noteId: string
+}> = ({ noteId, onRef }) => {
   const [rootComments, setRootComments] = useState<Comment[]>([])
   const fetchRootComments = async (noteId: string) => {
     const res = await getRootComments(noteId)
@@ -219,25 +218,14 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
     })
   }
 
-  const handleAddComment = async (
-    content: string,
-    rootCommentId?: string,
-    meetioneeId?: string,
-  ) => {
-    await addComment({
-      content,
-      note_id: noteId,
-      root_comment_id: rootCommentId,
-      mentionee_id: meetioneeId,
-    })
-    fetchRootComments(noteId)
-    setReplier({
-      isActive: false,
-      rootCommentId: undefined,
-      noteId: '',
-      meetionee: undefined,
-    })
-  }
+  useImperativeHandle(
+    onRef,
+    () => ({
+      fetchRootComments,
+      unfoldReply,
+    }),
+    [fetchRootComments, unfoldReply],
+  )
 
   return (
     <>
@@ -267,18 +255,6 @@ export const Comments: FC<{ noteId: string }> = ({ noteId }) => {
           ))}
         </RenderComment>
       ))}
-      <div>
-        {/* 
-         Interaction 可以是一堆幌子，而真正的评论框是在 Replier 里面的...
-         不然要传的参数函数太多了...
-        */}
-        <Replier handleAddComment={handleAddComment} />
-        {/* <Interaction
-          handleAddComment={handleAddComment}
-          handleLikeNote={() => {}}
-          handleCollectNote={() => {}}
-        /> */}
-      </div>
     </>
   )
 }

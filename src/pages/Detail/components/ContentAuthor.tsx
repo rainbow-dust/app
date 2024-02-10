@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import Avatar from '~/components/Avatar'
+
 export const ContentAuthor: FC<{
   author?: { username: string; avatar_url: string }
 }> = ({ author }) => {
@@ -13,15 +15,11 @@ export const ContentAuthor: FC<{
         borderBottom: '1px solid var(--border-color)',
       }}
     >
-      <img
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          marginRight: '10px',
-        }}
-        src={import.meta.env.VITE_FURINA_APP_IMG_URL + author?.avatar_url}
-        alt="avatar"
+      <Avatar
+        imageUrl={import.meta.env.VITE_FURINA_APP_IMG_URL + author?.avatar_url}
+        altText={author?.username || 'avatar'}
+        size={40}
+        peopleLink={`/people/${author?.username}`}
       />
       <span>{author?.username}</span>
     </div>

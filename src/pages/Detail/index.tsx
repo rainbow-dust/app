@@ -1,24 +1,34 @@
 import { createRef, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import useSWR from 'swr'
 
+import { IconLike } from '~/components/Icons'
 import {
   ReplierContext,
   ReplierContextType,
   useReplier,
 } from '~/hooks/useReplier'
-import { addComment } from '~/services'
+import { Note, addComment, cancelLikeNote, getNote, likeNote } from '~/services'
 
-import { Comments } from './components/Comments'
-import { Content } from './components/Content'
-import { Replier } from './components/Interaction'
+import { Comments, CommentsRef } from './components/Comments'
+import { ContentAuthor } from './components/ContentAuthor'
+import { ContentNote } from './components/ContentNote'
+import { ContentPics } from './components/ContentPics'
+import { Interaction } from './components/Interaction'
 
 export const Detail = () => {
   const { id } = useParams()
   const replier = useReplier()
   const navigate = useNavigate()
 
+  const { data: note, mutate: mutateNote } = useSWR<Note>(
+    ['key-/note/query/detail', id],
+    () => getNote(id as string),
+  )
+
+  // 评论回复相关
   const { setReplier } = useContext(ReplierContext)
-  const CommentsRef = createRef()
+  const CommentsRef = createRef<CommentsRef>()
 
   const handleAddComment = async (
     content: string,
@@ -33,9 +43,9 @@ export const Detail = () => {
     })
 
     if (rootCommentId) {
-      CommentsRef.current?.unfoldReply(rootCommentId)
+      CommentsRef.current!.unfoldReply(rootCommentId)
     } else {
-      CommentsRef.current?.fetchRootComments(id as string)
+      CommentsRef.current!.fetchRootComments(id as string)
     }
     setReplier({
       isActive: false,
@@ -44,6 +54,8 @@ export const Detail = () => {
       meetionee: undefined,
     })
   }
+
+  if (!note) return <div>loading...</div>
 
   return (
     <div
@@ -74,12 +86,41 @@ export const Detail = () => {
           >
             Back←
           </button>
-          <Content noteId={id} />
+          <div className="content">
+            <ContentAuthor author={note?.author} />
+            <ContentPics pic_list={note?.pic_list} />
+            <ContentNote
+              title={note?.title}
+              content={note?.content}
+              tags={note?.tags}
+            />
+          </div>
           <hr />
           <h4>Comments</h4>
           <ReplierContext.Provider value={replier as ReplierContextType}>
             <Comments noteId={id} onRef={CommentsRef} />
-            <Replier handleAddComment={handleAddComment} />
+            <Interaction
+              handleAddComment={handleAddComment}
+              Like={() => {
+                return (
+                  <>
+                    <IconLike
+                      isLiked={note?.is_liked || false}
+                      handleLike={async () => {
+                        await likeNote(note._id)
+                        mutateNote()
+                      }}
+                      handleCancelLike={async () => {
+                        await cancelLikeNote(note._id)
+                        mutateNote()
+                      }}
+                    />
+                    {note?.like_count}
+                  </>
+                )
+              }}
+              Collect={() => <div>collect</div>}
+            />
           </ReplierContext.Provider>
         </>
       )}

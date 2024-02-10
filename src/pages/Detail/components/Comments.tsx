@@ -169,11 +169,13 @@ export const RenderComment: FC<{
   )
 }
 
+export interface CommentsRef {
+  fetchRootComments: (noteId: string) => void
+  unfoldReply: (commentId: string) => void
+}
+
 export const Comments: FC<{
-  onRef?: React.Ref<{
-    fetchRootComments: (noteId: string) => void
-    unfoldReply: (commentId: string) => void
-  }>
+  onRef?: React.Ref<CommentsRef>
   noteId: string
 }> = ({ noteId, onRef }) => {
   const [rootComments, setRootComments] = useState<Comment[]>([])
@@ -218,14 +220,10 @@ export const Comments: FC<{
     })
   }
 
-  useImperativeHandle(
-    onRef,
-    () => ({
-      fetchRootComments,
-      unfoldReply,
-    }),
-    [fetchRootComments, unfoldReply],
-  )
+  useImperativeHandle(onRef, () => ({
+    fetchRootComments,
+    unfoldReply,
+  }))
 
   return (
     <>

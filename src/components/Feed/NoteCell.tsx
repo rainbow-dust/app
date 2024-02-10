@@ -32,6 +32,11 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
           style={{
             fontSize: '16px',
             marginBottom: '10px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 1,
           }}
         >
           {note.title}
@@ -85,6 +90,7 @@ export const NoteCell: FC<{ content: Note }> = ({ content }) => {
             <span
               style={{
                 marginLeft: '5px',
+                fontSize: '12px',
               }}
             >
               {note?.like_count}

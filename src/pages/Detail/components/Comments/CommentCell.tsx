@@ -96,7 +96,7 @@ export const CommentCell: FC<{
             >
               <span
                 style={{
-                  marginRight: '8px',
+                  marginRight: '12px',
                 }}
               >
                 <IconLike
@@ -112,7 +112,8 @@ export const CommentCell: FC<{
                 />
                 <span
                   style={{
-                    marginLeft: '8px',
+                    marginLeft: '4px',
+                    fontSize: '12px',
                   }}
                 >
                   {comment.like_count}
@@ -122,14 +123,13 @@ export const CommentCell: FC<{
               {/* 根评论回复不传 mentionee */}
               <span
                 style={{
-                  marginLeft: '10px',
+                  marginRight: '12px',
                 }}
               >
                 <BsChatDots
                   style={{
                     color: 'var(--theme-color)',
                     cursor: 'pointer',
-                    marginRight: '5px',
                     verticalAlign: 'middle',
                   }}
                   onClick={() => {
@@ -146,7 +146,8 @@ export const CommentCell: FC<{
                 />
                 <span
                   style={{
-                    marginRight: '5px',
+                    marginLeft: '4px',
+                    fontSize: '12px',
                   }}
                 >
                   {comment.child_comment_count ??

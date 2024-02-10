@@ -19,7 +19,12 @@ const Avatar: React.FC<AvatarProps> = ({
       <img
         src={imageUrl}
         alt={altText}
-        style={{ width: size, height: size, borderRadius: '50%' }}
+        style={{
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          verticalAlign: 'middle',
+        }}
       />
     </Link>
   )

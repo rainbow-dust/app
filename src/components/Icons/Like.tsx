@@ -15,7 +15,7 @@ const IconLike: FC<IconLikeProps> = ({
   handleCancelLike,
 }) => {
   return (
-    <span>
+    <>
       {isLiked ? (
         <BsFillHeartFill
           className={[Classes['like'], Classes['ed']].join(' ')}
@@ -27,7 +27,7 @@ const IconLike: FC<IconLikeProps> = ({
           onClick={handleLike}
         />
       )}
-    </span>
+    </>
   )
 }
 

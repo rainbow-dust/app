@@ -34,7 +34,7 @@ export const ImgUpload: React.FC<{
   return (
     <>
       <div className={Classes['img-upload']}>
-        <div className={Classes['img-upload-item']}>
+        <div>
           <input
             type="file"
             id="file"
@@ -47,7 +47,7 @@ export const ImgUpload: React.FC<{
           />
 
           <label htmlFor="file">
-            <div>
+            <div className={Classes['img-upload-item']}>
               <div className={Classes['img-upload-item-inner']}>+</div>
             </div>
           </label>

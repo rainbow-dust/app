@@ -54,7 +54,7 @@ export const Feed: FC<{
     notes.forEach((note) => {
       const height =
         Math.max(
-          Math.floor(note.cover?.height * (width / note.cover?.width)) +
+          Math.floor(note?.cover?.height * (width / note?.cover?.width)) +
             BOTTOM_GAP,
           200,
         ) || 100

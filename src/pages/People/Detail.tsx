@@ -150,7 +150,13 @@ const RelatedNotes = ({ username }: { username: string }) => {
           },
         ]}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => {
+          if (tab === activeTab) return
+          else {
+            setSize(1)
+            setActiveTab(tab)
+          }
+        }}
       />
 
       {activeTab === 'collections' ? (

@@ -18,9 +18,11 @@ export const useNotice = () => {
     const mo = () => {
       if (localStorage.getItem('token')) {
         getUnReadNoticeCount().then((res) => {
+          setCount(res)
           if (res) {
-            setCount(res)
             window.document.title = `(${res}) 小猫喵喵喵`
+          } else {
+            window.document.title = `小猫喵喵喵`
           }
         })
       }

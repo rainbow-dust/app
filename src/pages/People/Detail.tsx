@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
+import Avatar from '~/components/Avatar'
 import { Feed } from '~/components/Feed'
 import { Tabs, useTabs } from '~/components/Tabs'
 import {
@@ -28,6 +29,7 @@ interface UserInfo {
   followees: UserInfo[]
   followers: UserInfo[]
   is_following: boolean
+  mutual_follows?: UserInfo[]
 }
 
 const UserInfo = ({ username }: { username: string }) => {
@@ -75,6 +77,28 @@ const UserInfo = ({ username }: { username: string }) => {
               followees: {user?.followees.length},{' '}
               {user?.followees.map((user) => user.username).join(', ')}
             </p>
+            {user?.mutual_follows && (
+              <p>
+                我关注的人中，有{user?.mutual_follows?.length} 人关注了 ta,
+                分别是:{' '}
+                {user?.mutual_follows?.map((user) => {
+                  return (
+                    <>
+                      <Avatar
+                        imageUrl={
+                          import.meta.env.VITE_FURINA_APP_IMG_URL +
+                          user?.avatar_url
+                        }
+                        altText={user?.username || 'avatar'}
+                        size={16}
+                        peopleLink={`/people/${user?.username}`}
+                      />
+                      {user.username + ''}
+                    </>
+                  )
+                })}
+              </p>
+            )}
           </div>
           {username === localStorage.getItem('username') ? (
             <button

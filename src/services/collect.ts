@@ -1,4 +1,14 @@
-import { BASE_URL } from './index'
+import { BASE_URL, Note } from './index'
+
+export interface Collect {
+  _id: string
+  name: string
+  desc: string
+  notes?: Note[]
+  creator?: {
+    username: string
+  }
+}
 
 export function getCollects(param: {
   username: string
@@ -11,7 +21,7 @@ export function getCollects(param: {
     .then((res) => res.json())
     .then((res) => {
       if (res.error) throw res.error
-      return res
+      return res.data
     })
 }
 

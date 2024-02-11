@@ -1,10 +1,20 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
 import { Tabs, useTabs } from '~/components/Tabs'
-import { Note, cancelFollow, follow, getNotes, getUserLikes } from '~/services'
+import {
+  Collect,
+  Note,
+  cancelFollow,
+  createCollect,
+  follow,
+  getCollects,
+  getNotes,
+  getUserLikes,
+} from '~/services'
 
 import Classes from './Detail.module.css'
 
@@ -129,6 +139,32 @@ const RelatedNotes = ({ username }: { username: string }) => {
     isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
   const isRefreshing = isValidating && data && data.length === size
 
+  const [collects, setCollects] = useState<Collect[]>([])
+
+  useEffect(() => {
+    if (activeTab === 'collections') {
+      // fetch collections
+      getCollects({ username }).then(setCollects)
+    }
+  }, [activeTab, username])
+
+  const [newCollect, setNewCollect] = useState({
+    name: '',
+    desc: '',
+  })
+
+  const handleCreateCollect = () => {
+    if (!newCollect.name) return
+    if (!newCollect.desc) return
+    createCollect(newCollect).then(() => {
+      setNewCollect({
+        name: '',
+        desc: '',
+      })
+      getCollects({ username }).then(setCollects)
+    })
+  }
+
   return (
     <>
       <Tabs
@@ -160,7 +196,55 @@ const RelatedNotes = ({ username }: { username: string }) => {
       />
 
       {activeTab === 'collections' ? (
-        <div>collections</div>
+        <div>
+          collections
+          <form>
+            {/* 新建用的
+            
+            ...考虑拆一拆吧...有点长了
+            */}
+            <input
+              type="text"
+              value={newCollect.name}
+              onChange={(e) =>
+                setNewCollect({ ...newCollect, name: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              value={newCollect.desc}
+              onChange={(e) =>
+                setNewCollect({ ...newCollect, desc: e.target.value })
+              }
+            />
+            <button type="button" onClick={handleCreateCollect}>
+              create
+            </button>
+          </form>
+          <div>
+            {collects.map((collect) => (
+              <div key={collect._id}>
+                <div
+                  style={{
+                    cursor: 'pointer',
+                    fontSize: '1.2em',
+                  }}
+                >
+                  {collect.name}
+                </div>
+                <div
+                  style={{
+                    color: 'gray',
+                    fontSize: '1em',
+                  }}
+                >
+                  {collect.desc}
+                </div>
+                <div>{collect.notes?.length}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         <Feed
           notes={notes}

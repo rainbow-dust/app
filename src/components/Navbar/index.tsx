@@ -6,6 +6,7 @@ import { CurrentUserContext } from '~/hooks/useCurrentUser'
 import { queryTags } from '~/services'
 
 import { LoginOrRegisterModal } from '../Modal/LoginOrRegister'
+import { useModal } from '../Modal/base'
 import Classes from './index.module.css'
 
 export const NavBar = () => {
@@ -20,11 +21,8 @@ export const NavBar = () => {
       token: '',
     })
   }
-  const [isLoginOrRegisterModalOpen, setIsLoginOrRegisterModalOpen] =
-    useState(false)
-  const toggleLoginOrRegisterModal = () => {
-    setIsLoginOrRegisterModalOpen(!isLoginOrRegisterModalOpen)
-  }
+
+  const { isOpen, toggle } = useModal()
 
   // 亮暗
   type Theme = 'light' | 'dark' | 'system' | null
@@ -93,13 +91,10 @@ export const NavBar = () => {
             </button>
           </div>
         ) : (
-          <button onClick={toggleLoginOrRegisterModal}>登录</button>
+          <button onClick={toggle}>登录</button>
         )}
       </div>
-      <LoginOrRegisterModal
-        isOpen={isLoginOrRegisterModalOpen}
-        toggle={toggleLoginOrRegisterModal}
-      />
+      <LoginOrRegisterModal isOpen={isOpen} toggle={toggle} />
 
       <div className={Classes['toggle-theme']}>
         {theme === 'dark' ? (

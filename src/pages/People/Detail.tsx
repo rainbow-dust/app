@@ -100,7 +100,7 @@ const UserInfo = ({ username }: { username: string }) => {
 }
 
 const RelatedNotes = ({ username }: { username: string }) => {
-  const { activeTab, setActiveTab } = useTabs()
+  const { activeTab, setActiveTab } = useTabs('creations')
   const { data, size, setSize, isValidating, isLoading } = useSWRInfinite<
     Note[]
   >(
@@ -112,9 +112,12 @@ const RelatedNotes = ({ username }: { username: string }) => {
             pageSize: PAGE_SIZE,
             username,
           })
-        : getUserLikes(username)
-      // getUserLikes... 也许后端得改一改... 目前我是把 like 存到了 note 和 user 里...只是纯粹的关系... 像时间戳这种东西就没存了... 泔! 怎么办! 现在这里会报错是因为 like 的查询完全没分页也不知道该怎么分页...或者就先当这部分数据不重要好了
-      // 我简直...就是个笨蛋
+        : activeTab === 'likes'
+        ? getUserLikes(username, {
+            pageCurrent: (index as number) + 1,
+            pageSize: PAGE_SIZE,
+          })
+        : []
     },
   )
 
@@ -140,23 +143,31 @@ const RelatedNotes = ({ username }: { username: string }) => {
             label: '喜欢',
             content: <div>喜欢</div>,
           },
+          {
+            id: 'collections',
+            label: '收藏',
+            content: <div>收藏</div>,
+          },
         ]}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
 
-      {activeTab}
-      <Feed
-        notes={notes}
-        options={{
-          isEmpty,
-          isReachingEnd,
-          isRefreshing,
-          isLoadingMore,
-          setSize,
-          size,
-        }}
-      />
+      {activeTab === 'collections' ? (
+        <div>collections</div>
+      ) : (
+        <Feed
+          notes={notes}
+          options={{
+            isEmpty,
+            isReachingEnd,
+            isRefreshing,
+            isLoadingMore,
+            setSize,
+            size,
+          }}
+        />
+      )}
     </>
   )
 }

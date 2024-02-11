@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
 import { IconCollect, IconLike } from '~/components/Icons'
+import { CollectPopup } from '~/components/Modal/CollectPopup'
+import { useModal } from '~/components/Modal/base'
 import { getDate } from '~/hooks/useDate'
 import {
   ReplierContext,
@@ -54,6 +56,7 @@ export const Detail = () => {
       meetionee: undefined,
     })
   }
+  const { isOpen, toggle } = useModal()
 
   if (!id) return <div>note not found...</div>
 
@@ -148,6 +151,8 @@ export const Detail = () => {
                     // mutateNote()
                   }}
                   handleCancelCollect={async () => {
+                    toggle()
+                    console.log('toggle')
                     // await cancelLikeNote(note._id)
                     // mutateNote()
                   }}
@@ -158,6 +163,11 @@ export const Detail = () => {
           />
         </ReplierContext.Provider>
       </>
+      <CollectPopup
+        isOpen={isOpen}
+        toggle={toggle}
+        children={<div>CollectPopup</div>}
+      />
     </div>
   )
 }

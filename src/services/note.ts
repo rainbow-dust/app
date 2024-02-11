@@ -102,13 +102,17 @@ export async function cancelLikeNote(id: string) {
 
 // 获取点赞列表
 
-export async function getUserLikes(username: string) {
+export async function getUserLikes(
+  username: string,
+  noteQuery: { pageCurrent: number; pageSize: number },
+) {
   return fetch(`${BASE_URL}/note/${username}/likes`, {
-    method: 'GET',
+    method: 'POST',
+    body: JSON.stringify(noteQuery),
   })
     .then((res) => res.json())
     .then((res) => {
       if (res.error) throw res.error
-      return res.data
+      return res.noteList
     })
 }

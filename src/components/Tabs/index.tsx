@@ -10,8 +10,8 @@ interface TabsProps {
   setActiveTab: (tabId: string) => void
 }
 
-const useTabs = () => {
-  const [activeTab, setActiveTab] = useState('')
+const useTabs = (tab: string) => {
+  const [activeTab, setActiveTab] = useState(tab)
   return {
     activeTab,
     setActiveTab,

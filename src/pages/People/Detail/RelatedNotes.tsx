@@ -1,144 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import useSWR from 'swr'
+import { Link } from 'react-router-dom'
 import useSWRInfinite from 'swr/infinite'
 
-import Avatar from '~/components/Avatar'
 import { Feed } from '~/components/Feed'
 import { Tabs, useTabs } from '~/components/Tabs'
 import {
   Collect,
   Note,
-  cancelFollow,
   createCollect,
-  follow,
   getCollects,
   getNotes,
   getUserLikes,
 } from '~/services'
 
-import Classes from './Detail.module.css'
-
 const PAGE_SIZE = 10
 
-interface UserInfo {
-  username: string
-  avatar_url: string
-  password: string
-  bio: string
-  followees: UserInfo[]
-  followers: UserInfo[]
-  is_following: boolean
-  mutual_follows?: UserInfo[]
-}
-
-const UserInfo = ({ username }: { username: string }) => {
-  const navigate = useNavigate()
-  const fetcher = (url: string) =>
-    fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((res) => res.json())
-
-  const {
-    data: user,
-    error: userError,
-    isLoading: userLoading,
-    mutate: mutateUser,
-  } = useSWR<UserInfo>(`/api/user/info/${username}`, fetcher)
-
-  return (
-    <div>
-      {userLoading ? (
-        <div>Loading...</div>
-      ) : userError ? (
-        <div>Error</div>
-      ) : (
-        <div className="info">
-          <h1>Info</h1>
-          <div className={Classes['people-info']}>
-            <div className={Classes['people-avatar']}>
-              <img
-                src={import.meta.env.VITE_FURINA_APP_IMG_URL + user?.avatar_url}
-                alt={user?.username}
-              />
-            </div>
-            <div>{user?.username}</div>
-            <div>{user?.bio}</div>
-          </div>
-          <div>
-            <p>
-              followers: {user?.followers.length},{' '}
-              {user?.followers.map((user) => user.username).join(', ')}
-            </p>
-            <p>
-              followees: {user?.followees.length},{' '}
-              {user?.followees.map((user) => user.username).join(', ')}
-            </p>
-            {user?.mutual_follows && (
-              <p>
-                我关注的人中，有{user?.mutual_follows?.length} 人关注了 ta,
-                分别是:{' '}
-                {user?.mutual_follows?.map((user) => {
-                  return (
-                    <>
-                      <Avatar
-                        imageUrl={
-                          import.meta.env.VITE_FURINA_APP_IMG_URL +
-                          user?.avatar_url
-                        }
-                        altText={user?.username || 'avatar'}
-                        size={16}
-                        peopleLink={`/people/${user?.username}`}
-                      />
-                      {user.username + ''}
-                    </>
-                  )
-                })}
-              </p>
-            )}
-          </div>
-          {username === localStorage.getItem('username') ? (
-            <button
-              onClick={() => {
-                navigate(`/people/edit`)
-              }}
-            >
-              go to edit
-            </button>
-          ) : user?.is_following ? (
-            <button
-              onClick={async () => {
-                await cancelFollow(username)
-                mutateUser()
-              }}
-            >
-              取消关注
-            </button>
-          ) : (
-            <button
-              onClick={async () => {
-                await follow(username)
-                mutateUser()
-              }}
-            >
-              关注
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-
-const RelatedNotes = ({ username }: { username: string }) => {
+export const RelatedNotes = ({ username }: { username: string }) => {
   const { activeTab, setActiveTab } = useTabs('creations')
   const { data, size, setSize, isValidating, isLoading } = useSWRInfinite<
     Note[]
   >(
-    (index: number) => ['key-username/note/query/list' + activeTab, index], // 缓存什么的和 key相关
+    (index: number) => [
+      'key-username/note/query/list' + activeTab + username,
+      index,
+    ], // 缓存什么的和 key相关
     ([, index]: [string, number]) => {
       return activeTab === 'creations'
         ? getNotes({
@@ -283,18 +168,5 @@ const RelatedNotes = ({ username }: { username: string }) => {
         />
       )}
     </>
-  )
-}
-
-export const PeopleDetail = () => {
-  const { username } = useParams<{ username: string }>()
-  return (
-    <div>
-      <UserInfo username={username as string} />
-      <hr />
-      <div className={Classes['people-creations']}>
-        <RelatedNotes username={username as string} />
-      </div>
-    </div>
   )
 }

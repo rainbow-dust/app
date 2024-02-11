@@ -67,6 +67,17 @@ export async function getNotes({
     })
 }
 
+export async function getRecommendNotes() {
+  return fetch(`${BASE_URL}/note/recommend`, {
+    method: 'GET',
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.error) throw res.error
+      return res.noteList
+    })
+}
+
 export async function getNote(id: string) {
   return fetch(`${BASE_URL}/note/${id}`, {
     method: 'GET',

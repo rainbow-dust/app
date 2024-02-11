@@ -17,6 +17,7 @@ import type { Note } from '~/services'
 import { Comments, CommentsRef } from './components/Comments'
 import { Author, NoteText, Pics } from './components/Content'
 import { Interactions } from './components/Interactions'
+import { CollectList } from './components/Interactions/CollectList'
 
 export const Detail = () => {
   const { id } = useParams()
@@ -166,7 +167,7 @@ export const Detail = () => {
       <CollectPopup
         isOpen={isOpen}
         toggle={toggle}
-        children={<div>CollectPopup</div>}
+        children={<CollectList noteId={id as string} />}
       />
     </div>
   )

@@ -13,6 +13,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 import { HomeLayout } from '~/layout/Home'
+import { Collect } from '~/pages/Collect'
 import { Detail } from '~/pages/Detail'
 import { Explore } from '~/pages/Explore'
 import { Notice } from '~/pages/Notice'
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: 'publish',
         Component: Publish,
+      },
+      {
+        path: 'collect/:id',
+        Component: Collect,
       },
       {
         path: '*',

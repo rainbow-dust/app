@@ -12,8 +12,3 @@
   z-index: 1000;
 }
 
-.modal-content {
-  background-color: var(--bg-color);
-  padding: 1em;
-  position: relative;
-}

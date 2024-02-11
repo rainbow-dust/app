@@ -18,11 +18,36 @@ export const LoginOrRegisterModal = ({
   const [isLogin, setIsLogin] = useState<boolean>(true)
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
-      {isLogin ? (
-        <Login toggle={toggle} setIsLogin={setIsLogin} />
-      ) : (
-        <Register setIsLogin={setIsLogin} />
-      )}
+      <div
+        style={{
+          backgroundColor: 'var(--bg-color)',
+          padding: '20px',
+          borderRadius: '10px',
+          border: '1px solid var(--border-color)',
+          boxShadow: '0 0 10px 0 var(--border-color)',
+          position: 'relative',
+        }}
+      >
+        <button
+          onClick={() => {
+            toggle()
+          }}
+          style={{
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer',
+          }}
+        >
+          关闭
+        </button>
+
+        {isLogin ? (
+          <Login toggle={toggle} setIsLogin={setIsLogin} />
+        ) : (
+          <Register setIsLogin={setIsLogin} />
+        )}
+      </div>
     </Modal>
   )
 }

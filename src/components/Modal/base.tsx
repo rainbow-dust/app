@@ -42,15 +42,7 @@ const Modal = ({ isOpen, toggle, children }: ModalProps) => {
                 }
               }}
             >
-              <div className={Classes['modal-content']}>
-                {children}
-                <button
-                  onClick={toggle}
-                  style={{ position: 'absolute', top: 0, right: 0 }}
-                >
-                  关闭
-                </button>
-              </div>
+              {children}
             </div>
           )}
         </>,

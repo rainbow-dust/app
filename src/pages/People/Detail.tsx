@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
@@ -230,7 +230,7 @@ const RelatedNotes = ({ username }: { username: string }) => {
                     fontSize: '1.2em',
                   }}
                 >
-                  {collect.name}
+                  <Link to={`/collect/${collect._id}`}>{collect.name}</Link>
                 </div>
                 <div
                   style={{

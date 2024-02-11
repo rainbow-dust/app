@@ -267,8 +267,8 @@ export const PeopleDetail = () => {
   return (
     <div>
       <UserInfo username={username as string} />
+      <hr />
       <div className={Classes['people-creations']}>
-        <h2>Creations</h2>
         <RelatedNotes username={username as string} />
       </div>
     </div>

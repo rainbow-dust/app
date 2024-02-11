@@ -8,6 +8,7 @@ export interface Collect {
   creator?: {
     username: string
   }
+  is_collected?: boolean
 }
 
 export function getCollects(param: {

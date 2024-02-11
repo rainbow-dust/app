@@ -17,13 +17,28 @@ export const useNotice = () => {
   useEffect(() => {
     const mo = () => {
       if (localStorage.getItem('token')) {
-        getUnReadNoticeCount().then((res) => setCount(res))
+        getUnReadNoticeCount().then((res) => {
+          if (res) {
+            setCount(res)
+            window.document.title = `(${res}) 小猫喵喵喵`
+          }
+        })
       }
     }
-    window.addEventListener('click', mo)
+    window.addEventListener('click', debounce(mo, 1000))
     return () => {
-      window.removeEventListener('click', mo)
+      window.removeEventListener('click', debounce(mo, 1000))
     }
   }, [])
   return { count, setCount }
+}
+
+function debounce(fn: () => void, delay: number) {
+  let timer: number
+  return function () {
+    clearTimeout(timer)
+    timer = window.setTimeout(() => {
+      fn()
+    }, delay)
+  }
 }

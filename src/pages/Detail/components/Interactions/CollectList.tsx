@@ -5,19 +5,13 @@ import useSWR from 'swr'
 
 import { Message } from '~/components/Message'
 import {
+  Collect,
   addNoteToCollect,
   getCollects,
   removeNoteFromCollect,
 } from '~/services'
 
 import Classes from './CollectList.module.css'
-
-interface CollectItem {
-  _id: string
-  name: string
-  desc: string
-  is_collected: boolean
-}
 
 interface CollectListProps {
   noteId: string
@@ -61,7 +55,7 @@ export const CollectList: React.FC<CollectListProps> = (props) => {
   return (
     <div className={Classes['collect-list']}>
       {loading}
-      {collects?.map((collect: CollectItem) => (
+      {collects?.map((collect: Collect) => (
         <div key={collect._id} className={Classes['collect-item']}>
           <Link to={`/collect/${collect._id}`}>{collect.name}</Link>
           {collect.is_collected ? (

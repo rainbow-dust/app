@@ -16,6 +16,10 @@ interface UserInfo {
   followers: UserInfo[]
   is_following: boolean
   mutual_follows?: UserInfo[]
+
+  be_liked_count: number
+  be_collected_count: number
+  note_count: number
 }
 
 export const BaseInfo = ({ username }: { username: string }) => {
@@ -101,7 +105,8 @@ export const BaseInfo = ({ username }: { username: string }) => {
 
           <div className={Classes['people-active']}>
             <div className={Classes['people-active-count']}>
-              ❤ 0 喜欢 · 0 收藏
+              {user?.note_count} 发布 · {user?.be_liked_count} 喜欢 ·{' '}
+              {user?.be_collected_count} 收藏
             </div>
             <div className={Classes['people-active-follow']}>
               <div className={Classes['people-active-follow-count']}>

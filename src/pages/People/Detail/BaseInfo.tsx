@@ -5,7 +5,7 @@ import useSWR from 'swr'
 import Avatar from '~/components/Avatar'
 import { cancelFollow, follow } from '~/services'
 
-import Classes from './Detail.module.css'
+import Classes from './BaseInfo.module.css'
 
 interface UserInfo {
   username: string
@@ -40,70 +40,35 @@ export const BaseInfo = ({ username }: { username: string }) => {
   >('followers')
 
   return (
-    <div>
+    <>
       {userLoading ? (
         <div>Loading...</div>
       ) : userError ? (
         <div>Error</div>
       ) : (
-        <div className="info">
+        <div className={Classes['people']}>
           <div className={Classes['people-info']}>
             <div
+              className={Classes['people-info-cover']}
               style={{
-                background: `url(https://huamurui.github.io/biubiubiu.jpg) no-repeat center center`,
-                // 我希望背景图片只占一半总高度，宽度拉伸缩小，高度裁剪
-                backgroundSize: `cover`,
-                backgroundPosition: `center`,
-                height: `250px`,
-                width: `100%`,
+                background:
+                  'url(https://huamurui.github.io/biubiubiu.jpg) no-repeat cover center',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                height: '200px',
+                width: '100%',
               }}
             ></div>
-
-            <div
-              className={Classes['people-avatar']}
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '80px',
-              }}
-            >
+            <div className={Classes['people-info-avatar']}>
               <img
                 src={import.meta.env.VITE_FURINA_APP_IMG_URL + user?.avatar_url}
                 alt={user?.username}
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  border: '2px solid var(--border-color)',
-                  objectFit: 'cover',
-                  position: 'absolute',
-                  top: '-25px',
-                  left: '10%',
-                }}
               />
-              <div
-                style={{
-                  marginLeft: 'calc(10% + 120px)',
-                  marginTop: '10px',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {user?.username}
-                </div>
+              <div className={Classes['people-info-base']}>
+                <div className={Classes['username']}>{user?.username}</div>
                 <div>{user?.bio}</div>
               </div>
-              <div
-                style={{
-                  position: 'absolute',
-                  right: '10%',
-                  top: '15px',
-                }}
-              >
+              <div className={Classes['people-info-action']}>
                 {' '}
                 {username === localStorage.getItem('username') ? (
                   <button
@@ -135,72 +100,48 @@ export const BaseInfo = ({ username }: { username: string }) => {
               </div>
             </div>
           </div>
-          <div>❤ 0 喜欢 · 0 收藏</div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginTop: '20px',
-              fontSize: '14px',
-            }}
-          >
-            <div
-              style={{
-                paddingRight: '20px',
-                borderRight: '1px solid var(--border-color)',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                }}
-                onClick={() => setActiveMode('followers')}
-              >
-                {user?.followers.length}
-              </span>{' '}
-              关注 ta 的人
+
+          <div className={Classes['people-active']}>
+            <div className={Classes['people-active-count']}>
+              ❤ 0 喜欢 · 0 收藏
             </div>
-            <div
-              style={{
-                paddingRight: '20px',
-                borderRight: '1px solid var(--border-color)',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                }}
-                onClick={() => setActiveMode('followees')}
-              >
-                {user?.followees.length}
-              </span>
-              ta 关注的人
-            </div>
-            {user?.mutual_follows && (
-              <div>
-                我关注的人中，有
+            <div className={Classes['people-active-follow']}>
+              <div className={Classes['people-active-follow-count']}>
                 <span
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => setActiveMode('mutual_follows')}
+                  className={Classes['people-active-follow-count-number']}
+                  onClick={() => setActiveMode('followers')}
                 >
-                  {user?.mutual_follows?.length}
-                </span>{' '}
-                人关注了 ta
+                  {user?.followers.length}
+                </span>
+                关注 ta 的人
               </div>
-            )}
+              <div className={Classes['people-active-follow-count']}>
+                <span
+                  className={Classes['people-active-follow-count-number']}
+                  onClick={() => setActiveMode('followees')}
+                >
+                  {user?.followees.length}
+                </span>
+                ta 关注的人
+              </div>
+              {user?.mutual_follows && (
+                <div className={Classes['people-active-follow-count']}>
+                  我关注的人中，有
+                  <span
+                    className={Classes['people-active-follow-count-number']}
+                    onClick={() => setActiveMode('mutual_follows')}
+                  >
+                    {user?.mutual_follows?.length}
+                  </span>
+                  人关注了 ta
+                </div>
+              )}
+            </div>
+            {user && <PeopleList peopleList={user[activeMode] || []} />}
           </div>
-          {user && <PeopleList peopleList={user[activeMode] || []} />}
         </div>
       )}
-    </div>
+    </>
   )
 }
 

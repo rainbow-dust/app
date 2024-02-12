@@ -5,9 +5,11 @@
   font-weight: bold;
   border: none;
   outline: none;
-  border-bottom: 2px solid #eee;
+  padding: 20px 10px;
   caret-color: var(--theme-color);
-
+  border-radius: 5px 5px 0 0;
+  border-bottom: 2px solid var(--border-color);
+  box-sizing: border-box;
 }
 
 .content-textarea {
@@ -16,20 +18,22 @@
   font-size: 16px;
   border: none;
   outline: none;
-  border-bottom: 2px solid var(--border-color);
   resize: none;
   padding: 10px;
   box-sizing: border-box;
   caret-color: var(--theme-color);
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
 }
 
 .publish-button {
+  position: relative;
   width: 100px;
   height: 50px;
-  border: 1px solid var(--border-color);
-  margin: 5px;
-  position: relative;
+  margin: 5px 0;
+  font-size: 16px;
   color: var(--theme-color);
   background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
   cursor: pointer;
 }

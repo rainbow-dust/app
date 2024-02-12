@@ -40,6 +40,7 @@ Object.defineProperty(window, 'fetch', {
         .then(checkStatus)
         .catch((err) => {
           Message.error(err.message)
+          console.log(err)
           throw err
         })
       // checkStatus 这里可以做返回错误处理，实现返回拦截

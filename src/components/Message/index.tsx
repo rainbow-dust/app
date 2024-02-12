@@ -24,6 +24,7 @@ function createContainer() {
   if (!container) {
     container = document.createElement('div')
     container.setAttribute('id', CONTAINER_ID)
+    container.setAttribute('class', Classes['container'])
     document.body.appendChild(container)
   }
   return container

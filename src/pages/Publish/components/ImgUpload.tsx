@@ -34,24 +34,22 @@ export const ImgUpload: React.FC<{
   return (
     <>
       <div className={Classes['img-upload']}>
-        <div>
-          <input
-            type="file"
-            id="file"
-            accept="image/*"
-            multiple
-            onChange={handleFileChange}
-            style={{
-              display: 'none',
-            }}
-          />
+        <input
+          type="file"
+          id="file"
+          accept="image/*"
+          multiple
+          onChange={handleFileChange}
+          style={{
+            display: 'none',
+          }}
+        />
 
-          <label htmlFor="file">
-            <div className={Classes['img-upload-item']}>
-              <div className={Classes['img-upload-item-inner']}>+</div>
-            </div>
-          </label>
-        </div>
+        <label htmlFor="file">
+          <div className={Classes['img-upload-item']}>
+            <div className={Classes['img-upload-item-inner']}>+</div>
+          </div>
+        </label>
         {picList.map((pic, index) => (
           <div
             key={index}

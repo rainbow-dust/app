@@ -12,7 +12,15 @@ export const NoteText: FC<{
   return (
     <>
       <h2>{title}</h2>
-      <p>{content}</p>
+      <p
+        style={{
+          // 换行&空格处理
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+        }}
+      >
+        {content}
+      </p>
       {tags?.map((tag) => (
         <span
           key={tag._id}

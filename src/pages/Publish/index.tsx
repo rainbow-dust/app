@@ -68,30 +68,29 @@ export const Publish: React.FC = () => {
 
   return (
     <div>
-      <h1>Content Publish Page</h1>
       <form onSubmit={handleSubmit}>
+        <ImgUpload picList={picList} setPicList={setPicList} />
         <div>
           <input
             type="text"
             id="title"
-            placeholder="Title"
+            placeholder="填写标题会变可爱哦~"
             value={title}
             onChange={handleTitleChange}
             className={Classes['title-input']}
             style={{}}
           />
-        </div>
 
-        <div>
           <textarea
             id="content"
-            placeholder="type your content here"
+            placeholder="添加正文"
             value={content}
             onChange={handleContentChange}
             className={Classes['content-textarea']}
             style={{}}
           />
         </div>
+
         <div
           style={{
             display: 'flex',
@@ -121,10 +120,8 @@ export const Publish: React.FC = () => {
             </button>
           )}
         </div>
-        <ImgUpload picList={picList} setPicList={setPicList} />
-        <div>i have read and agree to xxxxxxx</div>
         <button type="submit" className={Classes['publish-button']}>
-          Publish
+          发布~
         </button>
       </form>
     </div>

@@ -30,14 +30,16 @@ enum NoticeType {
   comment = 'comment',
   follow = 'follow',
   system = 'system',
+  collect = 'collect',
 }
 
 // type to icon
 const noticeTypeToIcon = {
-  like: '💖',
+  like: '❤',
   comment: '💬',
   follow: '👤',
   system: '📢',
+  collect: '⭐️',
 }
 
 export const Notice = () => {

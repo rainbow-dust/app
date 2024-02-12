@@ -1,4 +1,5 @@
 import { createRef, useContext } from 'react'
+import { BsChatDots } from 'react-icons/bs'
 import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
@@ -139,28 +140,72 @@ export const Detail = () => {
                       mutateNote()
                     }}
                   />
-                  {note?.like_count}
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      margin: '0 4px',
+                    }}
+                  >
+                    {note?.like_count}
+                  </span>
                 </>
               )
             }}
             Collect={() => {
               return (
-                <IconCollect
-                  isCollected={true}
-                  handleCollect={async () => {
-                    // await likeNote(note._id)
-                    // mutateNote()
-                  }}
-                  handleCancelCollect={async () => {
-                    toggle()
-                    console.log('toggle')
-                    // await cancelLikeNote(note._id)
-                    // mutateNote()
-                  }}
-                />
+                <>
+                  <IconCollect
+                    isCollected={true}
+                    handleCollect={async () => {
+                      // await likeNote(note._id)
+                      // mutateNote()
+                    }}
+                    handleCancelCollect={async () => {
+                      toggle()
+                      console.log('toggle')
+                      // await cancelLikeNote(note._id)
+                      // mutateNote()
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      margin: '0 4px',
+                    }}
+                  >
+                    {note?.collect_count}
+                  </span>
+                </>
               )
             }}
-            // 短按是放到默认收藏夹，长按是吊起收藏夹选择...那怎么才能确定有没有收藏呢....
+            Comment={() => {
+              return (
+                <>
+                  <BsChatDots
+                    style={{
+                      verticalAlign: 'middle',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      setReplier({
+                        isActive: true,
+                        rootCommentId: undefined,
+                        noteId: id as string,
+                        meetionee: undefined,
+                      })
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      margin: '0 4px',
+                    }}
+                  >
+                    {note?.comment_count}
+                  </span>
+                </>
+              )
+            }}
           />
         </ReplierContext.Provider>
       </>

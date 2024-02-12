@@ -11,7 +11,8 @@ export const Interactions: FC<{
   ) => void
   Like: FC
   Collect: FC
-}> = ({ handleAddComment, Like, Collect }) => {
+  Comment: FC
+}> = ({ handleAddComment, Like, Collect, Comment }) => {
   return (
     <div className={Classes['interactions']}>
       <div className={Classes['replier']}>
@@ -22,6 +23,9 @@ export const Interactions: FC<{
       </div>
       <div className={Classes['action']}>
         <Collect />
+      </div>
+      <div className={Classes['action']}>
+        <Comment />
       </div>
     </div>
   )

@@ -22,6 +22,8 @@ export interface Note {
   pic_list: Pic[]
   cover: Pic
   like_count: number
+  comment_count: number
+  collect_count: number
   is_liked: boolean
   created_at: string
 }

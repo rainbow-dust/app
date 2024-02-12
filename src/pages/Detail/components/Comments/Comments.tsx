@@ -102,7 +102,7 @@ export const Comments: FC<{
           color: 'var(--text-color-secondary)',
         }}
       >
-        共{rootComments.length}条评论
+        共{rootComments.length}条根评论
       </div>
       {rootComments?.map((comment) => (
         <CommentCell

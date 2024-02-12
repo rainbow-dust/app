@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
+import { BsSearch } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
 import { Search } from '~/components/Search'
@@ -23,7 +24,6 @@ export const NavBar = () => {
   }
 
   const { isOpen, toggle } = useModal()
-
   // 亮暗
   type Theme = 'light' | 'dark' | 'system' | null
   const [theme, setTheme] = useState<Theme>(
@@ -60,6 +60,8 @@ export const NavBar = () => {
     return options
   }
 
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
+
   return (
     <div className={Classes.navbar}>
       <div
@@ -69,7 +71,13 @@ export const NavBar = () => {
       >
         furina
       </div>
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
         <Search
           str={str}
           tags={tags}
@@ -77,55 +85,96 @@ export const NavBar = () => {
           setTags={setTags}
           searchFn={searchFn}
         ></Search>
+        <BsSearch
+          style={{
+            verticalAlign: 'middle',
+            marginLeft: '10px',
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            navigate(`/search/${str}`)
+          }}
+        />
       </div>
-      <div>
-        {currentUser.user.username ? (
-          <div>
-            <span>{currentUser.user.username}</span>
-            <button
-              onClick={() => {
-                logout()
-              }}
-            >
-              退出登录
-            </button>
-          </div>
-        ) : (
-          <button onClick={toggle}>登录</button>
-        )}
-      </div>
-      <LoginOrRegisterModal isOpen={isOpen} toggle={toggle} />
 
-      <div className={Classes['toggle-theme']}>
-        {theme === 'dark' ? (
+      <div
+        className={Classes['menu']}
+        style={{
+          position: 'relative',
+        }}
+      >
+        {/* ...local上再多存点东西...头像也要 */}
+        {
           <button
             onClick={() => {
-              setTheme('light')
-              localStorage.setItem('theme', 'light')
+              setIsDropDownOpen(!isDropDownOpen)
             }}
           >
-            🌚
+            ☰
           </button>
-        ) : theme === 'light' ? (
-          <button
-            onClick={() => {
-              setTheme('dark')
-              localStorage.setItem('theme', 'dark')
+        }
+
+        {isDropDownOpen && (
+          <div
+            className={Classes['menu-content']}
+            style={{
+              position: 'absolute',
+              top: '100%',
+              right: '0',
             }}
           >
-            🌞
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              setTheme('system')
-              localStorage.setItem('theme', 'system')
-            }}
-          >
-            🌞🌚
-          </button>
+            <div>
+              {currentUser.user.username ? (
+                <div>
+                  <span>{currentUser.user.username}</span>
+                  <button
+                    onClick={() => {
+                      logout()
+                    }}
+                  >
+                    退出登录
+                  </button>
+                </div>
+              ) : (
+                <button onClick={toggle}>登录</button>
+              )}
+            </div>
+
+            <div className={Classes['toggle-theme']}>
+              {theme === 'dark' ? (
+                <button
+                  onClick={() => {
+                    setTheme('light')
+                    localStorage.setItem('theme', 'light')
+                  }}
+                >
+                  🌚
+                </button>
+              ) : theme === 'light' ? (
+                <button
+                  onClick={() => {
+                    setTheme('dark')
+                    localStorage.setItem('theme', 'dark')
+                  }}
+                >
+                  🌞
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setTheme('system')
+                    localStorage.setItem('theme', 'system')
+                  }}
+                >
+                  🌞🌚
+                </button>
+              )}
+            </div>
+          </div>
         )}
       </div>
+
+      <LoginOrRegisterModal isOpen={isOpen} toggle={toggle} />
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { BsBell, BsHouse, BsPen, BsPerson } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
 import { NoticeContext } from '~/hooks/useNotice'
@@ -11,22 +12,22 @@ export const ChannelList: React.FC = () => {
   const ChannelList = [
     {
       name: '发现',
-      icon: '',
+      icon: <BsHouse />,
       path: '/explore',
     },
     {
       name: '发布',
-      icon: '',
+      icon: <BsPen />,
       path: '/publish',
     },
     {
       name: '通知' + (count ? `(${count})` : ''),
-      icon: '',
+      icon: <BsBell />,
       path: '/notice',
     },
     {
       name: '我的',
-      icon: '',
+      icon: <BsPerson />,
       path: '/people/' + localStorage.getItem('username'),
     },
   ]
@@ -45,7 +46,17 @@ export const ChannelList: React.FC = () => {
           }}
           onClick={() => navigate(item.path)}
         >
-          <div className="cursor-pointer">{item.name}</div>
+          <>
+            <span
+              style={{
+                verticalAlign: 'middle',
+                marginRight: '10px',
+              }}
+            >
+              {item.icon}
+            </span>
+            <span>{item.name}</span>
+          </>
         </div>
       ))}
     </div>

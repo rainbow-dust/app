@@ -14,6 +14,7 @@
   box-sizing: border-box;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
+  
 }
 
 .channel-list-item:last-child {
@@ -37,9 +38,19 @@
     padding: 10px;
     border-bottom: none;
     border-right: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .channel-list-item:last-child {
     border-right: none;
   }
 }
 
+@media (max-width: 500px) {
+
+
+  .channel-list-item>:last-child {
+    display: none;
+  }
+}

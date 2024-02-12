@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
-import { Note, getNotes } from '~/services'
+import { Note, getNotes, getRecommendNotes } from '~/services'
 
 import './index.module.css'
 
@@ -37,6 +37,15 @@ export const Explore = () => {
 
   return (
     <div>
+      <button
+        onClick={() => {
+          getRecommendNotes({ pageCurrent: 1, pageSize: 10 }).then((res) => {
+            console.log(res)
+          })
+        }}
+      >
+        test
+      </button>
       <Feed
         notes={notes}
         options={{

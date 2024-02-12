@@ -69,9 +69,14 @@ export async function getNotes({
     })
 }
 
-export async function getRecommendNotes() {
-  return fetch(`${BASE_URL}/note/recommend`, {
-    method: 'GET',
+export async function getRecommendNotes(p: {
+  pageCurrent: number
+  pageSize: number
+  lastId?: string
+}) {
+  return fetch(`${BASE_URL}/note/query/recommend`, {
+    method: 'POST',
+    body: JSON.stringify(p),
   })
     .then((res) => res.json())
     .then((res) => {

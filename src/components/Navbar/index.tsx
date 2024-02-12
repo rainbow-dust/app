@@ -69,6 +69,17 @@ export const NavBar = () => {
           navigate('/')
         }}
       >
+        <img
+          src="/logo.png"
+          alt="logo"
+          style={{
+            width: '20px',
+            height: '20px',
+            cursor: 'pointer',
+            marginRight: '10px',
+            verticalAlign: 'middle',
+          }}
+        />
         furina
       </div>
       <div

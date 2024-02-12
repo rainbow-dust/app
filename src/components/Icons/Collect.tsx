@@ -15,7 +15,7 @@ const IconCollect: FC<IconCollectProps> = ({
   handleCancelCollect,
 }) => {
   return (
-    <span>
+    <>
       {isCollected ? (
         <BsStarFill
           className={[Classes['collect'], Classes['ed']].join(' ')}
@@ -27,7 +27,7 @@ const IconCollect: FC<IconCollectProps> = ({
           onClick={handleCollect}
         />
       )}
-    </span>
+    </>
   )
 }
 

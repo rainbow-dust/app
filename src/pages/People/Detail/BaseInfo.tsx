@@ -53,8 +53,6 @@ export const BaseInfo = ({ username }: { username: string }) => {
               style={{
                 background:
                   'url(https://huamurui.github.io/biubiubiu.jpg) no-repeat cover center',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 height: '200px',
                 width: '100%',
               }}

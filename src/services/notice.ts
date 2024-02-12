@@ -11,11 +11,14 @@ export async function getUnReadNoticeCount() {
     })
 }
 
-export async function getNoticeList(type?: string) {
+export async function getNoticeList(p: {
+  pageCurrent: number
+  pageSize: number
+  type?: string
+}) {
   return fetch(`${BASE_URL}/notice/query/list`, {
     method: 'POST',
-
-    body: JSON.stringify({ type }),
+    body: JSON.stringify(p),
   })
     .then((res) => res.json())
     .then((res) => {

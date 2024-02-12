@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-// import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
 import Avatar from '~/components/Avatar'

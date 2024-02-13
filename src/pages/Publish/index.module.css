@@ -24,6 +24,11 @@
   caret-color: var(--theme-color);
   border-radius: 0 0 5px 5px;
   box-sizing: border-box;
+
+
+  background-color: var(--bg-color-secondary);
+  color: var(--text-color);
+
 }
 
 .publish-button {

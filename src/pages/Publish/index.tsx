@@ -5,6 +5,7 @@ import { Search } from '~/components/Search'
 import { Pic, addNote, addTag, queryTags } from '~/services'
 
 import { ImgUpload } from './components/ImgUpload'
+import { MuMuEditor } from './components/MuMuEditor'
 import Classes from './index.module.css'
 
 interface Tag {
@@ -46,7 +47,7 @@ export const Publish: React.FC = () => {
     // Add your logic to submit the note content here
     addNote(
       title,
-      content,
+      JSON.stringify(content),
       tags.map((t) => t), // 这里是 tag 的 name...
       picList,
     ).then((res) => {
@@ -62,9 +63,6 @@ export const Publish: React.FC = () => {
   }
 
   const [content, setContent] = useState('')
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value)
-  }
 
   return (
     <div>
@@ -78,17 +76,9 @@ export const Publish: React.FC = () => {
             value={title}
             onChange={handleTitleChange}
             className={Classes['title-input']}
-            style={{}}
           />
 
-          <textarea
-            id="content"
-            placeholder="添加正文"
-            value={content}
-            onChange={handleContentChange}
-            className={Classes['content-textarea']}
-            style={{}}
-          />
+          <MuMuEditor content={content} setContent={setContent} />
         </div>
 
         <div

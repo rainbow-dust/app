@@ -9,9 +9,10 @@ import './index.css'
 import FufuTracker from 'fufu-tracker'
 
 const fufu = new FufuTracker({
-  appId: 'furina',
-  reportUrl: 'http://localhost:9527/statistics/collect',
-  eventsTobeRecord: ['action_scroll', 'action_click'],
+  app_id: 'furina',
+  username: localStorage.getItem('username') || 'anonymous',
+  report_url: 'http://localhost:9527/statistics/collect',
+  events_tobe_record: ['user_action'],
 })
 setInterval(() => {
   console.log('send')
@@ -19,6 +20,15 @@ setInterval(() => {
 }, 60000)
 const originFetch = fetch
 const checkStatus = (response: Response) => {
+  fufu.pushEvent({
+    type: 'request',
+    data: {
+      url: response.url,
+      status: response.status,
+      statusText: response.statusText,
+    },
+  })
+
   if (response.status >= 200 && response.status < 300) {
     return response
   }

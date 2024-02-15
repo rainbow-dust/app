@@ -1,10 +1,9 @@
 import { useContext, useState } from 'react'
 
 import { Message } from '~/components/Message'
+import { Modal } from '~/components/Modal'
 import { CurrentUserContext } from '~/hooks/useCurrentUser'
 import { login, register } from '~/services'
-
-import { Modal } from './base'
 
 interface LoginOrRegisterProps {
   isOpen: boolean

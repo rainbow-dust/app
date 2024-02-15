@@ -63,8 +63,8 @@ export const Notice = () => {
 
   const notices = data?.reduce((acc, page) => acc.concat(page), [])
 
-  if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error</div>
+  if (isLoading) return <div>Loading...</div>
   return (
     <div>
       <h1>Notice</h1>

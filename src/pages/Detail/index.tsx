@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
 import { IconCollect, IconLike } from '~/components/Icons'
-import { CollectPopup } from '~/components/Modal/CollectPopup'
+import { Popup } from '~/components/Modal'
 import { useModal } from '~/components/Modal/base'
 import { getDate } from '~/hooks/useDate'
 import {
@@ -12,13 +12,13 @@ import {
   ReplierContextType,
   useReplier,
 } from '~/hooks/useReplier'
+import { CollectList } from '~/pages/Collect/components'
 import { addComment, cancelLikeNote, getNote, likeNote } from '~/services'
 import type { Note } from '~/services'
 
 import { Comments, CommentsRef } from './components/Comments'
 import { Author, NoteText, Pics } from './components/Content'
 import { Interactions } from './components/Interactions'
-import { CollectList } from './components/Interactions/CollectList'
 
 export const Detail = () => {
   const { id } = useParams()
@@ -209,7 +209,7 @@ export const Detail = () => {
           />
         </ReplierContext.Provider>
       </>
-      <CollectPopup
+      <Popup
         isOpen={isOpen}
         toggle={toggle}
         children={<CollectList noteId={id as string} />}

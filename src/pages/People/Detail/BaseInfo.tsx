@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 
-import Avatar from '~/components/Avatar'
+import { Popup, useModal } from '~/components/Modal'
 import { cancelFollow, follow } from '~/services'
 
 import Classes from './BaseInfo.module.css'
+import { PeopleList } from './components/PeopleList'
 
-interface UserInfo {
+export interface UserInfo {
   username: string
   avatar_url: string
   cover_url: string
@@ -43,6 +44,8 @@ export const BaseInfo = ({ username }: { username: string }) => {
   const [activeMode, setActiveMode] = useState<
     'followers' | 'followees' | 'mutual_follows'
   >('followers')
+
+  const { isOpen, toggle } = useModal()
 
   return (
     <>
@@ -87,7 +90,7 @@ export const BaseInfo = ({ username }: { username: string }) => {
                       navigate(`/people/edit`)
                     }}
                   >
-                    go to edit
+                    编辑资料
                   </button>
                 ) : user?.is_following ? (
                   <button
@@ -121,7 +124,10 @@ export const BaseInfo = ({ username }: { username: string }) => {
               <div className={Classes['people-active-follow-count']}>
                 <span
                   className={Classes['people-active-follow-count-number']}
-                  onClick={() => setActiveMode('followers')}
+                  onClick={() => {
+                    setActiveMode('followers')
+                    toggle()
+                  }}
                 >
                   {user?.followers.length}
                 </span>
@@ -130,7 +136,10 @@ export const BaseInfo = ({ username }: { username: string }) => {
               <div className={Classes['people-active-follow-count']}>
                 <span
                   className={Classes['people-active-follow-count-number']}
-                  onClick={() => setActiveMode('followees')}
+                  onClick={() => {
+                    setActiveMode('followees')
+                    toggle()
+                  }}
                 >
                   {user?.followees.length}
                 </span>
@@ -141,7 +150,10 @@ export const BaseInfo = ({ username }: { username: string }) => {
                   我关注的人中，有
                   <span
                     className={Classes['people-active-follow-count-number']}
-                    onClick={() => setActiveMode('mutual_follows')}
+                    onClick={() => {
+                      setActiveMode('mutual_follows')
+                      toggle()
+                    }}
                   >
                     {user?.mutual_follows?.length}
                   </span>
@@ -149,30 +161,19 @@ export const BaseInfo = ({ username }: { username: string }) => {
                 </div>
               )}
             </div>
-            {user && <PeopleList peopleList={user[activeMode] || []} />}
+
+            <Popup
+              isOpen={isOpen}
+              toggle={toggle}
+              children={
+                user && <PeopleList peopleList={user[activeMode] || []} />
+              }
+            />
+
+            {}
           </div>
         </div>
       )}
     </>
-  )
-}
-
-const PeopleList = ({ peopleList }: { peopleList: UserInfo[] }) => {
-  return (
-    <div>
-      {peopleList.map((people) => (
-        <span key={people.username}>
-          <Avatar
-            imageUrl={
-              import.meta.env.VITE_FURINA_APP_IMG_URL + people.avatar_url
-            }
-            altText={people.username}
-            size={16}
-            peopleLink={`/people/${people.username}`}
-          />
-          {people.username}
-        </span>
-      ))}
-    </div>
   )
 }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 
 import { Note } from '~/services'
 
@@ -38,15 +38,14 @@ export const Feed: FC<{
   const GAP_H = 10
   const BOTTOM_GAP = 60 // 底部文字, actions 的留空
   const DEFAULT_WIDTH = 230 // 参考宽度
-  let columnHeight: number[]
-  const getNotesWithLayout = (notes: Note[]) => {
+  const getNotesWithLayout = useCallback((notes: Note[]) => {
     const notesWithLayout: NoteWithLayout[] = []
     // 参考宽度与ref宽度作比，给出一个列数
     const columnCount = Math.max(
       Math.floor((ref.current?.offsetWidth || 600) / DEFAULT_WIDTH),
       2,
     )
-    columnHeight = Array(columnCount).fill(0)
+    const columnHeight = Array(columnCount).fill(0)
     const width =
       (ref.current?.offsetWidth || 600) / columnCount -
       (GAP_H * (columnCount - 1)) / columnCount
@@ -78,27 +77,42 @@ export const Feed: FC<{
 
     setTotalHeight(Math.max(...columnHeight))
     return notesWithLayout
-  }
+  }, [])
 
   // 我只能说 react 和 windowing 的结合真的很难搞
-  // const getVisibleNotes = (notes: NoteWithLayout[], ranger:{
-  //   top: number
-  //   bottom: number
-  // } = {
-  //   top: window.scrollY,
-  //   bottom: window.scrollY + window.innerHeight
-  // }) => {
-  //   return notes.filter((note) => {
-  //     return (
-  //       note.layout.y! + note.layout.height! > ranger.top &&
-  //       note.layout.y! < ranger.bottom
-  //     )
-  //   })
-  // }
+  const getVisibleNotes = (
+    notes: NoteWithLayout[],
+    ranger: {
+      top: number
+      bottom: number
+    } = {
+      top: window.scrollY,
+      bottom: window.scrollY + window.innerHeight,
+    },
+  ) => {
+    return notes.filter((note) => {
+      return (
+        note.layout.y! + note.layout.height! > ranger.top &&
+        note.layout.y! < ranger.bottom
+      )
+    })
+  }
 
   useEffect(() => {
-    setRenderedNote(getNotesWithLayout(notes))
-  }, [notes])
+    const setMy = () => {
+      setRenderedNote(getVisibleNotes(getNotesWithLayout(notes)))
+    }
+    setMy()
+    document.addEventListener('scroll', () => {
+      setMy()
+    })
+
+    return () => {
+      document.removeEventListener('scroll', () => {
+        setMy()
+      })
+    }
+  }, [getNotesWithLayout, notes])
 
   return (
     <div style={{ fontFamily: 'sans-serif', width: '100%' }} ref={ref}>

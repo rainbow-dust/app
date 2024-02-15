@@ -7,6 +7,7 @@ import { upload } from '~/services'
 interface UserInfoEdit {
   username: string
   avatar_url: string
+  cover_url: string
   password: string
   bio: string
 }
@@ -19,6 +20,7 @@ export const PeopleEdit = () => {
   const [userInfo, setUserInfo] = useState<UserInfoEdit>({
     username: '',
     avatar_url: '',
+    cover_url: '',
     password: '',
     bio: '',
   })
@@ -42,6 +44,7 @@ export const PeopleEdit = () => {
       setUserInfo({
         username: data.username,
         avatar_url: data.avatar_url,
+        cover_url: data.cover_url,
         password: '',
         bio: data.bio,
       })
@@ -58,7 +61,10 @@ export const PeopleEdit = () => {
 
   // 这里应该...裁剪图片...图片以 base64 的形式展示，然后上传的时候再转成 blob
   // md 裁剪图片...
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    from: string,
+  ) => {
     const files = e.target.files
     if (!files) return
     const tobe = []
@@ -78,9 +84,10 @@ export const PeopleEdit = () => {
       tobe.push({ url, width, height })
     }
 
+    const key = from === 'avatar' ? 'avatar_url' : 'cover_url'
     setUserInfo({
       ...userInfo,
-      avatar_url: tobe[0].url,
+      [key]: tobe[0].url,
     })
   }
 
@@ -98,7 +105,9 @@ export const PeopleEdit = () => {
     })
     const data = await res.json()
     if (data) {
-      Message.success('success')
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+      Message.success('修改成功，请重新登录')
     }
   }
 
@@ -128,7 +137,21 @@ export const PeopleEdit = () => {
             type="file"
             id="file"
             accept="image/*"
-            onChange={handleFileChange}
+            onChange={(e) => handleFileChange(e, 'avatar')}
+          />
+        </div>
+        <div>
+          <img
+            src={import.meta.env.VITE_FURINA_APP_IMG_URL + userInfo.cover_url}
+            alt={userInfo.username}
+            style={{ width: '100px' }}
+          />
+          <label htmlFor="cover">cover:</label>
+          <input
+            type="file"
+            id="cover"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e, 'cover')}
           />
         </div>
         <div>

@@ -10,6 +10,7 @@ import Classes from './BaseInfo.module.css'
 interface UserInfo {
   username: string
   avatar_url: string
+  cover_url: string
   password: string
   bio: string
   followees: UserInfo[]
@@ -53,14 +54,22 @@ export const BaseInfo = ({ username }: { username: string }) => {
         <div className={Classes['people']}>
           <div className={Classes['people-info']}>
             <div
-              className={Classes['people-info-cover']}
               style={{
-                background:
-                  'url(https://huamurui.github.io/biubiubiu.jpg) no-repeat cover center',
                 height: '200px',
                 width: '100%',
+                overflow: 'hidden',
               }}
-            ></div>
+            >
+              <img
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  objectFit: 'cover',
+                }}
+                src={import.meta.env.VITE_FURINA_APP_IMG_URL + user?.cover_url}
+                alt={user?.username}
+              />
+            </div>
             <div className={Classes['people-info-avatar']}>
               <img
                 src={import.meta.env.VITE_FURINA_APP_IMG_URL + user?.avatar_url}

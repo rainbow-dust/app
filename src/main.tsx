@@ -1,4 +1,3 @@
-// import FufuTracker from 'fufu-tracker'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -7,14 +6,17 @@ import { Message } from './components/Message/index.tsx'
 
 import './index.css'
 
-// const fufu = new FufuTracker({
-//   appId: 'furina',
-//   reportUrl: 'http://localhost:9527/ping',
-//   eventsTobeRecord: ['action_scroll', 'action_click'],
-// })
-// setInterval(() => {
-//   fufu.send()
-// }, 10000)
+import FufuTracker from 'fufu-tracker'
+
+const fufu = new FufuTracker({
+  appId: 'furina',
+  reportUrl: 'http://localhost:9527/statistics/collect',
+  eventsTobeRecord: ['action_scroll', 'action_click'],
+})
+setInterval(() => {
+  console.log('send')
+  fufu.send()
+}, 60000)
 const originFetch = fetch
 const checkStatus = (response: Response) => {
   if (response.status >= 200 && response.status < 300) {

@@ -2,6 +2,8 @@ import { createContext, useEffect, useState } from 'react'
 
 import { getUnReadNoticeCount } from '~/services'
 
+import { debounce } from './utils'
+
 interface NoticeContextType {
   count: number
   setCount: (count: number) => void
@@ -33,14 +35,4 @@ export const useNotice = () => {
     }
   }, [])
   return { count, setCount }
-}
-
-function debounce(fn: () => void, delay: number) {
-  let timer: number
-  return function () {
-    clearTimeout(timer)
-    timer = window.setTimeout(() => {
-      fn()
-    }, delay)
-  }
 }

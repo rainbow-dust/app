@@ -6,20 +6,23 @@ import { useParams } from 'react-router-dom'
 import useSWR from 'swr'
 
 import { Feed } from '~/components/Feed'
+import { IconEmpty, IconError, IconLoading } from '~/components/Icons'
 import { Note, getCollectDetail } from '~/services'
 
 // 可以确认，单个 collect 的页面就是一个和tag一样的页面，但列表查询，是以弹窗的形式出现的。
 
 export const Collect = () => {
   const { id } = useParams()
-  const { data: collect, error } = useSWR(
-    `/api/collect/query/detail/${id}`,
-    () => {
-      return getCollectDetail({ collectId: id as string })
-    },
-  )
-  if (error) return <div>failed to load</div>
-  if (!collect) return <div>loading...</div>
+  const {
+    data: collect,
+    error,
+    isLoading,
+  } = useSWR(`/api/collect/query/detail/${id}`, () => {
+    return getCollectDetail({ collectId: id as string })
+  })
+  if (error) return <IconError />
+  if (isLoading) return <IconLoading />
+  if (!collect) return <IconEmpty />
   return (
     <div>
       <h1>{collect.name}</h1>

@@ -76,7 +76,7 @@ export const Feed: FC<{
       columnHeight[index] += note.layout.height + GAP_V
     })
 
-    setTotalHeight(Math.min(...columnHeight))
+    setTotalHeight(Math.max(...columnHeight))
     return notesWithLayout
   }
 
@@ -102,7 +102,6 @@ export const Feed: FC<{
 
   return (
     <div style={{ fontFamily: 'sans-serif', width: '100%' }} ref={ref}>
-      {options.isEmpty ? <p>Yay, no notes found.</p> : null}
       <div
         style={{
           height: totalHeight,

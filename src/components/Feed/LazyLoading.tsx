@@ -1,5 +1,8 @@
 import { FC, useCallback, useRef } from 'react'
 
+import { IconLoading } from '../Icons'
+import { IconEmpty } from '../Icons'
+
 export const LazyLoading: FC<{
   isLoadingMore: boolean | undefined
   isReachingEnd: boolean | undefined
@@ -21,12 +24,15 @@ export const LazyLoading: FC<{
     [isLoadingMore, isReachingEnd, setSize, size],
   )
   return (
-    <div ref={lazyLoadingRef}>
-      {isLoadingMore ? (
-        <div>Loading...</div>
-      ) : isReachingEnd ? (
-        <div>End</div>
-      ) : null}
+    <div
+      ref={lazyLoadingRef}
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      {isLoadingMore ? <IconLoading /> : isReachingEnd ? <IconEmpty /> : null}
     </div>
   )
 }

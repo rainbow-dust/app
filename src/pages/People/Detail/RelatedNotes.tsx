@@ -1,6 +1,7 @@
 import useSWRInfinite from 'swr/infinite'
 
 import { Feed } from '~/components/Feed'
+import { IconError } from '~/components/Icons'
 import { Tabs, useTabs } from '~/components/Tabs'
 import { CollectList } from '~/pages/Collect/components'
 import { Note, getNotes, getUserLikes } from '~/services'
@@ -39,7 +40,7 @@ export const RelatedNotes = ({ username }: { username: string }) => {
     isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
   const isRefreshing = isValidating && data && data.length === size
 
-  if (error) return <div>error...</div>
+  if (error) return <IconError />
 
   return (
     <>

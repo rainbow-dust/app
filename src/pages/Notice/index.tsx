@@ -3,6 +3,7 @@ import useSWRInfinite from 'swr/infinite'
 
 import Avatar from '~/components/Avatar'
 import { LazyLoading } from '~/components/Feed/LazyLoading'
+import { IconError, IconLoading } from '~/components/Icons'
 import { getDate } from '~/hooks/useDate'
 import { getNoticeList } from '~/services'
 
@@ -63,8 +64,8 @@ export const Notice = () => {
 
   const notices = data?.reduce((acc, page) => acc.concat(page), [])
 
-  if (error) return <div>Error</div>
-  if (isLoading) return <div>Loading...</div>
+  if (error) return <IconError />
+  if (isLoading) return <IconLoading />
   return (
     <div>
       <h1>Notice</h1>

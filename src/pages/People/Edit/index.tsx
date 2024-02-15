@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
+import { IconError, IconLoading } from '~/components/Icons'
 import { Message } from '~/components/Message'
 import { upload } from '~/services'
 
@@ -111,8 +112,8 @@ export const PeopleEdit = () => {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error</div>
+  if (error) return <IconError />
+  if (isLoading) return <IconLoading />
   return (
     <div>
       <form onSubmit={handleSubmit}>

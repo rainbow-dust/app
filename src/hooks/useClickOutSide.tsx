@@ -1,9 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-/**
- * Hook that alerts clicks outside of the passed ref
- */
-function useOutsideAlerter(
+function useOutside(
   ref: React.RefObject<HTMLElement>,
   onClickOutSide: () => void,
 ) {
@@ -20,15 +17,12 @@ function useOutsideAlerter(
   }, [ref, onClickOutSide])
 }
 
-/**
- * Component that alerts if you click outside of it
- */
-export const ClickOutSide = (props: {
+export const ClickOutSideProvider = (props: {
   children: React.ReactNode
   onClickOutSide: () => void
 }) => {
   const wrapperRef = useRef(null)
-  useOutsideAlerter(wrapperRef, props.onClickOutSide)
+  useOutside(wrapperRef, props.onClickOutSide)
 
   return <div ref={wrapperRef}>{props.children}</div>
 }

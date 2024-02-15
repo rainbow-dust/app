@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
+import { Dropdown } from '~/components/Dropdown'
 import { Search } from '~/components/Search'
 import { CurrentUserContext } from '~/hooks/useCurrentUser'
 import { queryTags } from '~/services'
 
-import { LoginOrRegisterModal } from '../Modal/LoginOrRegister'
 import { useModal } from '../Modal/base'
+import { LoginOrRegisterModal } from './components/LoginOrRegister'
 import Classes from './index.module.css'
 
 export const NavBar = () => {
@@ -59,8 +60,6 @@ export const NavBar = () => {
     })
     return options
   }
-
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
 
   return (
     <div className={Classes.navbar}>
@@ -115,74 +114,60 @@ export const NavBar = () => {
         }}
       >
         {/* ...local上再多存点东西...头像也要 */}
-        {
-          <button
-            onClick={() => {
-              setIsDropDownOpen(!isDropDownOpen)
-            }}
-          >
-            ☰
-          </button>
-        }
+        <Dropdown
+          Toggle={<button>☰</button>}
+          Menu={
+            <>
+              <div>
+                {currentUser.user.username ? (
+                  <div>
+                    <span>{currentUser.user.username}</span>
+                    <button
+                      onClick={() => {
+                        logout()
+                      }}
+                    >
+                      退出登录
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={toggle}>登录</button>
+                )}
+              </div>
 
-        {isDropDownOpen && (
-          <div
-            className={Classes['menu-content']}
-            style={{
-              position: 'absolute',
-              top: '100%',
-              right: '0',
-            }}
-          >
-            <div>
-              {currentUser.user.username ? (
-                <div>
-                  <span>{currentUser.user.username}</span>
+              <div className={Classes['toggle-theme']}>
+                {theme === 'dark' ? (
                   <button
                     onClick={() => {
-                      logout()
+                      setTheme('light')
+                      localStorage.setItem('theme', 'light')
                     }}
                   >
-                    退出登录
+                    🌚
                   </button>
-                </div>
-              ) : (
-                <button onClick={toggle}>登录</button>
-              )}
-            </div>
-
-            <div className={Classes['toggle-theme']}>
-              {theme === 'dark' ? (
-                <button
-                  onClick={() => {
-                    setTheme('light')
-                    localStorage.setItem('theme', 'light')
-                  }}
-                >
-                  🌚
-                </button>
-              ) : theme === 'light' ? (
-                <button
-                  onClick={() => {
-                    setTheme('dark')
-                    localStorage.setItem('theme', 'dark')
-                  }}
-                >
-                  🌞
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    setTheme('system')
-                    localStorage.setItem('theme', 'system')
-                  }}
-                >
-                  🌞🌚
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+                ) : theme === 'light' ? (
+                  <button
+                    onClick={() => {
+                      setTheme('dark')
+                      localStorage.setItem('theme', 'dark')
+                    }}
+                  >
+                    🌞
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setTheme('system')
+                      localStorage.setItem('theme', 'system')
+                    }}
+                  >
+                    🌞🌚
+                  </button>
+                )}
+              </div>
+            </>
+          }
+        />
       </div>
 
       <LoginOrRegisterModal isOpen={isOpen} toggle={toggle} />

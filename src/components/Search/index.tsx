@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 
-import { ClickOutSide } from './ClickOutSide'
+import { ClickOutSideProvider as ClickOutSide } from '../../hooks/useClickOutSide'
 import Classes from './index.module.css'
 
 interface Option {

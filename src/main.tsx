@@ -11,7 +11,7 @@ import FufuTracker from 'fufu-tracker'
 const fufu = new FufuTracker({
   app_id: 'furina',
   username: localStorage.getItem('username') || 'anonymous',
-  report_url: 'http://localhost:9527/statistics/collect',
+  report_url: import.meta.env.VITE_FURINA_APP_IMG_URL + '/statistics/collect',
   events_tobe_record: ['user_action'],
 })
 setInterval(() => {
@@ -22,6 +22,7 @@ const originFetch = fetch
 const checkStatus = (response: Response) => {
   fufu.pushEvent({
     type: 'request',
+    time_stamp: new Date().getTime(),
     data: {
       url: response.url,
       status: response.status,

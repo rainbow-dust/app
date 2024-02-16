@@ -1,11 +1,11 @@
-# app
+# @furina/app [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rainbow-dust/app/blob/main/LICENSE)  
+<!-- [![build status](https://github.com/rainbow-dust/server/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/rainbow-dust/server/actions/workflows/build.yml) -->
 
 ## description
 
-This is a simple app that does nothing.  
-this repo is the front-end part of the rainbow-dust, base on react, react-router, vite, swr... building for user interface.
+this repo is the front-end part of the furina, base on react, react-router, vite, swr... building for user interface.
 
-related projects:
+related repos:
 
 - [app](https://github.com/rainbow-dust/app)
 - [server](https://github.com/rainbow-dust/server)
@@ -14,25 +14,25 @@ related projects:
 ## features
 <!-- may be some screenshots here is better... -->
 
-- explore
-- note detail
-- people
-- notice
-
-also, there are some components and hooks that might be useful for other projects.
-
-- components
-  - modal
-  - popup
-  - message
-  - Comment
-  - Feed
-  - Search
-
-Non-capitalized components are more basic components  
-Capitalized components are more complex and specific components
-
-## deployment
+- content
+  - note feed
+  - note detail
+  - user profile
+  - user relations
+  - collect
+- interaction
+  - like/unlike to note/comment
+  - follow/unfollow to user
+  - create/modify note
+  - search base on tags
+- visual
+  - dark mode
+  - responsive
+  - animation
+- others
+  - user action track
+  - pwa
+...
 
 ## development
 

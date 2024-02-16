@@ -1,18 +1,19 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 
+import { rafThrottle } from '~/hooks/utils'
 import { Note } from '~/services'
 
 import { LazyLoading } from './LazyLoading'
 import { NoteCell } from './NoteCell'
 
-interface NoteWithLayout extends Note {
-  layout: {
-    width: number
-    height: number
-    x?: number
-    y?: number
-  }
-}
+// interface NoteWithLayout extends Note {
+//   layout: {
+//     width: number
+//     height: number
+//     x: number
+//     y: number
+//   }
+// }
 
 export const Feed: FC<{
   notes: Note[]
@@ -25,103 +26,125 @@ export const Feed: FC<{
     size: number
   }
 }> = ({ notes, options }) => {
-  // 在这里给 note 加上一个宽高...以及布局...这个应该是 Feed 的职责
+  const [myNotes, setMyNotes] = useState<Note[]>(notes)
+  useEffect(() => {
+    // 这里不要直接 set... 如果可以的话，处理过后再塞进去，而不是塞进去让 一堆 memo 全都更新...
+    setMyNotes(notes)
+  }, [notes])
 
-  const [renderedNote, setRenderedNote] = useState<NoteWithLayout[]>([])
-  const [totalHeight, setTotalHeight] = useState<number>(0)
-
-  // 获取当前外层的宽度，然后计算出每个 note 的宽高，然后进行布局，用 useRef
-
-  const ref = useRef<HTMLDivElement>(null)
+  const waterfallRef = useRef<HTMLDivElement>(null)
 
   const GAP_V = 10
   const GAP_H = 10
   const BOTTOM_GAP = 60 // 底部文字, actions 的留空
   const DEFAULT_WIDTH = 230 // 参考宽度
-  const getNotesWithLayout = useCallback((notes: Note[]) => {
-    const notesWithLayout: NoteWithLayout[] = []
-    // 参考宽度与ref宽度作比，给出一个列数
-    const columnCount = Math.max(
-      Math.floor((ref.current?.offsetWidth || 600) / DEFAULT_WIDTH),
-      2,
-    )
-    const columnHeight = Array(columnCount).fill(0)
-    const width =
-      (ref.current?.offsetWidth || 600) / columnCount -
-      (GAP_H * (columnCount - 1)) / columnCount
-    // 获取 note.cover 中的宽高，计算出 note 的高度后
-    notes.forEach((note) => {
-      const height =
-        Math.max(
-          Math.floor(note?.cover?.height * (width / note?.cover?.width)) +
-            BOTTOM_GAP,
-          200,
-        ) || 100
-      notesWithLayout.push({
+
+  const [scrollState, setScrollState] = useState({
+    viewWidth: 0,
+    viewHeight: 0,
+    start: 0,
+  })
+  const end = useMemo(() => 500 + scrollState.start, [scrollState])
+
+  const columnCount = useMemo(
+    () => Math.max(Math.floor(scrollState.viewWidth / DEFAULT_WIDTH), 2),
+    [scrollState],
+  )
+
+  const [totalHeight, setTotalHeight] = useState(0)
+
+  const handleScroll = rafThrottle(() => {
+    console.time('scroll')
+    const { scrollTop } = waterfallRef.current!
+    setScrollState({
+      ...scrollState,
+      start: scrollTop,
+    })
+    console.timeEnd('scroll')
+    console.log(scrollState.start, scrollTop)
+  })
+
+  const notesWithSize = useMemo(() => {
+    return myNotes.map((note) => {
+      const width = scrollState.viewWidth / columnCount - GAP_H
+      const height = note?.cover
+        ? Math.max(
+            Math.floor(note?.cover?.height * (width / note?.cover?.width)) +
+              BOTTOM_GAP,
+            200,
+          )
+        : 200
+      return {
         ...note,
         layout: {
           width,
           height,
         },
-      })
+      }
     })
-    // 进行布局，每次选择高度最小的列进行布局
-    // 注意处理间距
-    notesWithLayout.forEach((note) => {
-      const minHeight = Math.min(...columnHeight)
-      const index = columnHeight.indexOf(minHeight)
-      note.layout.x = index * (width + GAP_H)
-      note.layout.y = minHeight
-      columnHeight[index] += note.layout.height + GAP_V
+  }, [myNotes])
+
+  const notesWithLayout = useMemo(() => {
+    const columnWidth = scrollState.viewWidth / columnCount
+    const columnsHeight = new Array(columnCount).fill(0)
+    const _notes = notesWithSize.map((note) => {
+      const columnIndex = columnsHeight.indexOf(Math.min(...columnsHeight))
+      const x = columnIndex * columnWidth + GAP_H / 2
+      const y = columnsHeight[columnIndex] + GAP_V
+      const layout = {
+        ...note.layout,
+        x,
+        y,
+      }
+      columnsHeight[columnIndex] += layout.height + GAP_V
+      return {
+        ...note,
+        layout,
+      }
     })
 
-    setTotalHeight(Math.max(...columnHeight))
-    return notesWithLayout
-  }, [])
+    setTotalHeight(Math.max(...columnsHeight))
+    return _notes
+  }, [notesWithSize])
 
-  // 我只能说 react 和 windowing 的结合真的很难搞
-  const getVisibleNotes = (
-    notes: NoteWithLayout[],
-    ranger: {
-      top: number
-      bottom: number
-    } = {
-      top: window.scrollY,
-      bottom: window.scrollY + window.innerHeight,
-    },
-  ) => {
-    return notes.filter((note) => {
-      return (
-        note.layout.y! + note.layout.height! > ranger.top &&
-        note.layout.y! < ranger.bottom
-      )
+  const visibleNotes = useMemo(() => {
+    return notesWithLayout.filter((note) => {
+      const y = note.layout.y
+      const h = note.layout.height
+      return y < end && y + h > scrollState.start
+    })
+  }, [notesWithLayout, scrollState, end])
+
+  const init = () => {
+    setScrollState({
+      viewWidth: waterfallRef.current!.clientWidth,
+      viewHeight: waterfallRef.current!.clientHeight,
+      start: waterfallRef.current!.scrollTop,
     })
   }
 
   useEffect(() => {
-    const setMy = () => {
-      setRenderedNote(getVisibleNotes(getNotesWithLayout(notes)))
-    }
-    setMy()
-    document.addEventListener('scroll', () => {
-      setMy()
-    })
-
-    return () => {
-      document.removeEventListener('scroll', () => {
-        setMy()
-      })
-    }
-  }, [getNotesWithLayout, notes])
+    init()
+  }, [myNotes])
 
   return (
-    <div style={{ fontFamily: 'sans-serif', width: '100%' }} ref={ref}>
+    <div
+      style={{
+        fontFamily: 'sans-serif',
+        width: '100%',
+        overflowY: 'scroll',
+        height: '100vh',
+      }}
+      ref={waterfallRef}
+      onScroll={handleScroll}
+    >
       <div
         style={{
           height: totalHeight,
+          position: 'relative',
         }}
       >
-        {renderedNote?.map((content) => (
+        {visibleNotes?.map((content) => (
           <div
             key={content._id}
             style={{

@@ -26,6 +26,7 @@
 .home-layout-content {
   padding: 16px;
   grid-area: content;
+  height: calc(100vh - 50px);
 }
 
 

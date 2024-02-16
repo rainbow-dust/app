@@ -1,7 +1,5 @@
 import { FC, useCallback, useRef } from 'react'
 
-import { debounce } from '~/hooks/utils'
-
 import { IconLoading } from '../Icons'
 import { IconEmpty } from '../Icons'
 
@@ -18,9 +16,7 @@ export const LazyLoading: FC<{
       if (observer.current) observer.current.disconnect()
       observer.current = new IntersectionObserver(async (entries) => {
         if (entries[0].isIntersecting && !isReachingEnd) {
-          debounce(() => {
-            setSize(size + 1)
-          }, 200)()
+          setSize(size + 1)
         }
       })
       if (node) observer.current.observe(node)

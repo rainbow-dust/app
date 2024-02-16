@@ -18,3 +18,15 @@ export function throttle(fn: () => void, delay: number) {
     }
   }
 }
+
+export function rafThrottle(fn: (...args: unknown[]) => unknown) {
+  let lock = false
+  return function (this: unknown, ...args: unknown[]) {
+    if (lock) return
+    lock = true
+    window.requestAnimationFrame(() => {
+      fn.apply(this, args)
+      lock = false
+    })
+  }
+}

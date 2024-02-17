@@ -48,7 +48,7 @@ jobs:
           # 部署到 prod/static-file 分支
           target_branch: prod/static-file
           # 部署目录为默认输出目录
-          build_dir: app/dist
+          build_dir: ./dist
         env:
           # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

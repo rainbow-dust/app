@@ -1,43 +1,15 @@
 import React, { useState } from 'react'
 
 import { Message } from '~/components/Message'
-import { Search } from '~/components/Search'
-import { Pic, addNote, addTag, queryTags } from '~/services'
+import { Pic, addNote } from '~/services'
 
 import { ImgUpload } from './components/ImgUpload'
+import { TagSelect } from './components/TagSelect'
 import Classes from './index.module.css'
-
-interface Tag {
-  name: string
-  _id: string
-}
 
 export const Publish: React.FC = () => {
   // 搜索 tag
-  const [str, setStr] = useState('')
   const [tags, setTags] = useState<string[]>([])
-  const [isNewTag, setIsNewTag] = useState(false)
-
-  const searchFn = async (str: string) => {
-    const res = await queryTags(str)
-
-    const options = res.map((t: Tag) => {
-      return {
-        value: t.name,
-        label: t.name,
-      }
-    })
-    setIsNewTag(false)
-    if (
-      str &&
-      (options.length === 0 ||
-        (options.length === 1 && options[0].value !== str))
-    ) {
-      setIsNewTag(true)
-    }
-
-    return options
-  }
 
   const [picList, setPicList] = useState<Pic[]>([])
 
@@ -90,36 +62,7 @@ export const Publish: React.FC = () => {
             style={{}}
           />
         </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Search
-            str={str}
-            tags={tags}
-            setStr={setStr}
-            setTags={setTags}
-            searchFn={searchFn}
-          />
-          {isNewTag && (
-            <button
-              style={{
-                marginLeft: '10px',
-              }}
-              onClick={async (e) => {
-                e.preventDefault()
-                const res = await addTag(str)
-                setTags([...tags, res.name])
-              }}
-            >
-              create tag
-            </button>
-          )}
-        </div>
+        <TagSelect tags={tags} setTags={setTags} />
         <button type="submit" className={Classes['publish-button']}>
           发布~
         </button>

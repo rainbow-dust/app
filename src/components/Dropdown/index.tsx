@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 
+import { ClickOutSideProvider } from '~/hooks/useClickOutSide'
+
 import Classes from './index.module.css'
 
 interface DropdownProps {
-  Toggle: React.ReactNode
+  Toggle: React.ReactNode | undefined
   Menu: React.ReactNode
 }
 
@@ -15,9 +17,11 @@ export const Dropdown: React.FC<DropdownProps> = ({ Toggle, Menu }) => {
   }
 
   return (
-    <div className={Classes['dropdown']}>
-      <div onClick={handleToggle}>{Toggle}</div>
-      {isOpen && <div className={Classes['dropdown-menu']}>{Menu}</div>}
-    </div>
+    <ClickOutSideProvider onClickOutSide={() => setIsOpen(false)}>
+      <div className={Classes['dropdown']}>
+        <div onClick={handleToggle}>{Toggle}</div>
+        {isOpen && <div className={Classes['dropdown-menu']}>{Menu}</div>}
+      </div>
+    </ClickOutSideProvider>
   )
 }

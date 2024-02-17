@@ -15,7 +15,6 @@ const fufu = new FufuTracker({
   events_tobe_record: ['user_action'],
 })
 setInterval(() => {
-  console.log('send')
   fufu.send()
 }, 60000)
 const originFetch = fetch
@@ -66,5 +65,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>,
 )
-
-console.log('hello world', import.meta.env)

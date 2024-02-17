@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 
-import { ClickOutSideProvider as ClickOutSide } from '../../hooks/useClickOutSide'
+import { ClickOutSideProvider as ClickOutSide } from '~/hooks/useClickOutSide'
+
+import { Tabs } from '../Tabs'
 import Classes from './index.module.css'
 
 interface Option {
@@ -28,6 +30,10 @@ export const Search: FC<{
       return
     }
     if (e.key === 'Escape') {
+      return
+    }
+    if (e.key === 'Backspace' && str === '') {
+      setTags(tags.slice(0, -1))
       return
     }
     setStr(e.currentTarget.value)
@@ -87,6 +93,7 @@ export const Search: FC<{
               inputRef.current!.focus()
             }}
           >
+            {/* 右边给个搜索按钮，左边给个叉叉 */}
             {tags.map((tag) => {
               return (
                 <span
@@ -113,29 +120,52 @@ export const Search: FC<{
             <span ref={inputMirrorRef} className={Classes['tag-input-mirror']}>
               {str}
             </span>
+            {/* 这里给一个 tabs，是搜用户，还是内容... */}
           </div>
           {isActive && (
-            <div className={Classes['dropdown']}>
-              {options.map((option) => {
-                return (
-                  <div
-                    key={option.value}
-                    className={Classes['dropdown-item']}
-                    onClick={() => {
-                      if (tags.includes(option.value)) {
-                        setTags(tags.filter((t) => t !== option.value))
-                      } else {
-                        setTags([...tags, option.value])
-                      }
-                    }}
-                  >
-                    {option.label}
-                    {tags.includes(option.value) ? '✅' : ''}
-                  </div>
-                )
-              })}
-            </div>
-          )}{' '}
+            <>
+              <div>
+                <Tabs
+                  tabs={[
+                    {
+                      id: 'creations',
+                      label: '作品',
+                      content: <div>作品</div>,
+                    },
+                    {
+                      id: 'users',
+                      label: '用户',
+                      content: <div>用户</div>,
+                    },
+                  ]}
+                  activeTab={'creations'}
+                  setActiveTab={() => {}}
+                />
+              </div>
+              <div className={Classes['dropdown']}>
+                {/* 没有搜索的时候，给一些热门推荐。 */}
+                {/* 标签查询提示补全 */}
+                {options.map((option) => {
+                  return (
+                    <div
+                      key={option.value}
+                      className={Classes['dropdown-item']}
+                      onClick={() => {
+                        if (tags.includes(option.value)) {
+                          setTags(tags.filter((t) => t !== option.value))
+                        } else {
+                          setTags([...tags, option.value])
+                        }
+                      }}
+                    >
+                      {option.label}
+                      {tags.includes(option.value) ? '✅' : ''}
+                    </div>
+                  )
+                })}
+              </div>
+            </>
+          )}
           {/* <Dropdown
               cells={cells}
               selectedCells={selectedCells}

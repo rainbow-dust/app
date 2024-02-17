@@ -162,7 +162,6 @@ export const Detail = () => {
                     }}
                     handleCancelCollect={async () => {
                       toggle()
-                      console.log('toggle')
                       // await cancelLikeNote(note._id)
                       // mutateNote()
                     }}

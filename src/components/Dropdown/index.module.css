@@ -1,9 +1,11 @@
 .dropdown {
   position: relative;
+  width: 100%;
 }
 
 .dropdown-menu {
   position: absolute;
   top: 100%;
+  width: 100%;
 
 }

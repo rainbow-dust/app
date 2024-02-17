@@ -24,5 +24,9 @@ export const ClickOutSideProvider = (props: {
   const wrapperRef = useRef(null)
   useOutside(wrapperRef, props.onClickOutSide)
 
-  return <div ref={wrapperRef}>{props.children}</div>
+  return (
+    <div style={{ width: '100%', height: '100%' }} ref={wrapperRef}>
+      {props.children}
+    </div>
+  )
 }

@@ -36,6 +36,34 @@ related repos:
   
 ...
 
+## deployment
+
+pnpm i  
+pnpm build  
+
+nginx config:  
+(mainly remind CORS and react history mode routing)
+
+```conf
+server {
+    listen       80;
+    server_name yourdomain.com;
+    
+    location / {
+        root   /github/app-static;
+        index  index.html index.htm;
+        try_files $uri /index.html;
+    }
+
+    # for backend api, CORS
+    location /api {
+      # rewrite /api/xxx to /api/v1/xxx
+      rewrite ^/api/(.*)$ /api/v1/$1 break;
+      proxy_pass http://127.0.0.1:9527;
+    }
+}
+```
+
 ## development
 
 ### start the project

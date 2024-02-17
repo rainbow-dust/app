@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   fufu-tracker:
-    specifier: ^0.0.5
-    version: registry.npmjs.org/fufu-tracker@0.0.5
+    specifier: ^0.0.6
+    version: registry.npmjs.org/fufu-tracker@0.0.6
   react:
     specifier: ^18.2.0
     version: registry.npmjs.org/react@18.2.0
@@ -4203,10 +4203,10 @@ packages:
     dev: true
     optional: true
 
-  registry.npmjs.org/fufu-tracker@0.0.5:
-    resolution: {integrity: sha512-Tz6IBrba0rSzpkxZZ/GffXfEK2cdnz7qsZnv7FLE1LWQfPhTcZ521+VkZudswu/qXsttwrgtltbgeFzHfze68Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/fufu-tracker/-/fufu-tracker-0.0.5.tgz}
+  registry.npmjs.org/fufu-tracker@0.0.6:
+    resolution: {integrity: sha512-XoHdC4NMzr6EOQLva2mLSrZ2UOl1g+DBbPCuz8sar99WXX4EzBt5Ic5/81ZMBMHCjR4IIkPMH0GUGgg5PMUFCg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/fufu-tracker/-/fufu-tracker-0.0.6.tgz}
     name: fufu-tracker
-    version: 0.0.5
+    version: 0.0.6
     dev: false
 
   registry.npmjs.org/function-bind@1.1.2:

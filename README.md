@@ -23,6 +23,7 @@ related repos:
 - interaction
   - like/unlike to note/comment
   - follow/unfollow to user
+  - comment/collect/uncollect to note
   - create/modify note
   - search base on tags
 - visual
@@ -32,6 +33,7 @@ related repos:
 - others
   - user action track
   - pwa
+  
 ...
 
 ## development

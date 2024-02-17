@@ -68,18 +68,14 @@ export const Pics: FC<{ pic_list?: Pic[] }> = ({ pic_list }) => {
             style={{
               width: containerSize.width,
               height: containerSize.height,
-              backgroundImage: `url(http://192.168.2.153:9527${pic.url}`,
+              backgroundImage: `url(${import.meta.env.VITE_FURINA_APP_IMG_URL}${
+                pic.url
+              }`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
             }}
-          >
-            {/* <img src={`http://192.168.2.153:9527${pic.url}`} alt={pic.url}
-            style={{
-              objectFit: 'contain',
-            }}
-            /> */}
-          </div>
+          ></div>
         ))}
       </div>
       <div className={Classes.dots}>

@@ -62,7 +62,7 @@ export const ImgUpload: React.FC<{
               src={
                 pic.url.startsWith('http')
                   ? pic.url
-                  : `http://192.168.2.153:9527${pic.url}`
+                  : `${import.meta.env.VITE_FURINA_APP_IMG_URL}${pic.url}`
               }
               style={{
                 width: '100%',

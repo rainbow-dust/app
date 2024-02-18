@@ -1,8 +1,10 @@
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
-import { Dropdown } from '../Dropdown'
+import { queryTags } from '~/services'
+
+import { Dropdown } from '../../../Dropdown'
 import Classes from './index.module.css'
 
 interface Option {
@@ -10,31 +12,26 @@ interface Option {
   label: string
 }
 
-export const Search: FC<{
-  str: string
-  tags: string[]
-  setStr: (str: string) => void
-  setTags: (tags: string[]) => void
-  searchFn: (str: string) => Promise<Option[]>
-}> = ({ str, tags, setStr, setTags, searchFn }) => {
+export const Search = () => {
+  const [str, setStr] = useState('')
+  const searchFn = async (str: string) => {
+    const res = await queryTags(str)
+
+    const options = res.map((t: { name: string; _id: string }) => {
+      return {
+        value: t.name,
+        label: t.name,
+      }
+    })
+    return options
+  }
+
   const navigate = useNavigate()
   const [options, setOptions] = useState<Option[]>([])
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      if (tags.includes(str)) {
-        setStr('')
-        return
-      }
-      setTags([...tags, str])
-      setStr('')
-      return
-    }
-    if (e.key === 'Escape') {
-      return
-    }
-    if (e.key === 'Backspace' && str === '') {
-      setTags(tags.slice(0, -1))
+      navigate(`/search?keyword=${str}`)
       return
     }
     setStr(e.currentTarget.value)
@@ -63,6 +60,13 @@ export const Search: FC<{
               }}
             >
               <input
+                style={{
+                  outline: 'none',
+                  border: 'none',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '4px',
+                }}
                 value={str}
                 onChange={(e) => setStr(e.currentTarget.value)}
                 onKeyDown={handleKeyDown}
@@ -96,8 +100,7 @@ export const Search: FC<{
                   key={option.value}
                   onClick={() => {
                     setStr(option.label)
-                    setTags([...tags, option.label])
-                    setOptions([])
+                    navigate(`/search?keyword=${option.label}`)
                   }}
                 >
                   {option.label}

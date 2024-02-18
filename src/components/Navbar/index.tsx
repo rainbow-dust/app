@@ -2,9 +2,8 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Dropdown } from '~/components/Dropdown'
-import { Search } from '~/components/Search'
+import { Search } from '~/components/Navbar/components/Search'
 import { CurrentUserContext } from '~/hooks/useCurrentUser'
-import { queryTags } from '~/services'
 
 import { useModal } from '../Modal/base'
 import { LoginOrRegisterModal } from './components/LoginOrRegister'
@@ -44,22 +43,6 @@ export const NavBar = () => {
     }
   }, [theme])
 
-  // 搜索
-  const [str, setStr] = useState('')
-  const [tags, setTags] = useState<string[]>([])
-
-  const searchFn = async (str: string) => {
-    const res = await queryTags(str)
-
-    const options = res.map((t: { name: string; _id: string }) => {
-      return {
-        value: t.name,
-        label: t.name,
-      }
-    })
-    return options
-  }
-
   return (
     <div className={Classes.navbar}>
       <div
@@ -80,13 +63,7 @@ export const NavBar = () => {
         />
         furina
       </div>
-      <Search
-        str={str}
-        tags={tags}
-        setStr={setStr}
-        setTags={setTags}
-        searchFn={searchFn}
-      />
+      <Search />
 
       <div
         className={Classes['menu']}

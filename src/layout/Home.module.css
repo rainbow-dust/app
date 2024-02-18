@@ -1,34 +1,9 @@
-.home-layout {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 50px 1fr;
-  grid-template-areas:
-   "navbar navbar"
-   "channel content"
-   "channel content";
+.home-layout-content {
+  padding: 60px 10px 0 210px;
 }
 
 @media (max-width: 600px) {
-  .home-layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: 50px 1fr 50px;
-    grid-template-areas:
-     "navbar"
-     "content"
-     "channel";
+  .home-layout-content {
+    padding: 60px 0 0 0;
   }
-}
-
-.home-layout-navbar {
-  grid-area: navbar;
-}
-
-.home-layout-content {
-  padding: 16px;
-  grid-area: content;
-}
-
-
-.home-layout-channel {
-  grid-area: channel;
 }

@@ -76,28 +76,53 @@ export const Search = () => {
   // const [activeTags, setActiveTags] = useState([]);
 
   return (
-    <div>
-      <h1>Search</h1>
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '100%',
+      }}
+    >
       <Tabs
         tabs={searchModes}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-      {tags?.map((tag) => (
-        <Tag
-          key={tag.id}
-          name={tag.name}
-          onClick={() => {
-            if (selectedTags.includes(tag.name)) {
-              setSelectedTags(selectedTags.filter((i) => i !== tag.name))
-            } else {
-              setSelectedTags([...selectedTags, tag.name])
-            }
-            console.log(selectedTags)
-          }}
-          active={selectedTags.includes(tag.name)}
-        />
-      ))}
+
+      <div
+        style={{
+          // 我希望下面的 tags 不会换行，也不会撑开父容器宽度。而是横向滚动， Tag 组件的 display 已经是 inline-block
+
+          width: '100%',
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+
+          // 美化滚动条
+
+          // 以下是一些滚动条的美化
+          // 滚动条宽度
+          scrollbarWidth: 'thin',
+          // 滚动条颜色
+          scrollbarColor: 'var(--theme-color) var(--bg-color)',
+          boxSizing: 'border-box',
+        }}
+      >
+        {tags?.map((tag) => (
+          <Tag
+            key={tag.id}
+            name={tag.name}
+            onClick={() => {
+              if (selectedTags.includes(tag.name)) {
+                setSelectedTags(selectedTags.filter((i) => i !== tag.name))
+              } else {
+                setSelectedTags([...selectedTags, tag.name])
+              }
+              console.log(selectedTags)
+            }}
+            active={selectedTags.includes(tag.name)}
+          />
+        ))}
+      </div>
       <Feed
         notes={notes}
         options={{

@@ -19,6 +19,7 @@ import { Explore } from '~/pages/Explore'
 import { Notice } from '~/pages/Notice'
 import { PeopleDetail, PeopleEdit } from '~/pages/People'
 import { Publish } from '~/pages/Publish'
+import { Search } from '~/pages/Search'
 import { Tag } from '~/pages/Tag'
 
 export const router = createBrowserRouter([
@@ -33,6 +34,16 @@ export const router = createBrowserRouter([
       {
         path: 'explore',
         Component: Explore,
+        children: [
+          {
+            path: ':id',
+            Component: Detail,
+          },
+        ],
+      },
+      {
+        path: 'search',
+        Component: Search,
         children: [
           {
             path: ':id',

@@ -55,7 +55,6 @@ export const Feed: FC<{
         Math.max(
           Math.floor(note?.cover?.height * (width / note?.cover?.width)) +
             BOTTOM_GAP,
-          200,
         ) || 100
       notesWithLayout.push({
         ...note,

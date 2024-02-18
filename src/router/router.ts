@@ -68,10 +68,11 @@ export const router = createBrowserRouter([
         path: 'collect/:id',
         Component: Collect,
       },
-      {
-        path: '*',
-        Component: () => 404,
-      },
+      // 这里的匹配...会把 logo 静态资源..主要是 logo 也匹配掉...
+      // {
+      //   path: '*',
+      //   Component: () => 404,
+      // },
     ],
   },
 ])

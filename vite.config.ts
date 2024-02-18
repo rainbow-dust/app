@@ -10,7 +10,14 @@ export default defineConfig({
     VitePWA({
       manifest: {
         name: '@furina/app',
-        description: 'A PWA demo built with Vite and vite pwa',
+        description: 'furina, a sns app build with web tech',
+        theme_color: '#257CC4',
+        icons: [
+          {
+            src: '/logo.png',
+            type: 'image/png',
+          },
+        ],
       },
       devOptions: {
         // 如果想在`vite dev`命令下调试PWA, 必须启用它

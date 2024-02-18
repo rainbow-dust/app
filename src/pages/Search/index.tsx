@@ -5,7 +5,7 @@
 
 // 所以那个所谓的 tag input...简直就是神经病
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'

@@ -1,5 +1,5 @@
 # @furina/app [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rainbow-dust/app/blob/main/LICENSE)  
-<!-- [![build status](https://github.com/rainbow-dust/server/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/rainbow-dust/server/actions/workflows/build.yml) -->
+[![build status](https://github.com/rainbow-dust/app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/rainbow-dust/app/actions/workflows/build.yml)
 
 ## description
 

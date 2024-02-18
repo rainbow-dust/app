@@ -91,6 +91,9 @@ devDependencies:
   vite:
     specifier: ^5.0.8
     version: registry.npmjs.org/vite@5.0.8(@types/node@20.11.0)
+  vite-plugin-compression:
+    specifier: ^0.5.1
+    version: registry.npmjs.org/vite-plugin-compression@0.5.1(vite@5.0.8)
   vite-plugin-pwa:
     specifier: ^0.17.4
     version: registry.npmjs.org/vite-plugin-pwa@0.17.4(vite@5.0.8)(workbox-build@7.0.0)(workbox-window@7.0.0)
@@ -7177,6 +7180,22 @@ packages:
     dependencies:
       spdx-correct: registry.npmjs.org/spdx-correct@3.2.0
       spdx-expression-parse: registry.npmjs.org/spdx-expression-parse@3.0.1
+    dev: true
+
+  registry.npmjs.org/vite-plugin-compression@0.5.1(vite@5.0.8):
+    resolution: {integrity: sha512-5QJKBDc+gNYVqL/skgFAP81Yuzo9R+EAf19d+EtsMF/i8kFUpNi3J/H01QD3Oo8zBQn+NzoCIFkpPLynoOzaJg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/vite-plugin-compression/-/vite-plugin-compression-0.5.1.tgz}
+    id: registry.npmjs.org/vite-plugin-compression/0.5.1
+    name: vite-plugin-compression
+    version: 0.5.1
+    peerDependencies:
+      vite: '>=2.0.0'
+    dependencies:
+      chalk: registry.npmjs.org/chalk@4.1.2
+      debug: registry.npmjs.org/debug@4.3.4
+      fs-extra: registry.npmjs.org/fs-extra@10.1.0
+      vite: registry.npmjs.org/vite@5.0.8(@types/node@20.11.0)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   registry.npmjs.org/vite-plugin-pwa@0.17.4(vite@5.0.8)(workbox-build@7.0.0)(workbox-window@7.0.0):

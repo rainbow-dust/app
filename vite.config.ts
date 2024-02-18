@@ -1,5 +1,6 @@
 // import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
+import viteCompression from 'vite-plugin-compression'
 import { VitePWA } from 'vite-plugin-pwa'
 
 import react from '@vitejs/plugin-react'
@@ -25,6 +26,13 @@ export default defineConfig({
         // Vite在dev模式下会使用浏览器原生的ESModule，将type设置为`"module"`与原先的保持一致
         type: 'module',
       },
+    }),
+    viteCompression({
+      verbose: true,
+      disable: false,
+      threshold: 10240,
+      algorithm: 'gzip',
+      ext: '.gz',
     }),
     // visualizer({
     //   gzipSize: true,

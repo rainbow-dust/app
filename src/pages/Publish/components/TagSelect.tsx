@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Dropdown } from '~/components/Dropdown'
 import { addTag, queryTags } from '~/services'
 
+import Classes from './TagSelect.module.css'
+
 interface Tag {
   name: string
   heat: number
@@ -11,7 +13,7 @@ interface Tag {
 
 interface Option {
   value: string
-  label: string
+  label: string | React.ReactNode
   heat: number
 }
 
@@ -29,6 +31,17 @@ export const TagSelect: React.FC<{
     const options = res.map((t: Tag) => {
       return {
         value: t.name,
+        // label: ()=>{
+        //   if(t.name.match(str)){
+        //     return (
+        //       <>
+        //         {t.name.slice(0, t.name.indexOf(str))}
+        //         <span style={{ color: 'var(--theme-color)' }}>{str}</span>
+        //         {t.name.slice(t.name.indexOf(str) + str.length)}
+        //       </>
+        //     )
+        //   }
+        // },
         label: t.name,
         heat: t.heat,
       }
@@ -64,16 +77,7 @@ export const TagSelect: React.FC<{
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        padding: '8px 0',
-        zIndex: 100,
-        width: '100%',
-      }}
-    >
+    <div className={Classes['tag-select']}>
       <div
         style={{
           margin: '8px 0',
@@ -82,18 +86,7 @@ export const TagSelect: React.FC<{
       >
         标签：
         {tags.map((t) => (
-          <span
-            style={{
-              padding: '0 4px',
-              margin: '0 4px',
-              borderRadius: '4px',
-              background: 'var(--bg-color-secondary)',
-              color: 'var(--theme-color)',
-              fontSize: '16px',
-              cursor: 'pointer',
-            }}
-            key={t}
-          >
+          <span className={Classes['tag']} key={t}>
             {t}
             <span
               onClick={() => {
@@ -110,32 +103,13 @@ export const TagSelect: React.FC<{
           <input
             value={str}
             onChange={handleInputChange}
-            style={{
-              width: '100%',
-              padding: '6px 10px',
-              fontSize: '16px',
-              borderRadius: '4px',
-              boxSizing: 'border-box',
-              outline: 'none',
-              border: '1px solid var(--border-color)',
-            }}
+            className={Classes['input']}
           />
         }
         Menu={
-          <div
-            style={{
-              width: '100%',
-              padding: '8px 0',
-              background: 'var(--bg-color-secondary)',
-              borderRadius: '4px',
-              boxShadow: '0 0 4px 0 rgba(0, 0, 0, 0.1)',
-              boxSizing: 'border-box',
-              position: 'absolute',
-              zIndex: 100,
-            }}
-          >
+          <div className={Classes['menu']}>
             {isNewTag && (
-              <>
+              <span className={Classes['option']}>
                 <span style={{ color: 'var(--theme-color)' }}>{str}</span>
                 <button
                   onClick={(e) => {
@@ -147,25 +121,19 @@ export const TagSelect: React.FC<{
                 >
                   新建标签
                 </button>
-              </>
+              </span>
             )}
 
             {options.map((o) => (
               <div
-                style={{
-                  padding: '4px 10px',
-                  fontSize: '16px',
-                  borderBottom: '1px solid var(--border-color)',
-                  cursor: 'pointer',
-                  width: '100%',
-                }}
+                className={Classes['option']}
                 key={o.value}
                 onClick={() => {
                   setTags([...tags, o.value])
                   setStr('')
                 }}
               >
-                {o.label + '(热度' + o.heat + ')'}{' '}
+                {o.label + '(热度' + o.heat + ')'}
                 {tags.includes(o.value) ? '✅' : ''}
               </div>
             ))}

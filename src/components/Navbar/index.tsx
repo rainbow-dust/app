@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react'
-import { BsSearch } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
 import { Dropdown } from '~/components/Dropdown'
@@ -81,31 +80,13 @@ export const NavBar = () => {
         />
         furina
       </div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}
-      >
-        <Search
-          str={str}
-          tags={tags}
-          setStr={setStr}
-          setTags={setTags}
-          searchFn={searchFn}
-        ></Search>
-        <BsSearch
-          style={{
-            verticalAlign: 'middle',
-            marginLeft: '10px',
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            navigate(`/search/${str}`)
-          }}
-        />
-      </div>
+      <Search
+        str={str}
+        tags={tags}
+        setStr={setStr}
+        setTags={setTags}
+        searchFn={searchFn}
+      />
 
       <div
         className={Classes['menu']}

@@ -1,6 +1,18 @@
 .search {
-  position: relative;
+  /* position: relative; */
+  position: fixed;
+  top: 8px;
+  left: calc(50% - 100px);
   width: 200px;
+  padding: 10px 20px;
+  background: var(--bg-color);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 5px;
+}
+
+.search:hover {
+  border: 1px solid var(--border-color);
 }
 
 @media (max-width: 600px) {
@@ -8,6 +20,8 @@
     position: fixed;
     top: 0;
     left: 0;
+    padding: 10px 20px;
+
     width: calc(100vw - 40px);
     padding: 10px 20px;
     height: 60px;
@@ -31,22 +45,30 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  border: 1px solid var(--border-color);
   border-radius: 4px;
-  background: var(--bg-color);
+  background: var(--bg-color-secondary);
   cursor: text;
   overflow: visible;
 }
 
-.tag-input:hover {
-  border: 1px solid var(--border-color-secondary);
+.search-icon {
+  cursor: pointer;
+  margin-left: 10px;
 }
 
+.search-icon:hover {
+  color: var(--theme-color);
+}
+
+
 .tag-input-tag {
-  margin: 2px;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
   padding: 0 4px;
+  margin: 0 4px;
+  background: var(--bg-color-secondary);
+  color: var(--theme-color);
+  font-size: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--theme-color);
   cursor: pointer;
   animation: popup 0.2s ease;
 }
@@ -87,13 +109,12 @@
 
 
 .dropdown {
-  position: absolute;
+  /* position: absolute; */
   top: 100%;
   left: 0;
   width: 100%;
   z-index: 100;
   background: var(--bg-color);
-  border: 1px solid var(--border-color);
   border-radius: 4px;
 }
 
@@ -106,7 +127,6 @@
   line-height: 40px;
   font-size: 14px;
   color: var(--text-color-secondary);
-  border-top: 1px solid var(--border-color);
   background-color: var(--bg-color);
   cursor: pointer;
 }

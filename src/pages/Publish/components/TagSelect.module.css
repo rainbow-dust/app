@@ -1,0 +1,59 @@
+
+.tag-select {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 0;
+  z-index: 100;
+  width: 100%;
+}
+
+
+.tag-select .tag {
+  padding: 0 4px;
+  margin: 0 4px;
+  background: var(--bg-color-secondary);
+  color: var(--theme-color);
+  font-size: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+.tag-select .tag:hover {
+  background: var(--theme-color);
+  color: var(--bg-color-secondary);
+}
+
+.tag-select input {
+  position: relative;
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  z-index: 10; 
+}
+
+
+.tag-select .menu {
+  width: 100%;
+  background: var(--bg-color-secondary);
+  border-radius: 0px 0px 4px 4px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 1;
+}
+
+.tag-select .menu .option {
+  padding: 8px 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.tag-select .menu .option:last-child {
+  border-bottom: none;
+}

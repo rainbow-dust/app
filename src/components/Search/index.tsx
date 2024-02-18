@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
+import { BsSearch } from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
 
 import { ClickOutSideProvider as ClickOutSide } from '~/hooks/useClickOutSide'
 
@@ -17,6 +19,7 @@ export const Search: FC<{
   setTags: (tags: string[]) => void
   searchFn: (str: string) => Promise<Option[]>
 }> = ({ str, tags, setStr, setTags, searchFn }) => {
+  const navigate = useNavigate()
   const [options, setOptions] = useState<Option[]>([])
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -73,12 +76,14 @@ export const Search: FC<{
 
   return (
     <div
-      className={Classes['search'] + (isActive ? ' ' + Classes['active'] : '')}
+      style={{
+        position: 'relative',
+      }}
     >
       <div
-        style={{
-          position: 'relative',
-        }}
+        className={
+          Classes['search'] + (isActive ? ' ' + Classes['active'] : '')
+        }
       >
         <ClickOutSide
           onClickOutSide={() => {
@@ -87,62 +92,83 @@ export const Search: FC<{
           }}
         >
           <div
-            className={Classes['tag-input']}
-            style={isActive ? { border: '1px solid var(--border-color)' } : {}}
-            onClick={() => {
-              inputRef.current!.focus()
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
-            {/* 右边给个搜索按钮，左边给个叉叉 */}
-            {tags.map((tag) => {
-              return (
-                <span
-                  key={tag}
-                  className={Classes['tag-input-tag']}
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag))
-                  }}
-                >
-                  {tag}
-                </span>
-              )
-            })}
-            <input
-              className={Classes['tag-input-input']}
-              ref={inputRef}
-              value={str}
-              onChange={(e) => {
-                setStr(e.target.value)
+            <div
+              className={Classes['tag-input']}
+              style={
+                isActive ? { border: '1px solid var(--border-color)' } : {}
+              }
+              onClick={() => {
+                inputRef.current!.focus()
               }}
-              onKeyDown={handleKeyDown}
-            />
-            {/* 可以通过这个 mirror 得到渲染后的文字宽度...tmd原来是这样用的 */}
-            <span ref={inputMirrorRef} className={Classes['tag-input-mirror']}>
-              {str}
-            </span>
-            {/* 这里给一个 tabs，是搜用户，还是内容... */}
+            >
+              {/* 右边给个搜索按钮，左边给个叉叉 */}
+              {tags.map((tag) => {
+                return (
+                  <span
+                    key={tag}
+                    className={Classes['tag-input-tag']}
+                    onClick={() => {
+                      setTags(tags.filter((t) => t !== tag))
+                    }}
+                  >
+                    {tag}
+                  </span>
+                )
+              })}
+              <input
+                className={Classes['tag-input-input']}
+                ref={inputRef}
+                value={str}
+                onChange={(e) => {
+                  setStr(e.target.value)
+                }}
+                onKeyDown={handleKeyDown}
+              />
+              {/* 可以通过这个 mirror 得到渲染后的文字宽度...tmd原来是这样用的 */}
+              <span
+                ref={inputMirrorRef}
+                className={Classes['tag-input-mirror']}
+              >
+                {str}
+              </span>
+              {/* 这里给一个 tabs，是搜用户，还是内容... */}
+            </div>
+
+            <div className={Classes['search-icon']}>
+              <BsSearch
+                onClick={() => {
+                  navigate(`/search/${str}`)
+                }}
+              />
+            </div>
           </div>
           {isActive && (
             <>
-              <div>
-                <Tabs
-                  tabs={[
-                    {
-                      id: 'creations',
-                      label: '作品',
-                      content: <div>作品</div>,
-                    },
-                    {
-                      id: 'users',
-                      label: '用户',
-                      content: <div>用户</div>,
-                    },
-                  ]}
-                  activeTab={'creations'}
-                  setActiveTab={() => {}}
-                />
-              </div>
               <div className={Classes['dropdown']}>
+                <div>
+                  <Tabs
+                    tabs={[
+                      {
+                        id: 'creations',
+                        label: '作品',
+                        content: <div>作品</div>,
+                      },
+                      {
+                        id: 'users',
+                        label: '用户',
+                        content: <div>用户</div>,
+                      },
+                    ]}
+                    activeTab={'creations'}
+                    setActiveTab={() => {}}
+                  />
+                </div>
                 {/* 没有搜索的时候，给一些热门推荐。 */}
                 {/* 标签查询提示补全 */}
                 {options.map((option) => {

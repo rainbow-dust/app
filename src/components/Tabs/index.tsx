@@ -33,6 +33,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab }) => {
             style={{
               fontWeight: tab.id === activeTab ? 'bold' : 'normal',
               backgroundColor: tab.id === activeTab ? 'lightblue' : 'white',
+              marginRight: '10px',
             }}
           >
             {tab.label}

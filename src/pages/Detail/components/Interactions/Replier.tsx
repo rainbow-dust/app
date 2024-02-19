@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react'
+import { FC, createRef, useContext, useState } from 'react'
 
 import { ReplierContext } from '~/hooks/useReplier'
 
@@ -13,6 +13,15 @@ export const Replier: FC<{
 }> = ({ handleAddComment }) => {
   const [content, setContent] = useState('')
   const { replier, setReplier } = useContext(ReplierContext)
+
+  const inputRef = createRef<HTMLInputElement>()
+
+  const handleClick = () => {
+    handleAddComment(content, replier.rootCommentId, replier.meetionee?._id)
+    setContent('')
+    inputRef.current!.value = ''
+  }
+
   return (
     <div className={replier.isActive ? Classes['replier'] : ''}>
       <label htmlFor="reply">
@@ -22,6 +31,7 @@ export const Replier: FC<{
       <input
         type="text"
         placeholder="评论"
+        ref={inputRef}
         onFocus={() => {
           setReplier({
             isActive: true,
@@ -34,17 +44,7 @@ export const Replier: FC<{
       />
       {replier.isActive && (
         <div>
-          <button
-            onClick={() =>
-              handleAddComment(
-                content,
-                replier.rootCommentId,
-                replier.meetionee?._id,
-              )
-            }
-          >
-            评论
-          </button>
+          <button onClick={handleClick}>评论</button>
           <button
             onClick={() => {
               setReplier({

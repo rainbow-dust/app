@@ -41,10 +41,19 @@ pnpm i
 pnpm build  
 
 nginx config:  
-(mainly remind CORS and react history mode routing)
+(mainly remind CORS and react history mode routing, gzip is also recommended)
 
 ```conf
 server {
+    # gzip
+    gzip on;
+    gzip_buffers 32 4K;
+    gzip_comp_level 6;
+    gzip_min_length 100;
+    gzip_types application/javascript text/css text/xml;
+    gzip_disable "MSIE [1-6]\."; #配置禁用gzip条件，支持正则。此处表示ie6及以下不启用gzip（因为ie低版本不支持）
+    gzip_vary on;
+    
     listen       80;
     server_name yourdomain.com;
     

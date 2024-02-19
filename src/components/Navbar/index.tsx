@@ -75,8 +75,22 @@ export const NavBar = () => {
         <Dropdown
           Toggle={<button>☰</button>}
           Menu={
-            <>
-              <div>
+            <div
+              style={{
+                position: 'absolute',
+                top: '-10px',
+                right: '0',
+                width: '100px',
+                height: '100px',
+                background: 'var(--bg-color-secondary)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                borderRadius: '5px',
+              }}
+            >
+              <div className={Classes['dropdown-option']} style={{}}>
                 {currentUser.user.username ? (
                   <div>
                     <span>{currentUser.user.username}</span>
@@ -92,8 +106,7 @@ export const NavBar = () => {
                   <button onClick={toggle}>登录</button>
                 )}
               </div>
-
-              <div className={Classes['toggle-theme']}>
+              <div className={Classes['dropdown-option']}>
                 {theme === 'dark' ? (
                   <button
                     onClick={() => {
@@ -123,7 +136,7 @@ export const NavBar = () => {
                   </button>
                 )}
               </div>
-            </>
+            </div>
           }
         />
       </div>

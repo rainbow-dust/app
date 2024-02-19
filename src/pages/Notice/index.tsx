@@ -68,7 +68,7 @@ export const Notice = () => {
   if (isLoading) return <IconLoading />
   return (
     <div>
-      <h1>Notice</h1>
+      <h3>消息</h3>
       <div className={Classes['notice-list']}>
         {notices?.map((item: Notice) => (
           <div key={item._id} className={Classes['notice-item']}>

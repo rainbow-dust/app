@@ -2,7 +2,13 @@ import Avatar from '~/components/Avatar'
 
 import { UserInfo } from '../BaseInfo'
 
-export const PeopleList = ({ peopleList }: { peopleList: UserInfo[] }) => {
+export const PeopleList = ({
+  peopleList,
+  toggle,
+}: {
+  peopleList: UserInfo[]
+  toggle: () => void
+}) => {
   // 这里之后再做的话..肯定要做成内部再请求的形式，为获取查的用户是否关注当前用户等信息
   // 这一次先只改造成 pop list
   return (
@@ -16,6 +22,7 @@ export const PeopleList = ({ peopleList }: { peopleList: UserInfo[] }) => {
             padding: '10px 0',
             borderBottom: '1px solid #e6e6e6',
           }}
+          onClick={toggle}
         >
           <Avatar
             imageUrl={

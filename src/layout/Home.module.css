@@ -1,9 +1,11 @@
 .home-layout-content {
-  padding: 60px 10px 0 210px;
+  padding: 60px 10px 150px 210px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
   .home-layout-content {
-    padding: 60px 0 0 0;
+    padding: 60px 10px 150px 10px;
+    box-sizing: border-box;
   }
 }

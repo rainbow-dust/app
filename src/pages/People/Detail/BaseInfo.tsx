@@ -166,7 +166,12 @@ export const BaseInfo = ({ username }: { username: string }) => {
               isOpen={isOpen}
               toggle={toggle}
               children={
-                user && <PeopleList peopleList={user[activeMode] || []} />
+                user && (
+                  <PeopleList
+                    peopleList={user[activeMode] || []}
+                    toggle={toggle}
+                  />
+                )
               }
             />
 

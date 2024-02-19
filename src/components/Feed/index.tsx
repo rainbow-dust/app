@@ -85,7 +85,7 @@ export const Feed: FC<{
       top: number
       bottom: number
     } = {
-      top: window.scrollY,
+      top: window.scrollY - 400,
       bottom: window.scrollY + window.innerHeight,
     },
   ) => {

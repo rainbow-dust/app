@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 
 import App from './App.tsx'
 import { Message } from './components/Message/index.tsx'
+import { BASE_URL } from './services/index.ts'
 
 import './index.css'
 
@@ -11,7 +12,7 @@ import FufuTracker from 'fufu-tracker'
 const fufu = new FufuTracker({
   app_id: 'furina',
   username: localStorage.getItem('username') || 'anonymous',
-  report_url: import.meta.env.VITE_FURINA_APP_API_URL + '/statistics/collect',
+  report_url: BASE_URL + '/statistics/collect',
   events_tobe_record: ['user_action'],
 })
 setInterval(() => {

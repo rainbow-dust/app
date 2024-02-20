@@ -36,11 +36,21 @@ related repos:
 ...
 
 screenshots:
-<video src="./screenshots/2024-2-20%20141432.mp4" controls="controls">Your browser does not support the video tag.</video>
-![image](./screenshots/2024-2-20%20141410.jpg)
-![image](./screenshots/2024-2-20%20141422.jpg)
-![image](./screenshots/2024-2-20%20141427.jpg)
-![image](./screenshots/2024-2-20%20141416.jpg)
+<div style="display: flex; justify-content: space-between;">
+<video src="./screenshots/2024-2-20%20141432.mp4" controls="controls" width="45%">Your browser does not support the video tag.</video>
+</div>
+
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/2024-2-20%20141410.jpg" width="45%" />
+  <img src="./screenshots/2024-2-20%20141422.jpg" width="45%" />
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/2024-2-20%20141427.jpg" width="45%" />
+  <img src="./screenshots/2024-2-20%20141416.jpg" width="45%" />
+</div>
+
+
 
 ## deployment
 

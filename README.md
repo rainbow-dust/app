@@ -1,4 +1,4 @@
-# @furina/app [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rainbow-dust/app/blob/main/LICENSE)  [![build status](https://github.com/rainbow-dust/app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/rainbow-dust/app/actions/workflows/build.yml)
+# @furina/app [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rainbow-dust/app/blob/main/LICENSE)  [![build status](https://github.com/rainbow-dust/app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/rainbow-dust/app/actions/workflows/build.yml) ![release](https://img.shields.io/github/v/release/rainbow-dust/app?color=blueviolet&include_prereleases) ![issues](https://img.shields.io/github/issues/rainbow-dust/app.svg) ![pulls](https://img.shields.io/github/issues-pr/rainbow-dust/app.svg)
 
 ## description
 
@@ -49,7 +49,6 @@ screenshots:
 <div style="display: flex; justify-content: space-between;">
   <img src="./screenshots/2024-2-20%20141422.jpg" width="45%" />
 </div>
-
 
 ## deployment
 

@@ -1,5 +1,4 @@
-<img src="./public/logo.png" width="100" style="display: block; margin: 0 auto;"
- />
+<img src="./public/logo.png" width="100" style="display: block; margin: 0 auto;" />
 
 # @furina/app [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rainbow-dust/app/blob/main/LICENSE)  [![build status](https://github.com/rainbow-dust/app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/rainbow-dust/app/actions/workflows/build.yml) ![release](https://img.shields.io/github/v/release/rainbow-dust/app?color=blueviolet&include_prereleases) ![issues](https://img.shields.io/github/issues/rainbow-dust/app.svg) ![pulls](https://img.shields.io/github/issues-pr/rainbow-dust/app.svg)
 
@@ -59,7 +58,7 @@ pnpm i
 pnpm build  
 
 nginx config:  
-(mainly remind CORS and react history mode routing, gzip is also recommended)
+(mainly remind CORS and react history mode routing, gzip and cache is also recommended)
 
 ```conf
 server {
@@ -79,6 +78,15 @@ server {
         root   /github/app-static;
         index  index.html index.htm;
         try_files $uri /index.html;
+        # js、css、字体、图片等资源启用强缓存
+        if ($request_uri ~* .*[.](js|css|map|jpg|png|svg|ico)$) {
+          add_header Cache-Control "public, max-age=25920000";#非html缓存1个月
+          add_header Expires "30d";
+        }
+        # HTML 启用协商缓存
+        if ($request_filename ~* ^.*[.](html|htm)$) {
+          add_header Cache-Control "public, no-cache";
+        }
     }
 
     # for backend api, CORS

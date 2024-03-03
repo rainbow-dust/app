@@ -43,14 +43,28 @@ screenshots:
   <img src="./screenshots/2024-2-20%20141410.jpg" width="45%" />
 </div>
 
-<div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/2024-2-20%20141427.jpg" width="45%" />
-  <img src="./screenshots/2024-2-20%20141416.jpg" width="45%" />
-</div>
+<details>
+  <summary>more screenshots:</summary>
 
-<div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/2024-2-20%20141422.jpg" width="45%" />
-</div>
+  <div style="display: flex; justify-content: space-between;">
+    <img src="./screenshots/2024-2-20%20141427.jpg" width="45%" />
+    <img src="./screenshots/2024-2-20%20141416.jpg" width="45%" />
+  </div>
+
+  <div style="display: flex; justify-content: space-between;">
+    <img src="./screenshots/2024-2-20%20141422.jpg" width="45%" />
+    <img src="./screenshots/screenshot-20240303-232109.png" width="45%" />
+  </div>
+  <div style="display: flex; justify-content: space-between;">
+    <img src="./screenshots/screenshot-20240219-144512.png" />
+  </div>
+    <div style="display: flex; justify-content: space-between;">
+    <img src="./screenshots/screenshot-20240303-232002.png" />
+  </div>
+
+</details>
+
+
 
 ## deployment
 

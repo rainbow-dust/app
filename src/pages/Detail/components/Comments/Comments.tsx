@@ -1,4 +1,10 @@
-import { FC, useContext, useEffect, useImperativeHandle, useState } from 'react'
+import {
+  FC,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useReducer,
+} from 'react'
 
 import { ReplierContext } from '~/hooks/useReplier'
 import { getChildComments, getRootComments } from '~/services'
@@ -36,10 +42,41 @@ export const Comments: FC<{
   onRef?: React.Ref<CommentsRef>
   noteId: string
 }> = ({ noteId, onRef }) => {
-  const [rootComments, setRootComments] = useState<Comment[]>([])
+  const [rootComments, setRootComments] = useReducer(
+    (
+      state: Comment[],
+      action: {
+        type: 'init' | 'open-children'
+        payload: {
+          comments: Comment[]
+          rootCommentId?: string
+        }
+      },
+    ) => {
+      switch (action.type) {
+        case 'init':
+          return action.payload.comments
+        case 'open-children':
+          return state.map((comment) => {
+            if (comment._id === action.payload.rootCommentId) {
+              comment.children = action.payload.comments
+              return comment
+            }
+            return comment
+          })
+      }
+    },
+    [],
+  )
+
   const fetchRootComments = async (noteId: string) => {
     const res = await getRootComments(noteId)
-    setRootComments(res)
+    setRootComments({
+      type: 'init',
+      payload: {
+        comments: res,
+      },
+    })
   }
 
   useEffect(() => {
@@ -48,16 +85,13 @@ export const Comments: FC<{
 
   const unfoldReply = async (commentId: string) => {
     const res = await getChildComments(commentId)
-    const newRootComments = rootComments.map((comment) => {
-      if (comment._id === commentId) {
-        return {
-          ...comment,
-          children: res.data,
-        }
-      }
-      return comment
+    setRootComments({
+      type: 'open-children',
+      payload: {
+        comments: res.data,
+        rootCommentId: commentId,
+      },
     })
-    setRootComments(newRootComments)
   }
 
   const { setReplier } = useContext(ReplierContext)
